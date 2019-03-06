@@ -1,0 +1,45 @@
+@import "../app";
+
+.wrapper{
+  position: relative;
+  @include wh(100%);
+  @include flex-column;
+}
+
+.app-header{
+  @include padding-x;
+  @include wh(100%,60px);
+  @include flex;
+  align-items: center;
+  justify-content: space-between;
+  background: $gighlight-color;
+  color: white;
+  .title{
+    font-size: 1.3rem;
+    font-weight: bold;
+  }
+}
+
+.content-box{
+  flex: 1;
+  @include flex;
+}
+
+.app-aside{
+  position: relative;
+  width: 15%;
+  z-index: 1;
+  background: #f7f7f7;
+  box-shadow: 4px 1px 12px rgba(0,55,107,.04);
+}
+
+.content-body{
+  flex: 1;
+  @include padding;
+  padding-bottom: 0;
+  @include flex-column;
+  background: #f2f2f2;
+  .app-container{
+    flex: 1;
+  }
+}

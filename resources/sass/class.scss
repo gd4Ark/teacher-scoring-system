@@ -1,0 +1,11 @@
+.app-footer{
+  @include footer;
+}
+
+.form-group:nth-last-child(1){
+  margin-bottom: 0;
+}
+
+.col-form-label{
+  text-align: center;
+}

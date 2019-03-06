@@ -1,0 +1,32 @@
+@import "../app";
+
+.app-container{
+  @include wh(100%);
+  @include flex-column;
+  @include mask;
+  justify-content: space-around;
+  position: relative;
+  .inner-container {
+    flex: 1;
+    @include sub-center;
+    justify-content: space-around;
+    .text{
+      color: white;
+      h1{
+        font-size: 3rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+      }
+      p{
+        line-height: 2;
+      }
+    }
+    .login-panel{
+      @include panel;
+      width: 400px;
+    }
+  }
+  .app-footer{
+    @include padding-x;
+  }
+}

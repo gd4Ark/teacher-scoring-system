@@ -1,0 +1,144 @@
+@mixin flex {
+  display: flex;
+}
+
+@mixin flex-column {
+  @include flex;
+  flex-direction: column;
+}
+
+@mixin sub-center {
+  @include flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin center {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+@mixin po-abs {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+@mixin padding($x:$app-padding,$y:$app-padding) {
+  @include padding-x($x);
+  @include padding-y($y);
+}
+
+@mixin padding-x($padding: $app-padding) {
+  padding-left: $padding;
+  padding-right: $padding;
+}
+
+@mixin padding-y($padding: $app-padding) {
+  padding-top: $padding;
+  padding-bottom: $padding;
+}
+
+@mixin wh($width, $height: false) {
+  width: $width;
+
+  @if $height {
+    height: $height;
+  }
+
+  @else {
+    height: $width;
+  }
+}
+
+@mixin nav {
+  @include flex;
+  justify-content: space-around;
+  align-items: center;
+
+  .nav-item a {
+    display: block;
+    @include wh(100%);
+    color: $secondary-font-color;
+
+    &.router-link-active {
+      color: $highlight-color;
+    }
+  }
+}
+
+@mixin center {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+@mixin mask {
+  position: relative;
+  z-index: 1;
+
+  &::after {
+    content: '';
+    @include center;
+    @include wh(100%);
+    background: rgba(0, 0, 0, 0.4);
+    z-index: -1;
+  }
+}
+
+@mixin no-user-select {
+  user-select: none;
+}
+
+@mixin no-scrollbar {
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+}
+
+@mixin footer {
+  @include wh(100%, 40px);
+  @include flex;
+  align-items: center;
+  justify-content: space-between;
+  color: rgb(102, 102, 102);
+  opacity: 0.8;
+
+  .title {
+    font-size: 1rem;
+  }
+
+  .copyright {
+    font-size: 0.5rem;
+  }
+
+}
+
+@mixin panel{
+  width: 100%;
+  border-radius: 4px;
+  color: #303133;
+  background: white;
+  border: 1px solid #ebeef5;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+  .panel-header{
+    @include padding(9px,10px);
+    @include sub-center;
+    border-bottom: 1px solid #ebeef5;
+    .panel-title{
+      font-size: 1.2rem;
+      font-weight: 400;
+    }
+  }
+  .panel-body{
+    @include padding(20px);
+  }
+}
