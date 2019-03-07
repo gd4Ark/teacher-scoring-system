@@ -36603,10 +36603,9 @@ window._ = __webpack_require__(/*! lodash */ "./node_modules/_lodash@4.17.11@lod
  */
 
 try {
-  window.Popper = __webpack_require__(/*! popper.js */ "./node_modules/_popper.js@1.14.7@popper.js/dist/esm/popper.js").default;
+  // window.Popper = require('popper.js').default;
   window.$ = window.jQuery = __webpack_require__(/*! jquery */ "./node_modules/_jquery@3.3.1@jquery/dist/jquery.js");
-
-  __webpack_require__(/*! bootstrap */ "./node_modules/_bootstrap@4.3.1@bootstrap/dist/js/bootstrap.js");
+  window.bootstrap = __webpack_require__(/*! bootstrap */ "./node_modules/_bootstrap@4.3.1@bootstrap/dist/js/bootstrap.js");
 } catch (e) {}
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -36646,10 +36645,21 @@ if (token) {
 
 /***/ }),
 
-/***/ "./resources/sass/app.scss":
-/*!*********************************!*\
-  !*** ./resources/sass/app.scss ***!
-  \*********************************/
+/***/ "./resources/sass/layouts/home.scss":
+/*!******************************************!*\
+  !*** ./resources/sass/layouts/home.scss ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ "./resources/sass/layouts/login.scss":
+/*!*******************************************!*\
+  !*** ./resources/sass/layouts/login.scss ***!
+  \*******************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -36658,14 +36668,15 @@ if (token) {
 /***/ }),
 
 /***/ 0:
-/*!*************************************************************!*\
-  !*** multi ./resources/js/app.js ./resources/sass/app.scss ***!
-  \*************************************************************/
+/*!**********************************************************************************************************!*\
+  !*** multi ./resources/js/app.js ./resources/sass/layouts/home.scss ./resources/sass/layouts/login.scss ***!
+  \**********************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(/*! C:\xampp\htdocs\teacher-scoring-system\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\teacher-scoring-system\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\teacher-scoring-system\resources\sass\layouts\home.scss */"./resources/sass/layouts/home.scss");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\teacher-scoring-system\resources\sass\layouts\login.scss */"./resources/sass/layouts/login.scss");
 
 
 /***/ })
