@@ -1,9 +1,10 @@
 <div class="app-aside">
     <ul class="menu" id="menu">
         @foreach ($navList as $item)
-           @if (isset($item['subs']))
+            @if (isset($item['subs']))
                 <li class="submenu menu-item">
-                    <a class="submenu-title menu-item-title" data-toggle="collapse" href="#{{$item['title']}}" data-parent="#menu">
+                    <a class="submenu-title menu-item-title" data-toggle="collapse" href="#{{$item['title']}}"
+                       data-parent="#menu">
                         <i class="{{ $item['icon']  }}"></i>
                         <span>{{ $item['title']  }}</span>
                     </a>
@@ -20,33 +21,31 @@
                         </ul>
                     </div>
                 </li>
-           @else
+            @else
                 <li class="menu-item">
                     <a class="menu-item-title" href="{{ $item['path']  }}">
                         <i class="{{ $item['icon']  }}"></i>
                         <span>{{ $item['title']  }}</span>
                     </a>
                 </li>
-           @endif
+            @endif
         @endforeach
     </ul>
 </div>
 <script>
     // 实现只能展开一个子菜单
-    $('body').on('click','.submenu-title',function(event){
+    $('body').on('click', '.submenu-title', function () {
         var $this = $(this);
         var parent = $this.data('parent');
         var actives = parent && $(parent).find('.collapse.show');
 
-        // From bootstrap itself
         if (actives && actives.length) {
             hasData = actives.data('collapse');
             //if (hasData && hasData.transitioning) return;
             actives.collapse('hide');
         }
 
-        var target = $this.attr('data-target') || (href = $this.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, ''); //strip for ie7
-
+        var target = $this.attr('data-target');
         $(target).collapse('toggle');
     })
 </script>
