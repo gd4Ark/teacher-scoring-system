@@ -1,0 +1,16 @@
+export default [{
+        title: '分数概览',
+        index: '/score',
+        icon : 'el-icon-ali-shuju',
+    },
+    {
+        title: '班级管理',
+        index : '/group',
+        icon : 'el-icon-ali-banji',
+    },
+    {
+        title: '教师管理',
+        index : '/tearcher',
+        icon : 'el-icon-ali-jiaoshi',
+    }
+]

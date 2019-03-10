@@ -1,0 +1,136 @@
+.el-message-box,
+.el-dialog {
+  max-width: 350px;
+}
+
+.toolbar {
+  padding: 3px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.back {
+  &::after {
+    content: "←";
+    font-size: 1.3rem;
+    font-weight: bold;
+  }
+}
+
+.a{
+  color: #409EFF;
+  font-size: 0.8rem;
+}
+
+.app-container {
+  @include wh(100%);
+}
+
+.table-content {
+  @include wh(100%);
+  @include flex-column;
+}
+
+.table {
+  width: 100%;
+  margin: 2% auto;
+  border-radius: 5px;
+}
+
+.el-table .warning-row {
+  background: oldlace;
+}
+
+.el-button--mini {
+  padding: 7px 10px;
+}
+
+.el-form-item label {
+  font-size: 0.8rem;
+}
+
+.el-select {
+  width: 100%;
+}
+
+.el-form-item {
+  margin-bottom: 15px;
+
+  label {
+    text-align: center;
+  }
+}
+
+.el-input-number,
+.el-date-editor.el-input,
+.el-date-editor.el-input__inner {
+  width: auto;
+}
+
+.el-input-number--mini {
+  width: 130px;
+}
+
+// .el-input__inner{
+//   background:transparent;
+//   border: none;
+//   border-bottom: 1px solid #dcdfe6;
+//   border-bottom-left-radius: 0;
+//   border-bottom-right-radius: 0;
+// }
+
+.el-select .el-input.is-focus .el-input__inner {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.el-card {
+  margin-bottom: 3vh;
+}
+
+.el-card__header {
+  padding: 9px 10px;
+}
+
+.el-card__body {
+  padding: 12px;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: normal;
+}
+
+.card-header {
+  height:30px;
+  @include flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.el-pagination {
+  margin-top: 1.5vh;
+  @include sub-center;
+  justify-content: space-around;
+}
+
+.el-menu{
+  background: transparent;
+  border: none;
+}
+
+.el-upload{
+  display: block;
+}
+.el-upload-dragger{
+  width: auto;
+}
+
+.el-textarea__inner{
+  font-family: inherit;
+}
+
+.font-size-small{
+  font-size: .8rem;
+}
