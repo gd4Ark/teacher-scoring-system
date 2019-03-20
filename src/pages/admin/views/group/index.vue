@@ -4,7 +4,7 @@
   </not-sub-router>
 </template>
 <script>
-import GroupTable from "@/pages/admin/components/GroupTable";
+import GroupTable from "@/pages/admin/tables/GroupTable";
 export default {
   components: {
     GroupTable,

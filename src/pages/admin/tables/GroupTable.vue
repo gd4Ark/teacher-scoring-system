@@ -22,7 +22,7 @@
       <v-table :data="group.list"
                :columns="columns">
         <template slot="columns-after">
-          <el-table-column label="允许评分状态（点击切换）"
+          <el-table-column label="切换评分状态"
                            align="center">
             <template slot-scope="scope">
               <span :class="['allow-status',scope.row.allow ? 'yes' : 'no']">{{ scope.row.allow ? '√' : '×' }}</span>
