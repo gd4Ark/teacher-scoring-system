@@ -4,7 +4,7 @@
   </not-sub-router>
 </template>
 <script>
-import TearcherTable from "@/pages/admin/components/TearcherTable";
+import TearcherTable from "@/pages/admin/tables/TearcherTable";
 export default {
   components: {
     TearcherTable,
