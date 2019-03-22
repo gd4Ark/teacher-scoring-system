@@ -1,5 +1,7 @@
 <template>
-  <el-upload action=""
+  <el-upload ref="upload"
+             action=""
+             :file-list="fileList"
              :limit="item.limit || limit"
              :http-request="onRquest"
              :before-upload="onBeforeUpload"
@@ -7,33 +9,39 @@
              drag>
     <i class="el-icon-upload"></i>
     <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-    <div class="el-upload__tip"
-         slot="tip">
-      <template v-if="allowExtensions.length < 1">
-        不限制文件格式
-      </template>
-      <template v-else>
-        只能上传 {{ showAllowExtensions }} 文件
-      </template>
-      ，不可超过 {{ limit }} M。
-    </div>
   </el-upload>
 </template>
 <script>
 export default {
   props: {
-    item: Object
+    item: Object,
+    model: [Object, String, File]
   },
   data: () => ({
     default: {
       limit: 1,
       maxSize: 2,
       allowExtensions: []
-    }
+    },
+    fileList: [],
+    file: ""
   }),
+  watch: {
+    file(file) {
+      this.$emit("update:model", file);
+    },
+    model(file) {
+      if (!file) {
+        return this.clearFiles();
+      }
+      if (this.file !== file) {
+        this.file = file;
+      }
+    }
+  },
   methods: {
-    onRquest(a) {
-      console.log(a);
+    onRquest({ file }) {
+      this.file = file;
     },
     onBeforeUpload(file) {
       if (!this.isAllowExtension(file)) {
@@ -47,7 +55,11 @@ export default {
       return true;
     },
     onExceed() {
-      this.$util.msg.warning("最多只能上传一个文件");
+      this.$util.msg.warning(`最多只能上传${this.limit}个文件`);
+    },
+    clearFiles() {
+      this.fileList.length = 0;
+      this.$refs.upload.clearFiles();
     },
     isAllowExtension(file) {
       if (this.allowExtensions.length < 1) return true;

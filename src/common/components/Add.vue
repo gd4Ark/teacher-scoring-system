@@ -1,7 +1,8 @@
 <template>
-  <div :style="{width:width}">
+  <div :style="{width:'40%'}">
     <baseForm ref="baseForm"
-              :btn="btnText"
+              :use-btn="useBtn"
+              :btn-text="btnText"
               :form-item="formItem"
               :get-form-data="getFormData"
               @submit="submit">
@@ -11,20 +12,21 @@
 </template>
 <script>
 import BaseForm from "@/common/components/BaseForm";
+import { mapActions } from "vuex";
 export default {
   components: {
     BaseForm
   },
   props: {
-    width: {
-      type: String,
-      default: "40%"
-    },
     formItem: Array,
     getFormData: Function,
-    action: {
+    module: {
       type: String,
       default: ""
+    },
+    useBtn: {
+      type: Boolean,
+      default: true
     },
     btnText: {
       type: String,
@@ -32,14 +34,21 @@ export default {
     }
   },
   methods: {
+    ...mapActions(["add"]),
+    resetData() {
+      this.$refs.baseForm.resetData();
+    },
     async submit(formData) {
-      if (!this.action) {
+      if (!this.module) {
         return this.$emit("submit", formData);
       }
-      const id = await this.$store.dispatch(this.action, formData);
+      const id = await this.add({
+        module: this.module,
+        data: formData
+      });
       if (id) {
         this.$util.msg.success("添加成功！");
-        this.$refs.baseForm.resetData();
+        this.resetData();
         this.$emit("success");
       }
     }

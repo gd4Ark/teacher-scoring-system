@@ -1,28 +1,25 @@
 <template>
-  <div :style="width">
+  <div :style="{width:'40%'}">
     <baseForm ref="baseForm"
-              :btn="btnText"
+              :btn-text="btnText"
               :form-item="formItem"
               :form-data="current"
-              @submit="submit">
+              @submit="handleSubmit">
       <slot></slot>
     </baseForm>
   </div>
 </template>
 <script>
 import BaseForm from "@/common/components/BaseForm";
+import { mapActions } from "vuex";
 export default {
   components: {
     BaseForm
   },
   props: {
-    width: {
-      type: String,
-      default: "40%"
-    },
     formItem: Array,
     current: Object,
-    action: {
+    module: {
       type: String,
       default: ""
     },
@@ -32,11 +29,15 @@ export default {
     }
   },
   methods: {
-    async submit(formData) {
-      if (!this.action) {
+    ...mapActions(["update"]),
+    async handleSubmit(formData) {
+      if (!this.module) {
         return this.$emit("submit", formData);
       }
-      const id = await this.$store.dispatch(this.action, formData);
+      const id = await this.update({
+        module: this.module,
+        data: formData
+      });
       if (id) {
         this.$util.msg.success("更新成功");
         this.$emit("get-data");

@@ -1,16 +1,12 @@
 export default {
 
-    base: {
+    form: {
         item: [{
             label: "姓名",
             key: "name",
             type: "textarea",
             row: 20,
-            placeholder: `请输入教师姓名，一行一个。
-如：
-    张三
-    李四 
-PS：如姓名已存在或重复将自动忽略。`,
+            placeholder: `请输入姓名，一行一个。\np.s：如已存在或重复将自动忽略。`,
         }, ],
         data: () => ({
             name: '',

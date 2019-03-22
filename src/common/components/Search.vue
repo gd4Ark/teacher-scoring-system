@@ -29,7 +29,7 @@ export default {
     module: String
   },
   data: () => ({
-    searchKeyword: []
+    search_keyword: []
   }),
   mounted() {
     // this.reset();
@@ -44,14 +44,14 @@ export default {
       this.submit();
     },
     submit() {
-      this.searchKeyword = [];
+      this.search_keyword = [];
       this.formItem.forEach(el => {
         const key = el.key;
         let item = this.formData[key];
         if (el.items) {
           el.items.forEach((el, index) => {
             if (item[index] !== 0 && !item[index]) return;
-            this.searchKeyword.push([key, el.operation, item[index]]);
+            this.search_keyword.push([key, el.operation, item[index]]);
           });
         } else {
           if (item !== 0 && !item) return;
@@ -59,7 +59,7 @@ export default {
           if (operation === "like") {
             item = `%${item}%`;
           }
-          this.searchKeyword.push([key, operation, item]);
+          this.search_keyword.push([key, operation, item]);
         }
       });
       this.handleSubmit();
@@ -67,20 +67,20 @@ export default {
     async handleSubmit() {
       await this.updateSearchKeyword({
         module: this.module,
-        searchKeyword: this.searchKeyword
+        search_keyword: this.search_keyword
       });
       this.$emit("get-data");
     }
   },
   computed: {
     submitAction() {
-      return `${this.module}searchKeyword`;
+      return `${this.module}search_keyword`;
     },
     formItem() {
-      return this.$vData[this.module].search.item;
+      return this.$v_data[this.module].search.item;
     },
     formData() {
-      return this.$store.state[this.module].searchData;
+      return this.$store.state[this.module].search_data;
     },
     s_module() {
       return this.$util.firstUpperCase(this.module);

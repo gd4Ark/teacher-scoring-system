@@ -13,6 +13,7 @@ export default [{
         {
             path : 'add',
             component : Add,
+            name : 'addTearcher',
             meta : {
                 title : "添加教师",
             }

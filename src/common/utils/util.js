@@ -31,6 +31,17 @@ export default {
             return JSON.stringify(obj) === "{}";
         }
 
+        o.cover = (obj1, obj2) => {
+            const _obj1 = Object.assign({}, obj1);
+            const _obj2 = Object.assign({}, obj2);
+            for (const key in _obj1) {
+                if (_obj2[key]) {
+                    _obj1[key] = _obj2[key];
+                }
+            }
+            return _obj1;
+        }
+
         o.numberToW = (num) => {
             return num / 10000 + 'w';
         }

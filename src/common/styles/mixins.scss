@@ -108,15 +108,16 @@
   @include wh(100%, 40px);
   @include flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   color: rgb(102, 102, 102);
   opacity: 0.5;
 
-  p{
-    font-size: 0.8rem;
-    & + p{
-      margin-left: 0.5rem;
-    }
+  .title {
+    font-size: 1rem;
+  }
+
+  .copyright {
+    font-size: 0.5rem;
   }
 
 }

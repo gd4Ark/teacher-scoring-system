@@ -1,4 +1,52 @@
 export default {
+    async get(ctx, {
+        module,
+        url = null,
+        doCommit = true,
+    }) {
+        const path = url ? url : module;
+        const res = await this._vm.$axios.get(`/${path}`, ctx.getters.requestData(ctx.state[module]));
+        if (doCommit) {
+            ctx.commit(module, res);
+        }
+        return res;
+    },
+    async add(ctx, {
+        module,
+        data
+    }) {
+        return await this._vm.$axios.post(`/${module}`, data);
+    },
+    async uploadAdd(ctx, {
+        module,
+        data,
+    }) {
+        return await this._vm.$axios.upload(`/${module}`, data);
+    },
+    async update(ctx, {
+        module,
+        data
+    }) {
+        return await this._vm.$axios.put(`/${module}/${data.id}`, data);
+    },
+    async updateBatch(ctx, {
+        module,
+        ids,
+        data,
+    }) {
+        return await this._vm.$axios.put(`/${module}`, {
+            ids,
+            data,
+        });
+    },
+    async delete(crx, {
+        module,
+        ids
+    }) {
+        return await this._vm.$axios.delete(`/${module}`, {
+            ids
+        })
+    },
     async login({
         commit
     }, {
@@ -12,34 +60,22 @@ export default {
     async logout() {
         return await this._vm.$axios.post(`/logout`);
     },
-    async updatePassword(context, {
+    async updatePassword(ctx, {
         data
     }) {
         return await this._vm.$axios.post(`/password`, data);
     },
-    async getUser({
-        commit,
-        state,
-        getters
-    }, data = null) {
-        if (data && data.id !== null) {
-            return await this._vm.$axios.get('/user', {
-                id: data.id
-            });
-        }
-        commit('updateUser', await this._vm.$axios.get('/user', getters.requestData(state.user)));
-    },
-    async resetSearchData(context, module) {
-        context.commit(`update${this._vm.$util.firstUpperCase(module)}`, {
-            searchData: this._vm.$vData[module].search.data(),
+    async resetSearchData(ctx, module) {
+        ctx.commit(module, {
+            search_data: this._vm.$v_data[module].search.data(),
         });
     },
-    async updateSearchKeyword(context, {
+    async updateSearchKeyword(ctx, {
         module,
-        searchKeyword = []
+        search_keyword = []
     }) {
-        context.commit(`update${this._vm.$util.firstUpperCase(module)}`, {
-            searchKeyword,
+        ctx.commit(module, {
+            search_keyword,
         });
     }
 }

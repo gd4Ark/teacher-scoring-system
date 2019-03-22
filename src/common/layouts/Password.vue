@@ -2,8 +2,8 @@
   <wrap>
     <div class="app-container">
       <v-card title="修改密码">
-        <add :formItem="$vData.user.userPassword.item"
-             :getFormData="$vData.user.userPassword.data"
+        <add :formItem="$v_data.user.userPassword.item"
+             :getFormData="$v_data.user.userPassword.data"
              @submit="submit"
              btnText="修改" />
       </v-card>

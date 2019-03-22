@@ -1,17 +1,17 @@
 export default {
-    requestData(state) {
+    requestData() {
         return (origin) => {
             const {
-                pageIndex,
-                pageSize,
-                searchKeyword,
+                current_page,
+                pre_page,
+                search_keyword,
             } = origin;
             const data = {
-                pageIndex,
-                pageSize,
+                page: current_page,
+                pre_page,
             };
-            if (searchKeyword.length) {
-                data.searchKeyword = searchKeyword;
+            if (search_keyword.length) {
+                data.where = search_keyword;
             }
             return data;
         }

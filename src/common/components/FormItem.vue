@@ -1,18 +1,18 @@
 <template>
   <div v-if="load">
-    <!-- 选择类型 -->
+    <!-- 选择 -->
     <el-select v-if="item.type === 'select'"
                v-model="val"
                :size="item.size || ''"
                :placeholder="getPlaceholder(item,'选择')"
                :clearable="true">
-      <el-option v-for="option in getOptions(item)"
+      <el-option v-for="option in item.options"
                  :key="option.value"
                  :label="option.label"
                  :value="option.value">
       </el-option>
     </el-select>
-    <!-- 日期类型 -->
+    <!-- 日期 -->
     <el-date-picker v-else-if="item.type === 'date'"
                     v-model="val"
                     type="date"
@@ -21,7 +21,7 @@
                     value-format="yyyy-MM-dd"
                     clearable>
     </el-date-picker>
-    <!-- 滑块类型 -->
+    <!-- 滑块 -->
     <el-slider v-else-if="item.type === 'range'"
                v-model="val"
                :step="item.step"
@@ -30,7 +30,7 @@
                show-input
                input-size="mini">
     </el-slider>
-    <!-- 计数类型 -->
+    <!-- 计数 -->
     <el-input-number v-else-if="item.type === 'inputNumber'"
                      v-model="val"
                      :step="item.step"
@@ -39,9 +39,17 @@
     </el-input-number>
     <!-- 上传 -->
     <template v-else-if="item.type === 'file'">
-      <upload :item="item" />
+      <upload :item="item"
+              :model.sync="val" />
     </template>
-    <!-- 其他 -->
+    <!-- 开关 -->
+    <el-switch v-else-if="item.type === 'switch'"
+               v-model="val"
+               active-color="#13ce66"
+               inactive-color="#ff4949"
+               inactive-value="0"
+               active-value="1" />
+    <!-- 默认 -->
     <el-input v-else
               :type="item.type"
               :placeholder="getPlaceholder(item)"
@@ -59,7 +67,7 @@ export default {
   },
   props: {
     item: Object,
-    model: [String, Number]
+    model: [String, Number, Boolean, File]
   },
   data: () => ({
     load: false,
@@ -70,15 +78,9 @@ export default {
     this.load = true;
   },
   methods: {
-    getOptions(item) {
-      if (item.options) return item.options;
-      const { optionsOrigin } = item;
-      const module = this.$store.state[optionsOrigin.module];
-      return optionsOrigin.getOptions(module);
-    },
-    getPlaceholder(item,type='输入'){
+    getPlaceholder(item, type = "输入") {
       return item.placeholder || `请${type}` + item.label;
-    },
+    }
   },
   watch: {
     val(val) {

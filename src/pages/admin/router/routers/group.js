@@ -1,7 +1,9 @@
 import Group from "@/pages/admin/views/group";
 
 import Add from "@/pages/admin/views/group/children/Add";
-import AddStudent from "@/pages/admin/views/group/children/AddStudent";
+
+import Student from "./group/student";
+import Course from "./group/course";
 
 export default [{
     path: '/group',
@@ -10,19 +12,16 @@ export default [{
     meta: {
         title: "班级管理",
     },
-    children: [{
+    children: [
+        ...Student,
+        ...Course,
+        {
             path: 'add',
             component: Add,
+            name : 'addGroup',
             meta: {
                 title: "添加班级",
             }
         },
-        {
-            path: 'addStudent',
-            component: AddStudent,
-            meta: {
-                title: "添加学生",
-            }
-        }
     ],
 }]

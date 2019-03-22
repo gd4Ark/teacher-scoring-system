@@ -1,10 +1,9 @@
 <template>
   <el-Pagination background
-                 layout="total, sizes, prev, pager, next, jumper"
+                 layout="total, prev, pager, next, jumper"
                  :total="module.total"
-                 :current-page.sync="module.pageIndex"
-                 :page-sizes="module.pageSizes"
-                 :page-size.sync="module.pageSize"
+                 :current-page.sync="module.current_page"
+                 :page-size.sync="module.per_page"
                  @current-change="handleCurrentChange"
                  @size-change="handleSizeChange">
   </el-Pagination>

@@ -1,6 +1,9 @@
-.el-message-box,
-.el-dialog {
+.el-message-box {
   max-width: 350px;
+}
+
+.el-dialog {
+  max-width: 600px;
 }
 
 .toolbar {
@@ -18,7 +21,7 @@
   }
 }
 
-.a{
+.a {
   color: #409EFF;
   font-size: 0.8rem;
 }
@@ -42,20 +45,28 @@
   background: oldlace;
 }
 
+.el-table__body-wrapper {
+  @include no-scrollbar;
+}
+
 .el-button--mini {
   padding: 7px 10px;
+}
+
+*+.el-button {
+  margin-left: 10px;
 }
 
 .el-form-item label {
   font-size: 0.8rem;
 }
 
-.el-select {
-  width: 100%;
+.el-switch {
+  line-height: 40px;
 }
 
 .el-form-item {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 
   label {
     text-align: center;
@@ -85,8 +96,18 @@
   border-bottom-right-radius: 0;
 }
 
-.el-card {
-  margin-bottom: 3vh;
+*+.el-card {
+  margin-top: $app-padding;
+}
+
+.table-card {
+  flex: 1;
+  @include flex-column;
+
+  .el-card__body {
+    flex: 1;
+    overflow: hidden;
+  }
 }
 
 .el-card__header {
@@ -103,7 +124,7 @@
 }
 
 .card-header {
-  height:30px;
+  height: 30px;
   @include flex;
   align-items: center;
   justify-content: space-between;
@@ -115,22 +136,29 @@
   justify-content: space-around;
 }
 
-.el-menu{
+.el-menu {
   background: transparent;
   border: none;
+  overflow: hidden;
 }
 
-.el-upload{
+.el-upload {
   display: block;
 }
-.el-upload-dragger{
-  width: auto;
+
+.el-upload-dragger .el-icon-upload {
+  margin: 20px 0 16px;
 }
 
-.el-textarea__inner{
+.el-upload-dragger {
+  @include wh(auto);
+  padding: 1vh;
+}
+
+.el-textarea__inner {
   font-family: inherit;
 }
 
-.font-size-small{
+.font-size-small {
   font-size: .8rem;
 }

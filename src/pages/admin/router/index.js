@@ -10,6 +10,7 @@ import Home from "@/common/layouts/Home";
 import Score from "./routers/score";
 import Group from "./routers/group";
 import Tearcher from "./routers/tearcher";
+import Subject from "./routers/subject";
 
 import Login from "../views/Login";
 
@@ -31,6 +32,7 @@ const routerConfig = {
                 ...Score,
                 ...Group,
                 ...Tearcher,
+                ...Subject,
                 {
                     path: '/404',
                     component: notFound,
@@ -59,6 +61,8 @@ Vue.use(VueRouter);
 const router = new VueRouter(
     routerConfig,
 );
+
+var routeList = []
 
 router.beforeEach(async (to, from, next) => {
     if (to.meta.title) {

@@ -5,6 +5,9 @@ import createPersist from 'vuex-localstorage'
 
 import tearcher from "./modules/tearcher";
 import group from "./modules/group";
+import subject from "./modules/subject";
+import student from "./modules/student";
+import course from "./modules/course";
 
 import mutations from "./mutations";
 import actions from "./actions";
@@ -16,6 +19,9 @@ export default new vuex.Store({
     state: {
         tearcher,
         group,
+        subject,
+        student,
+        course,
     },
     mutations: {
         ...mutations,

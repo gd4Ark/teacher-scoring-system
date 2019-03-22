@@ -4,7 +4,7 @@
              class="el-menu-vertical"
              unique-opened
              router>
-      <template v-for="item in navList">
+      <template v-for="item of navList">
         <el-submenu v-if="item.subs"
                     :index="item.index"
                     :key="item.index">
@@ -13,7 +13,7 @@
                :class="item.icon"></i>
             <span>{{ item.title }}</span>
           </template>
-          <el-menu-item v-for="subItem in item.subs"
+          <el-menu-item v-for="subItem of item.subs"
                         :index="subItem.index"
                         :key="subItem.index">
             <i v-if="subItem.icon"

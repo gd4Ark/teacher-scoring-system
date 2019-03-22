@@ -1,9 +1,10 @@
 <template>
   <el-table :data="data"
+            height="93.5%"
             style="width: 100%;"
             @selection-change="handleSelectionChange">
     <slot name="columns-before" />
-    <el-table-column type="selection" width="40"></el-table-column>
+    <el-table-column type="selection"></el-table-column>
     <el-table-column v-for="(column,index) in columns"
                      :key="index"
                      v-bind="column"
@@ -21,15 +22,18 @@
 </template>
 <script>
 import FormItem from "@/common/components/FormItem";
-import ManageTable from "@/common/mixins/ManageTable";
 export default {
   components: {
     FormItem
   },
-  mixins: [ManageTable],
   props: {
     data: Array,
     columns: Array
+  },
+  methods: {
+    handleSelectionChange(val) {
+      this.$emit("selection-change", val);
+    }
   }
 };
 </script>

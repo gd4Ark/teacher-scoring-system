@@ -1,9 +1,10 @@
 <template>
   <div class="app-container">
-    <v-card :title="$route.meta.title">
-      <add :formItem="$vData.tearcher.base.item"
-           :getFormData="$vData.tearcher.base.data"
-           action="addTearcher">
+    <v-card title="添加教师">
+      <add :formItem="$v_data.tearcher.form.item"
+           :getFormData="$v_data.tearcher.form.data"
+           module="tearcher"
+           :style="{width:'50%'}">
       </add>
     </v-card>
   </div>

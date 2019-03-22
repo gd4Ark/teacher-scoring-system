@@ -12,5 +12,10 @@ export default [{
         title: '教师管理',
         index : '/tearcher',
         icon : 'el-icon-ali-jiaoshi',
+    },
+    {
+        title: '科目管理',
+        index : '/subject',
+        icon : 'el-icon-ali-ic_subject',
     }
 ]
