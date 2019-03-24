@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
     <v-card title="添加教师">
-      <add :formItem="$v_data.tearcher.form.item"
-           :getFormData="$v_data.tearcher.form.data"
+      <add :formItem="$v_data.tearcher.add.item"
+           :getFormData="$v_data.tearcher.add.data"
            module="tearcher"
            :style="{width:'50%'}">
       </add>

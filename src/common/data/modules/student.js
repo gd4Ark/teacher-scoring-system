@@ -24,10 +24,29 @@ export default {
             key: "name",
             type: "text",
             operation: 'like',
+        }, {
+            label: "是否已评",
+            key: "status",
+            type: "select",
+            operation: '=',
+            options: [{
+                    label: '全部',
+                    value: '',
+                },
+                {
+                    label: '是',
+                    value: '1',
+                },
+                {
+                    label: '否',
+                    value: '0',
+                }
+            ]
         }],
         data: () => ({
             id: '',
             name: '',
+            status: '',
         })
     }
 

@@ -17,8 +17,12 @@
                        label="操作"
                        align="center">
         <template slot-scope="scope">
-          <el-button size="mini"
-                     @click="handleDelete([scope.row.id])">编辑</el-button>
+          <modal-edit :title="`编辑 ${scope.row.name } 中`"
+                      :form-item="$v_data.subject.edit.item"
+                      :current="scope.row"
+                      :module="module"
+                      btn-size="mini"
+                      @get-data="getData" />
           <el-button size="mini"
                      type="danger"
                      @click="handleDelete([scope.row.id])">删除</el-button>
@@ -33,13 +37,15 @@
 <script>
 import vTable from "@/common/components/Table";
 import Pagination from "@/common/components/Pagination";
+import ModalEdit from "@/common/components/ModalEdit";
 import ManageTable from "@/common/mixins/ManageTable";
 import { mapActions, mapState } from "vuex";
 export default {
   mixins: [ManageTable],
   components: {
     vTable,
-    Pagination
+    Pagination,
+    ModalEdit
   },
   props: {
     title: {
@@ -48,6 +54,7 @@ export default {
     }
   },
   data: () => ({
+    module: "subject",
     columns: [
       {
         prop: "name",

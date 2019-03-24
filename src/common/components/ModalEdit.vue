@@ -13,12 +13,13 @@
               :btn-text="btnText"
               :form-item="formItem"
               :form-data="formData"
-              @submit="handleEdit" />
+              @submit="handleSubmit" />
   </modal>
 </template>
 <script>
 import Modal from "@/common/components/Modal";
 import BaseForm from "@/common/components/BaseForm";
+import { mapActions } from "vuex";
 export default {
   components: {
     Modal,
@@ -41,6 +42,15 @@ export default {
       type: String,
       default: ""
     },
+    beforeSubmit: {
+      type: Function,
+      default: data => data
+    },
+    beforeVerify: {
+      type: Function,
+      default: data => true
+    },
+    module: String,
     formItem: Array,
     current: Object,
     getFormData: Function,
@@ -51,6 +61,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(["update", "updateBatch"]),
     getData() {
       this.$emit("get-data");
     },
@@ -64,14 +75,40 @@ export default {
     submit() {
       this.$refs.baseForm.submit();
     },
-    reset(){
+    reset() {
       // 需要异步执行 否则无法调用 baseForm.reset 方法
-      setTimeout(()=>{
+      setTimeout(() => {
         this.$refs.baseForm.reset();
-      },0);
+      }, 0);
     },
-    handleEdit(formData) {
-      console.log(this.current);
+    async handleSubmit(data) {
+      if (!this.beforeVerify(data)) {
+        return;
+      }
+      data = this.beforeSubmit(data);
+      let res = null;
+      if (this.isBatch) {
+        res = await this.updateBatch({
+          module: this.module,
+          ids: this.ids,
+          data
+        });
+      } else {
+        res = await this.update({
+          module: this.module,
+          data: {
+            ...data,
+            id: this.current.id
+          }
+        });
+      }
+      if (res) {
+        this.$util.msg.success("更新成功");
+        this.$emit("get-data");
+        this.$emit("success");
+        this.$refs.modal.hidden();
+        this.$emit("get-data");
+      }
     }
   },
   computed: {

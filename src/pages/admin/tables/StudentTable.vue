@@ -13,17 +13,24 @@
 
     <v-table :data="student.list"
              :columns="columns">
-      <el-table-column slot="columns-after"
-                       label="操作"
-                       align="center">
-        <template slot-scope="scope">
-          <el-button size="mini"
-                     @click="handleDelete([scope.row.id])">编辑</el-button>
-          <el-button size="mini"
-                     type="danger"
-                     @click="handleDelete([scope.row.id])">删除</el-button>
-        </template>
-      </el-table-column>
+      <template slot="columns-after">
+        <el-table-column label="是否已评"
+                         align="center">
+          <template slot-scope="scope">
+            <span :class="['display-status',scope.row.status ? 'yes' : 'no']"></span>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作"
+                         align="center">
+          <template slot-scope="scope">
+            <el-button size="mini"
+                       @click="handleDelete([scope.row.id])">编辑</el-button>
+            <el-button size="mini"
+                       type="danger"
+                       @click="handleDelete([scope.row.id])">删除</el-button>
+          </template>
+        </el-table-column>
+      </template>
     </v-table>
 
     <pagination :module="student"
@@ -64,7 +71,7 @@ export default {
     }),
     add() {
       this.$router.push({
-        name : 'addStudent',
+        name: "addStudent"
       });
     }
   },

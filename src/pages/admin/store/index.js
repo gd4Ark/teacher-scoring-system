@@ -3,6 +3,7 @@ import vuex from 'vuex'
 
 import createPersist from 'vuex-localstorage'
 
+import score from "./modules/score";
 import tearcher from "./modules/tearcher";
 import group from "./modules/group";
 import subject from "./modules/subject";
@@ -17,6 +18,7 @@ Vue.use(vuex);
 
 export default new vuex.Store({
     state: {
+        score,
         tearcher,
         group,
         subject,

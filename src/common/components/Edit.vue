@@ -19,26 +19,38 @@ export default {
   props: {
     formItem: Array,
     current: Object,
-    module: {
-      type: String,
-      default: ""
-    },
+    module: String,
     btnText: {
       type: String,
       default: "更新"
+    },
+    beforeSubmit: {
+      type: Function,
+      default: data => data
+    },
+    beforeVerify: {
+      type: Function,
+      default: data => true
     }
   },
   methods: {
     ...mapActions(["update"]),
-    async handleSubmit(formData) {
+    async handleSubmit(data) {
       if (!this.module) {
-        return this.$emit("submit", formData);
+        return this.$emit("submit", data);
       }
-      const id = await this.update({
+      if (!this.beforeVerify(data)) {
+        return;
+      }
+      data = this.beforeSubmit(data);
+      const res = await this.update({
         module: this.module,
-        data: formData
+        data: {
+          id: this.current.id,
+          ...data
+        }
       });
-      if (id) {
+      if (res) {
         this.$util.msg.success("更新成功");
         this.$emit("get-data");
         this.$emit("success");

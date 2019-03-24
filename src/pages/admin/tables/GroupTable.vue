@@ -23,7 +23,7 @@
         <el-table-column label="切换评分状态"
                          align="center">
           <template slot-scope="scope">
-            <span :class="['allow-status',scope.row.allow ? 'yes' : 'no']">{{ scope.row.allow ? '√' : '×' }}</span>
+            <span :class="['display-status',scope.row.allow ? 'yes' : 'no']"></span>
           </template>
         </el-table-column>
         <el-table-column label="操作"
@@ -77,7 +77,7 @@ export default {
       },
       {
         prop: "complete_count",
-        label: "完成人数"
+        label: "已评人数"
       }
     ]
   }),
@@ -115,16 +115,3 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
-.allow-status {
-  cursor: pointer;
-  font-size: 1.2rem;
-  font-weight: bold;
-  &.yes {
-    color: #67c23a;
-  }
-  &.no {
-    color: #f56c6c;
-  }
-}
-</style>

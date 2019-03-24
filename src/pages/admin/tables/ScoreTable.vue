@@ -3,34 +3,20 @@
           :title="title">
     <div class="toolbar"
          slot="toolbar">
-      <el-button size="small"
-                 type="primary"
-                 @click="add">添加</el-button>
-      <el-button size="small"
-                 type="danger"
-                 @click="handleDelete(multipleSelection)">删除</el-button>
     </div>
 
-    <v-table :data="tearcher.list"
+    <v-table :data="score.list"
              :columns="columns">
       <el-table-column slot="columns-after"
                        label="操作"
                        align="center">
         <template slot-scope="scope">
-          <modal-edit :title="`编辑 ${scope.row.name } 中`"
-                      :form-item="$v_data.tearcher.edit.item"
-                      :current="scope.row"
-                      :module="module"
-                      btn-size="mini"
-                      @get-data="getData" />
-          <el-button size="mini"
-                     type="danger"
-                     @click="handleDelete([scope.row.id])">删除</el-button>
+          <el-button size="mini">明细</el-button>
         </template>
       </el-table-column>
     </v-table>
 
-    <pagination :module="tearcher"
+    <pagination :module="score"
                 @get-data="getData" />
   </v-card>
 </template>
@@ -50,33 +36,48 @@ export default {
   props: {
     title: {
       type: String,
-      default: "科目表"
+      default: "分数表"
     }
   },
   data: () => ({
-    module: "tearcher",
+    module: "score",
     columns: [
       {
-        prop: "name",
+        prop: "tearcher_name",
         label: "教师姓名"
+      },
+      {
+        prop: "subject_name",
+        label: "所教科目"
+      },
+      {
+        prop: "score",
+        label: "xxx分数"
+      },
+      {
+        prop: "score",
+        label: "xxx分数"
+      },
+      {
+        prop: "score",
+        label: "xxx分数"
+      },
+      {
+        prop: "score",
+        label: "xxx分数"
+      },
+      {
+        prop: "count",
+        label: "已评人数"
       }
     ]
   }),
   created() {
     this.getData();
   },
-  methods: {
-    ...mapActions({
-      delData: "deltemplate"
-    }),
-    add() {
-      this.$router.push({
-        name: "addTearcher"
-      });
-    }
-  },
+  methods: {},
   computed: {
-    ...mapState(["tearcher"])
+    ...mapState(["score"])
   }
 };
 </script>

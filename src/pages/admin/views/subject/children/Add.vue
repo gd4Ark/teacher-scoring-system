@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
     <v-card title="添加科目">
-      <add :formItem="$v_data.subject.form.item"
-           :getFormData="$v_data.subject.form.data"
+      <add :formItem="$v_data.subject.add.item"
+           :getFormData="$v_data.subject.add.data"
            module="subject"
            :style="{width:'50%'}">
       </add>

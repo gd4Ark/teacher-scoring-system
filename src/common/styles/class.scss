@@ -57,11 +57,16 @@
   margin-left: 10px;
 }
 
+.el-button+* {
+  margin-left: 10px;
+}
+
 .el-form-item label {
   font-size: 0.8rem;
 }
 
 .el-switch {
+  text-align: left;
   line-height: 40px;
 }
 
@@ -161,4 +166,26 @@
 
 .font-size-small {
   font-size: .8rem;
+}
+
+
+.display-status {
+  font-size: 1.2rem;
+  font-weight: bold;
+
+  &.yes {
+    color: #67c23a;
+
+    &::after {
+      content: "√";
+    }
+  }
+
+  &.no {
+    color: #f56c6c;
+
+    &::after {
+      content: "×";
+    }
+  }
 }

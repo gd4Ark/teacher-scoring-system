@@ -4,7 +4,7 @@
            ref="form"
            :label-width="showLabel ? '70px' : 0"
            autocomplete="off">
-           
+
     <el-form-item v-for="(item,index) in formItem"
                   :key="index"
                   :label="item.label">
@@ -54,7 +54,7 @@ export default {
       type: Boolean,
       default: false
     }
-  },
+  }
 };
 </script>
 <style lang="scss" scoped>

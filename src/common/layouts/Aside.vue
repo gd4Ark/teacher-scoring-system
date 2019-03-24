@@ -59,7 +59,7 @@ export default {
 
 <style lang="scss" scoped>
 .app-aside {
-  width: 15%;
+  width: 13%;
   padding-top: 20px;
   position: relative;
   z-index: 1;

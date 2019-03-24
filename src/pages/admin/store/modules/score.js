@@ -1,0 +1,37 @@
+export default {
+    list: [{
+            id: '1',
+            tearcher_name: "张三",
+            subject_name: "计算机网络",
+            score: 100,
+            count: 50,
+        },
+        {
+            id: '1',
+            tearcher_name: "张三",
+            subject_name: "计算机网络",
+            score: 100,
+            count: 50,
+        },
+        {
+            id: '1',
+            tearcher_name: "张三",
+            subject_name: "计算机网络",
+            score: 100,
+            count: 50,
+        },
+        {
+            id: '1',
+            tearcher_name: "张三",
+            subject_name: "计算机网络",
+            score: 100,
+            count: 50,
+        },
+    ],
+    total: 0,
+    current_page: 1,
+    per_page: 10,
+    page_sizes: [10, 20, 30, 40, 50, 60],
+    search_keyword: [],
+    search_data: {},
+}

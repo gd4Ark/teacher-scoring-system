@@ -51,12 +51,16 @@ export default {
           return this.$util.msg.warning("请填写完整！");
         }
       }
-      this.$emit("submit", this.s_formData);
+      const data = this.$util.retainKeys(
+        this.s_formData,
+        this.formItem.map(el => el.key)
+      );
+      this.$emit("submit", data);
     }
   },
   computed: {
     requiredItems() {
-      return this.formItem.filter(el => !el.blank).map(el => el.key);
+      return this.formItem.filter(el => !el.empty).map(el => el.key);
     }
   }
 };

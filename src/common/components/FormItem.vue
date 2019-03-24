@@ -4,9 +4,9 @@
     <el-select v-if="item.type === 'select'"
                v-model="val"
                :size="item.size || ''"
-               :placeholder="getPlaceholder(item,'选择')"
+               :placeholder="getPlaceholder('选择')"
                :clearable="true">
-      <el-option v-for="option in item.options"
+      <el-option v-for="option in options"
                  :key="option.value"
                  :label="option.label"
                  :value="option.value">
@@ -17,7 +17,7 @@
                     v-model="val"
                     type="date"
                     :editable="false"
-                    :placeholder="getPlaceholder(item,'选择')"
+                    :placeholder="getPlaceholder('选择')"
                     value-format="yyyy-MM-dd"
                     clearable>
     </el-date-picker>
@@ -47,12 +47,12 @@
                v-model="val"
                active-color="#13ce66"
                inactive-color="#ff4949"
-               inactive-value="0"
-               active-value="1" />
+               :inactive-value="getInactive"
+               :active-value="getActive" />
     <!-- 默认 -->
     <el-input v-else
               :type="item.type"
-              :placeholder="getPlaceholder(item)"
+              :placeholder="getPlaceholder()"
               :rows="item.row"
               :min="item.min"
               :max="item.max"
@@ -61,6 +61,7 @@
 </template>
 <script>
 import Upload from "./Upload";
+import { setTimeout } from "timers";
 export default {
   components: {
     Upload
@@ -71,15 +72,30 @@ export default {
   },
   data: () => ({
     load: false,
-    val: ""
+    val: "",
+    options: []
   }),
   mounted() {
     this.val = this.model;
     this.load = true;
+    setTimeout(() => {
+      this.init();
+    }, 0);
   },
   methods: {
-    getPlaceholder(item, type = "输入") {
-      return item.placeholder || `请${type}` + item.label;
+    async init() {
+      if (this.item.type === "select") {
+        this.options = await this.getOptions();
+      }
+    },
+    getPlaceholder(type = "输入") {
+      return this.item.placeholder || `请${type}` + this.item.label;
+    },
+    async getOptions() {
+      if (this.item.options) return this.item.options;
+      const module = this.item.option_module;
+      await this.$store.dispatch("getOptions", module);
+      return this.$store.state[module].options;
     }
   },
   watch: {
@@ -90,6 +106,14 @@ export default {
       if (this.val !== val) {
         this.val = val;
       }
+    }
+  },
+  computed: {
+    getActive() {
+      return this.item.active !== void 0 ? this.item.active : true;
+    },
+    getInactive() {
+      return this.item.inactive !== void 0 ? this.item.inactive : false;
     }
   }
 };

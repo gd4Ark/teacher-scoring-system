@@ -1,4 +1,5 @@
 import login from "./modules/login";
+import score from "./modules/score";
 import tearcher from "./modules/tearcher";
 import group from "./modules/group";
 import subject from "./modules/subject";
@@ -10,6 +11,7 @@ export default {
 
         Vue.prototype.$v_data = {
             login,
+            score,
             tearcher,
             group,
             subject,
