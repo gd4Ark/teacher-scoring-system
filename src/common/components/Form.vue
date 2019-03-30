@@ -1,44 +1,29 @@
 <template>
-  <el-form v-if="formData"
+  <el-form v-if="load"
+           :model="formData"
+           :show-message="false"
            :inline="inline"
+           :rules="rules"
            ref="form"
-           :label-width="showLabel ? '70px' : 0"
-           autocomplete="off">
+           :label-width="showLabel ? '80px' : 0"
+           autocomplete="off"
+           @submit.native.prevent>
 
-    <el-form-item v-for="(item,index) in formItem"
-                  :key="index"
-                  :label="item.label">
-
-      <!-- 一行多个 -->
-      <template v-if="item.items">
-        <template v-for="(it,index) in item.items">
-          <el-col v-if="index>0"
-                  :key="index"
-                  class="line"
-                  :span="2">-</el-col>
-          <el-col :span="11"
-                  :key="index">
-            <form-item :item="item"
-                       :key="index"
-                       :model.sync="formData[item.key][index]" />
-          </el-col>
-        </template>
-      </template>
-
-      <!-- 一行一个 -->
-      <template v-else>
-        <form-item :item="item"
-                   :model.sync="formData[item.key]" />
-      </template>
-
-    </el-form-item>
-
+    <form-item v-for="(item,index) in formItem"
+               :item="item"
+               :form-item="formItem"
+               :form-data="formData"
+               :key="item.key"
+               :rules="rules"
+               :spliceKey="item.key"
+               @submit="submit" />
     <slot></slot>
 
   </el-form>
 </template>
 <script>
 import FormItem from "@/common/components/FormItem";
+import { setTimeout } from "timers";
 export default {
   components: {
     FormItem
@@ -54,12 +39,38 @@ export default {
       type: Boolean,
       default: false
     }
+  },
+  data: () => ({
+    rules: {},
+    load: false
+  }),
+  mounted() {
+    this.initRules(this.formItem);
+    this.load = true;
+  },
+  methods: {
+    submit() {
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          this.$emit("submit");
+        } else {
+          this.$util.msg.warning("请填写正确！");
+        }
+      });
+    },
+
+    initRules(formItem, key = "") {
+      formItem.forEach(el => {
+        const k = key ? key + "." + el.key : el.key;
+        if (el.rules) {
+          this.rules[k] = el.rules;
+        } else if (el.isGroup) {
+          this.initRules(el.group, k);
+        } else if (el.items) {
+          this.initRules(el.items, key);
+        }
+      });
+    }
   }
 };
 </script>
-<style lang="scss" scoped>
-.line {
-  display: block;
-  text-align: center;
-}
-</style>

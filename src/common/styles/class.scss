@@ -61,20 +61,25 @@
   margin-left: 10px;
 }
 
-.el-form-item label {
-  font-size: 0.8rem;
-}
-
 .el-switch {
   text-align: left;
   line-height: 40px;
 }
 
-.el-form-item {
+.el-form-item-container {
   margin-bottom: 10px;
+}
+
+.el-form-item:not(.el-form-item-container) {
+  margin-bottom: 10px;
+}
+
+.el-form-item {
+  margin-bottom: 0;
 
   label {
     text-align: center;
+    font-size: 0.8rem;
   }
 }
 
@@ -99,6 +104,11 @@
 .el-select .el-input.is-focus .el-input__inner {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
+}
+
+.el-card {
+  overflow-y: auto;
+  @include no-scrollbar;
 }
 
 *+.el-card {
@@ -169,9 +179,10 @@
 }
 
 
-.display-status {
+.status {
   font-size: 1.2rem;
   font-weight: bold;
+  padding: 10px;
 
   &.yes {
     color: #67c23a;

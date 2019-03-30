@@ -5,25 +5,27 @@
          slot="toolbar">
       <el-button size="small"
                  type="primary"
-                 @click="add">添加</el-button>
+                 @click="toAdd">添加</el-button>
       <el-button size="small"
                  type="primary"
-                 @click="add">全部允许评分</el-button>
+                 @click="toAdd">全部允许评分</el-button>
       <el-button size="small"
                  type="danger"
-                 @click="add">全部禁止评分</el-button>
+                 @click="toAdd">全部禁止评分</el-button>
       <el-button size="small"
                  type="danger"
                  @click="handleDelete(multipleSelection)">删除</el-button>
     </div>
 
-    <v-table :data="group.list"
-             :columns="columns">
+    <v-table :data="stateData.data"
+             :columns="columns"
+             @selection-change="handleSelectionChange"
+             @sort-change="handleSortChange">
       <template slot="columns-after">
         <el-table-column label="切换评分状态"
                          align="center">
           <template slot-scope="scope">
-            <span :class="['display-status',scope.row.allow ? 'yes' : 'no']"></span>
+            <span :class="['status',scope.row.allow ? 'yes' : 'no']"></span>
           </template>
         </el-table-column>
         <el-table-column label="操作"
@@ -44,15 +46,16 @@
       </template>
     </v-table>
 
-    <pagination :module="group"
+    <pagination :module="stateData"
                 @get-data="getData" />
   </v-card>
 </template>
 <script>
+const __module = "group";
 import vTable from "@/common/components/Table";
 import Pagination from "@/common/components/Pagination";
 import ManageTable from "@/common/mixins/ManageTable";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapMutations } from "vuex";
 export default {
   mixins: [ManageTable],
   components: {
@@ -66,13 +69,15 @@ export default {
     }
   },
   data: () => ({
+    module: __module,
     columns: [
       {
         prop: "name",
-        label: "班级名称"
+        label: "班级名称",
+        sortable: "custom"
       },
       {
-        prop: "count",
+        prop: "student_count",
         label: "人数"
       },
       {
@@ -85,10 +90,10 @@ export default {
     this.getData();
   },
   methods: {
-    ...mapActions({
-      delData: "deltemplate"
+    ...mapMutations({
+      setOrder: __module
     }),
-    add() {
+    toAdd() {
       this.$router.push({
         name: "addGroup"
       });
@@ -111,7 +116,9 @@ export default {
     }
   },
   computed: {
-    ...mapState(["group"])
+    ...mapState({
+      stateData: __module
+    })
   }
 };
 </script>

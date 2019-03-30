@@ -1,6 +1,6 @@
 <template>
   <el-Pagination background
-                 layout="total, prev, pager, next, jumper"
+                 layout="total,sizes, prev, pager, next, jumper"
                  :total="module.total"
                  :current-page.sync="module.current_page"
                  :page-size.sync="module.per_page"

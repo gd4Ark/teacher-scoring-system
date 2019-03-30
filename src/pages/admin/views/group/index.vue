@@ -1,7 +1,8 @@
 <template>
   <not-sub-router name="group">
-    <search module="group" />
-    <group-table />
+    <search module="group"
+            @get-data="getData" />
+    <group-table @get-data="getData" />
   </not-sub-router>
 </template>
 <script>
@@ -13,8 +14,10 @@ export default {
     GroupTable,
     Search
   },
-  ...mapActions({
-    // getData: "getGroup"
-  })
+  methods: {
+    ...mapActions({
+      getData: "getGroup"
+    })
+  }
 };
 </script>

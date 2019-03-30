@@ -73,33 +73,13 @@ class Controller extends BaseController
                 }
             }
         }
-        return $query;
-    }
-
-    /**
-     * @param $file \Illuminate\Http\UploadedFile
-     * @return array
-     */
-    protected function getFileLines($file)
-    {
-        $lines = [];
-        $file = $file->openFile();
-        while ($line = $file->fgetcsv()) {
-            $lines = array_merge($lines, $line);
+        $orderBy = $this->req->get('order_by');
+        $desc = $this->req->get('desc', 0);
+        if ($orderBy) {
+            $direction = (int)$desc === 1 ? 'desc' : 'asc';
+            $query->orderBy($orderBy, $direction);
         }
-        return $lines;
-    }
-
-    /**
-     * @param $file \Illuminate\Http\UploadedFile
-     * @param $path string
-     * @return string
-     */
-    protected function MoveFile($file, $path)
-    {
-        $filename = time() . rand(1000, 9999);
-        $file->move(storage_path($path), $filename);
-        return $path . '/' . $filename;
+        return $query;
     }
 
 }

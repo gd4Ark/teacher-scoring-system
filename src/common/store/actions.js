@@ -11,6 +11,13 @@ export default {
         }
         return res;
     },
+    async getOptions(ctx, module) {
+        const path = module + '?getOptions=1';
+        const res = await this._vm.$axios.get(`/${path}`);
+        ctx.commit(module, {
+            options: res
+        });
+    },
     async add(ctx, {
         module,
         data
@@ -25,7 +32,7 @@ export default {
     },
     async update(ctx, {
         module,
-        data
+        data,
     }) {
         return await this._vm.$axios.put(`/${module}/${data.id}`, data);
     },
@@ -36,7 +43,7 @@ export default {
     }) {
         return await this._vm.$axios.put(`/${module}`, {
             ids,
-            data,
+            ...data,
         });
     },
     async delete(crx, {
@@ -52,7 +59,7 @@ export default {
     }, {
         data
     }) {
-        commit('updateLogin', await this._vm.$axios.post(`/login`, data));
+        commit('login', await this._vm.$axios.post(`/login`, data));
     },
     async checkLogin() {
         return await this._vm.$axios.post(`/checkLogin`);
@@ -60,10 +67,10 @@ export default {
     async logout() {
         return await this._vm.$axios.post(`/logout`);
     },
-    async updatePassword(ctx, {
+    async resetPassword(ctx, {
         data
     }) {
-        return await this._vm.$axios.post(`/password`, data);
+        return await this._vm.$axios.post(`/reset`, data);
     },
     async resetSearchData(ctx, module) {
         ctx.commit(module, {

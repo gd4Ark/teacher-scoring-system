@@ -11,7 +11,8 @@
     </div>
     <c-form :inline="true"
             :form-item="formItem"
-            :form-data="formData" />
+            :form-data="formData"
+            @submit="submit" />
   </v-card>
 </template>
 <script>

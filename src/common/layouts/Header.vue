@@ -60,6 +60,7 @@ export default {
     ...mapActions(["logout"]),
     async handleLogout() {
       await this.logout();
+      await this.$util.msg.success("退出成功！");
       this.$router.push("/login");
     }
   }

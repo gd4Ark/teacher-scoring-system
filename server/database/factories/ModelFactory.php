@@ -46,11 +46,11 @@ $factory->define(Student::class, function (Faker\Generator $faker) {
 
 $factory->define(Teaching::class, function (Faker\Generator $faker) {
     $group = Group::query()->inRandomOrder()->first();
-    $subject = Student::query()->inRandomOrder()->first();
     $teacher = Teacher::query()->inRandomOrder()->first();
+    $subject = Subject::query()->inRandomOrder()->first();
     return [
         'group_id' => $group['id'],
-        'subject_id' => $subject['id'],
         'teacher_id' => $teacher['id'],
+        'subject_id' => $subject['id'],
     ];
 });

@@ -1,128 +1,111 @@
 <template>
-  <div v-if="load">
-    <!-- 选择 -->
-    <el-select v-if="item.type === 'select'"
-               v-model="val"
-               :size="item.size || ''"
-               :placeholder="getPlaceholder('选择')"
-               :clearable="true">
-      <el-option v-for="option in options"
-                 :key="option.value"
-                 :label="option.label"
-                 :value="option.value">
-      </el-option>
-    </el-select>
-    <!-- 日期 -->
-    <el-date-picker v-else-if="item.type === 'date'"
-                    v-model="val"
-                    type="date"
-                    :editable="false"
-                    :placeholder="getPlaceholder('选择')"
-                    value-format="yyyy-MM-dd"
-                    clearable>
-    </el-date-picker>
-    <!-- 滑块 -->
-    <el-slider v-else-if="item.type === 'range'"
-               v-model="val"
-               :step="item.step"
-               :min="item.min"
-               :max="item.max"
-               show-input
-               input-size="mini">
-    </el-slider>
-    <!-- 计数 -->
-    <el-input-number v-else-if="item.type === 'inputNumber'"
-                     v-model="val"
-                     :step="item.step"
-                     :min="item.min"
-                     :max="item.max">
-    </el-input-number>
-    <!-- 上传 -->
-    <template v-else-if="item.type === 'file'">
-      <upload :item="item"
-              :model.sync="val" />
+  <div class="el-form-item el-form-item-container">
+    <!-- is group -->
+    <template v-if="item.isGroup">
+      <form-item v-for="(subItem,subIndex) in item.group"
+                 :key="getKey(subItem)"
+                 :splice-key="getKey(subItem)"
+                 :item="subItem"
+                 :rules="rules"
+                 :form-item="formItem"
+                 :form-data="formData" />
     </template>
-    <!-- 开关 -->
-    <el-switch v-else-if="item.type === 'switch'"
-               v-model="val"
-               active-color="#13ce66"
-               inactive-color="#ff4949"
-               :inactive-value="getInactive"
-               :active-value="getActive" />
-    <!-- 默认 -->
-    <el-input v-else
-              :type="item.type"
-              :placeholder="getPlaceholder()"
-              :rows="item.row"
-              :min="item.min"
-              :max="item.max"
-              v-model="val" />
+    <template v-else>
+      <!-- 一行多个 -->
+      <template v-if="item.items">
+        <el-form-item v-for="(subItem,subIndex) in item.items"
+                      :key="getKey(subItem)"
+                      :label="subItem.label"
+                      :prop="spliceKey +'.'+ subItem.key"
+                      :class="{hidden : !showWhen(subItem.enableWhen)}"
+                      :style="getStyle(subItem)">
+          <span v-show="false">{{ setModel(spliceKey +'.'+ subItem.key) }}</span>
+          <form-control :item="subItem"
+                        :model.sync="model[subItem.key]"
+                        @submit="submit" />
+        </el-form-item>
+      </template>
+      <!-- 一行一个 -->
+      <template v-else>
+        <el-form-item :label="item.label"
+                      :prop="spliceKey">
+          <span v-show="false">{{ setModel(spliceKey) }}</span>
+          <form-control :item="item"
+                        :model.sync="model[item.key]"
+                        @submit="submit" />
+        </el-form-item>
+      </template>
+    </template>
   </div>
 </template>
 <script>
-import Upload from "./Upload";
-import { setTimeout } from "timers";
+import FormControl from "@/common/components/FormControl";
 export default {
+  name: "FormItem",
   components: {
-    Upload
+    FormControl
   },
   props: {
+    isGroup: {
+      type: Boolean,
+      default: false
+    },
+    spliceKey: {
+      type: String,
+      default: ""
+    },
+    rules: Object,
     item: Object,
-    model: [String, Number, Boolean, File]
+    formData: Object,
+    formItem: Array
   },
   data: () => ({
-    load: false,
-    val: "",
-    options: []
+    model: null
   }),
-  mounted() {
-    this.val = this.model;
-    this.load = true;
-    setTimeout(() => {
-      this.init();
-    }, 0);
-  },
   methods: {
-    async init() {
-      if (this.item.type === "select") {
-        this.options = await this.getOptions();
+    showWhen(enableWhen) {
+      if (!enableWhen || !Object.keys(enableWhen)) return true;
+      for (const key in enableWhen) {
+        if (this.getProperty(key) === enableWhen[key]) return true;
       }
     },
-    getPlaceholder(type = "输入") {
-      return this.item.placeholder || `请${type}` + this.item.label;
+    getStyle(item) {
+      return {
+        display: "inline-block",
+        width: item.width || "100%"
+      };
     },
-    async getOptions() {
-      if (this.item.options) return this.item.options;
-      const module = this.item.option_module;
-      await this.$store.dispatch("getOptions", module);
-      return this.$store.state[module].options;
-    }
-  },
-  watch: {
-    val(val) {
-      this.$emit("update:model", val);
+    getKey(item) {
+      if (!this.spliceKey) return item.key;
+      else if (!item.key) return this.spliceKey;
+      return this.spliceKey + "." + item.key;
     },
-    model(val) {
-      if (this.val !== val) {
-        this.val = val;
+    setModel(path) {
+      const paths = path.split(".");
+      let curProp = this.formData;
+      for (let i = 0; i < paths.length - 1; i++) {
+        if (curProp[paths[i]] === undefined) return;
+        curProp = curProp[paths[i]];
       }
-    }
-  },
-  computed: {
-    getActive() {
-      return this.item.active !== void 0 ? this.item.active : true;
+      this.model = curProp;
     },
-    getInactive() {
-      return this.item.inactive !== void 0 ? this.item.inactive : false;
+    getProperty(path) {
+      const paths = path.split(".");
+      let curProp = this.formData;
+      for (let i = 0; i < paths.length; i++) {
+        if (curProp[paths[i]] === undefined) return;
+        curProp = curProp[paths[i]];
+      }
+      return curProp;
+    },
+    submit() {
+      this.$emit("submit");
     }
   }
 };
 </script>
 <style lang="scss" scoped>
-.el-form-item__content div {
-  display: block;
-}
-.el-form-item {
-  margin-bottom: 12px;
+.el-form-item.hidden {
+  visibility: hidden;
 }
 </style>

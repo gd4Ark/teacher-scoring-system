@@ -105,7 +105,7 @@
 }
 
 @mixin footer {
-  @include wh(100%, 40px);
+  @include wh(100%, 30px);
   @include flex;
   align-items: center;
   justify-content: space-between;
@@ -113,7 +113,7 @@
   opacity: 0.5;
 
   .title {
-    font-size: 1rem;
+    font-size: 0.8rem;
   }
 
   .copyright {

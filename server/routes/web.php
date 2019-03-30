@@ -13,16 +13,7 @@ $router->post('login', 'AuthController@login');
 //    $router->post('logout', 'AuthController@logout');
 //    $router->post('refresh', 'AuthController@refresh');
 //
-//    $router->resource('domain', 'DomainController');
-//    $router->resource('keyword', 'KeywordController');
-//    $router->resource('template', 'TemplateController');
-//    $router->resource('paragraph', 'ParagraphController');
-//    $router->resource('config', 'ConfigController');
 //
 //});
 
-$router->resource('domain', 'DomainController');
-$router->resource('keyword', 'KeywordController');
-$router->resource('template', 'TemplateController');
-$router->resource('paragraph', 'ParagraphController');
-$router->resource('config', 'ConfigController');
+$router->resource('group', 'GroupController');

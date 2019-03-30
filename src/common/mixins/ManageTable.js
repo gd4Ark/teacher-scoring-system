@@ -1,8 +1,14 @@
+import {
+    mapActions,
+} from "vuex";
 export default {
     data: () => ({
         multipleSelection: []
     }),
     methods: {
+        ...mapActions({
+            delData: 'delete',
+        }),
         getData() {
             this.$emit("get-data");
         },
@@ -23,6 +29,7 @@ export default {
         },
         async delete(ids) {
             await this.delData({
+                module: this.module,
                 ids
             });
             this.getData();
@@ -30,6 +37,15 @@ export default {
         },
         handleSelectionChange(val) {
             this.multipleSelection = val.map(el => el.id);
+        },
+        handleSortChange(val) {
+            const desc = val.order === "descending" ? 1 : 0;
+            const prop = val.prop || "";
+            this.setOrder({
+                order_by: prop,
+                desc
+            });
+            this.getData();
         }
     }
 }

@@ -18,19 +18,19 @@ class DatabaseSeeder extends Seeder
         User::query()->truncate();
         User::query()->create([
             'username' => 'admin',
-            'password' => password_hash('spider', PASSWORD_DEFAULT)
+            'password' => password_hash('admin', PASSWORD_DEFAULT)
         ]);
         if (env('APP_ENV') !== 'production') {
-            Group::query()->truncate();
-            factory(Group::class, 20)->create();
-            Student::query()->truncate();
-            factory(Student::class, 20)->create();
-            Subject::query()->truncate();
-            factory(Subject::class, 20)->create();
-            Teacher::query()->truncate();
-            factory(Teacher::class, 20)->create();
-            Teaching::query()->truncate();
-            factory(Teaching::class, 20)->create();
+            Group::query()->delete();
+            factory(Group::class, 50)->create();
+            Student::query()->delete();
+            factory(Student::class, 2000)->create();
+            Subject::query()->delete();
+            factory(Subject::class, 50)->create();
+            Teacher::query()->delete();
+            factory(Teacher::class, 50)->create();
+            Teaching::query()->delete();
+            factory(Teaching::class, 100)->create();
         }
     }
 }

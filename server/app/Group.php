@@ -3,13 +3,18 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 class Group extends Model
 {
+
     protected $fillable = [
         'name',
-        'code_main',
-        'code_secondary',
+        'allow',
         'meta'
     ];
     protected $casts = [
         'meta' => 'array'
     ];
+
+    public function students()
+    {
+        return $this->hasOne('App\Student','group_id','id');
+    }
 }

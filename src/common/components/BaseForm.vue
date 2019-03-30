@@ -1,6 +1,9 @@
 <template>
-  <c-form :form-item="formItem"
-          :form-data="s_formData">
+  <c-form v-if="s_formData!==null"
+          :form-item="formItem"
+          :form-data="s_formData"
+          @submit="handleSubmit"
+          ref="form">
     <el-form-item>
       <slot></slot>
       <el-button v-if="useBtn"
@@ -42,25 +45,26 @@ export default {
   },
   methods: {
     reset() {
-      this.s_formData = { ...this.formData } || this.getFormData();
+      this.s_formData = this.formData
+        ? this.$util.clone(this.formData)
+        : this.getFormData();
     },
     submit() {
-      for (const index in this.requiredItems) {
-        const key = this.requiredItems[index];
-        if (this.s_formData[key] === "") {
-          return this.$util.msg.warning("请填写完整！");
-        }
-      }
-      const data = this.$util.retainKeys(
-        this.s_formData,
-        this.formItem.map(el => el.key)
-      );
+      this.$refs.form.submit();
+    },
+    handleSubmit() {
+      const data = this.$util.retainKeys(this.s_formData, this.getKeys());
       this.$emit("submit", data);
-    }
-  },
-  computed: {
-    requiredItems() {
-      return this.formItem.filter(el => !el.empty).map(el => el.key);
+    },
+    getKeys() {
+      let keys = [];
+      this.formItem.forEach(el => {
+        if (el.items) {
+          return (keys = [...keys, ...el.items.map(el => el.key)]);
+        }
+        return keys.push(el.key);
+      });
+      return keys;
     }
   }
 };

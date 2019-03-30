@@ -1,28 +1,20 @@
 export default {
 
-    form: {
+    add: {
         item: [{
             label: "班级名称",
-            key: "name",
+            key: "name_list",
             type: "textarea",
             row: 20,
             placeholder: `请输入班级名称，一行一个。\np.s：如已存在或重复将自动忽略。`,
+            disabledEvent : true,
+            rules: [{
+                required: true,
+                trigger: 'blur',
+            }]
         }, ],
         data: () => ({
-            name: '',
-        })
-    },
-
-    student: {
-        item: [{
-            label: "学生姓名",
-            key: "name",
-            type: "textarea",
-            row: 20,
-            placeholder: `请输入学生名字，一行一个。\np.s：如已存在或重复将自动忽略。`,
-        }, ],
-        data: () => ({
-            name: '',
+            name_list: '',
         })
     },
 

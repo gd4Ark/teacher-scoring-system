@@ -2,15 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Template;
+use App\Group;
 use Illuminate\Http\Request;
 
-class TemplateController extends Controller
+class GroupController extends Controller
 {
 
     public function index()
     {
-        $query = $this->queryFilter(Template::query());
+        $query = Group::query()->withCount([
+            'students as student_count',
+            'students as complete_count' => function ($query) {
+                $query->where('complete', 1);
+            }
+        ]);
+        $query = $this->queryFilter($query);
         if ($this->req->get('getOptions') == 1) {
             return $this->getOptions($query);
         } else {
@@ -22,8 +28,9 @@ class TemplateController extends Controller
     {
         try {
             $input = $request->all();
+//            return $input;
             // Todo: Validate
-            $item = Template::query()->create($input);
+            $item = Group::query()->insert($input);
             return $this->json($item);
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
@@ -32,13 +39,13 @@ class TemplateController extends Controller
 
     public function show($id)
     {
-        $item = Template::query()->findOrFail($id);
+        $item = Group::query()->findOrFail($id);
         return $this->json($item);
     }
 
     public function update(Request $request, $id)
     {
-        $item = Template::query()->findOrFail($id);
+        $item = Group::query()->findOrFail($id);
         try {
             $input = $request->all();
             // Todo: Validate
@@ -51,7 +58,7 @@ class TemplateController extends Controller
 
     public function delete($id)
     {
-        $item = Template::query()->findOrFail($id);
+        $item = Group::query()->findOrFail($id);
         try {
             $item->delete();
             return $this->json();
@@ -65,7 +72,7 @@ class TemplateController extends Controller
         $ids = (array)$request->get('ids');
         $data = $request->except('ids');
         try {
-            Template::query()->whereIn('id', $ids)->update($data);
+            Group::query()->whereIn('id', $ids)->update($data);
             return $this->json();
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
@@ -76,7 +83,7 @@ class TemplateController extends Controller
     {
         $ids = (array)$request->get('ids');
         try {
-            Template::query()->whereIn('id', $ids)->delete();
+            Group::query()->whereIn('id', $ids)->delete();
             return $this->json();
         } catch (\Exception $e) {
             return $this->error('Delete failed');
