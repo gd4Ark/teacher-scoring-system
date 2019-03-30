@@ -69,6 +69,16 @@ class GroupController extends Controller
 
     public function updateBatch(Request $request)
     {
+        if ($request->input('all') == 1){
+            $data = $request->except('all');
+            try {
+                Group::query()->update($data);
+                return $this->json();
+            } catch (\Exception $e) {
+                return $this->error($e->getMessage());
+            }
+        }
+
         $ids = (array)$request->get('ids');
         $data = $request->except('ids');
         try {

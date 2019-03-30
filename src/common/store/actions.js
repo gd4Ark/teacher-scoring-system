@@ -38,13 +38,19 @@ export default {
     },
     async updateBatch(ctx, {
         module,
-        ids,
+        all = 0,
+        ids = [],
         data,
     }) {
-        return await this._vm.$axios.put(`/${module}`, {
-            ids,
+        const item = all === 1 ? {
+            all
+        } : {
+            ids
+        }
+        await this._vm.$axios.put(`/${module}`, {
+            ...item,
             ...data,
-        });
+        })
     },
     async delete(crx, {
         module,

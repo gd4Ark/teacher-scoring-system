@@ -182,7 +182,8 @@
 .status {
   font-size: 1.2rem;
   font-weight: bold;
-  padding: 10px;
+  display: block;
+  @include wh(100%);
 
   &.yes {
     color: #67c23a;
@@ -199,4 +200,8 @@
       content: "×";
     }
   }
+}
+
+.toggle {
+  cursor: pointer;
 }
