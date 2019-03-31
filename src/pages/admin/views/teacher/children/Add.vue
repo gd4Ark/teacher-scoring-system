@@ -1,9 +1,10 @@
 <template>
   <div class="app-container">
     <v-card title="添加教师">
-      <add :formItem="$v_data.tearcher.add.item"
-           :getFormData="$v_data.tearcher.add.data"
-           module="tearcher"
+      <add :form-item="$v_data.teacher.add.item"
+           :get-form-data="$v_data.teacher.add.data"
+           :before-submit="splitNameList"
+           module="teacher"
            :style="{width:'50%'}">
       </add>
     </v-card>
@@ -11,7 +12,9 @@
 </template>
 <script>
 import Add from "@/common/components/Add";
+import splitNameList from "@/common/mixins/splitNameList";
 export default {
+  mixins: [splitNameList],
   components: {
     Add
   }

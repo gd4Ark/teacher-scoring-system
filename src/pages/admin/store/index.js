@@ -4,7 +4,7 @@ import vuex from 'vuex'
 import createPersist from 'vuex-localstorage'
 
 import score from "./modules/score";
-import tearcher from "./modules/tearcher";
+import teacher from "./modules/teacher";
 import group from "./modules/group";
 import subject from "./modules/subject";
 import student from "./modules/student";
@@ -19,7 +19,7 @@ Vue.use(vuex);
 export default new vuex.Store({
     state: {
         score,
-        tearcher,
+        teacher,
         group,
         subject,
         student,

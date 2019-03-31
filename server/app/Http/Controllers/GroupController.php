@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Group;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Validator;
 
 class GroupController extends Controller
 {
@@ -27,11 +28,15 @@ class GroupController extends Controller
     public function create(Request $request)
     {
         try {
-            $input = $request->all();
-//            return $input;
-            // Todo: Validate
-            $item = Group::query()->insert($input);
-            return $this->json($item);
+            $groups = $request->all();
+            $res = true;
+            foreach ($groups as $group){
+                // Todo: Validate
+                $res = Group::query()->firstOrCreate([
+                    'name' => $group['name']
+                ]);
+            }
+            return $this->json($res);
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }
@@ -46,14 +51,31 @@ class GroupController extends Controller
     public function update(Request $request, $id)
     {
         $item = Group::query()->findOrFail($id);
-        try {
-            $input = $request->all();
-            // Todo: Validate
-            $item->update($input);
-            return $this->json($item);
-        } catch (\Exception $e) {
+        try{
+            $validator  =   $this->validate($request, [
+                'name' => 'required|unique:groups,name,' . $item->id,
+            ],[
+                'unique' => '唯一',
+            ]);
+            return $validator;
+        }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
+//        try {
+//            $input = $request->all();
+//            // Todo: Validate
+//            $item->update($input);
+//            return $this->json($item);
+//        } catch (\Exception $e) {
+//            return $this->error($e->getMessage(3));
+//            $err = $e->getMessage();
+//            switch ($e->getCode()){
+//                case 1062:
+//                        $err = '字段值已存在！';
+//                        break;
+//            }
+//            return $this->error($err);
+//        }
     }
 
     public function delete($id)

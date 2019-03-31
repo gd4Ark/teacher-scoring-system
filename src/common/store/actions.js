@@ -22,7 +22,7 @@ export default {
         module,
         data
     }) {
-        return await this._vm.$axios.post(`/${module}`, data);
+        return console.log(await this._vm.$axios.post(`/${module}`, data));
     },
     async uploadAdd(ctx, {
         module,
@@ -34,7 +34,7 @@ export default {
         module,
         data,
     }) {
-        return await this._vm.$axios.put(`/${module}/${data.id}`, data);
+        return console.log(await this._vm.$axios.put(`/${module}/${data.id}`, data));
     },
     async updateBatch(ctx, {
         module,

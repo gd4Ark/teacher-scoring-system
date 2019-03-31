@@ -1,22 +1,22 @@
 <template>
-  <not-sub-router name="subject">
-    <search module="subject"
+  <not-sub-router name="teacher">
+    <search module="teacher"
             @get-data="getData" />
-    <subject-table @get-data="getData" />
+    <teacher-table @get-data="getData" />
   </not-sub-router>
 </template>
 <script>
 import Search from "@/common/components/Search";
-import SubjectTable from "@/pages/admin/tables/SubjectTable";
+import TeacherTable from "@/pages/admin/tables/TeacherTable";
 import { mapActions } from "vuex";
 export default {
   components: {
-    SubjectTable,
+    TeacherTable,
     Search
   },
   methods: {
     ...mapActions({
-      getData: "getSubject"
+      getData: "getTeacher"
     })
   }
 };

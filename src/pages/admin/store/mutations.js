@@ -13,8 +13,8 @@ export default {
     teaching(state, data) {
         state.teaching = this._vm.$util.cover(state.teaching, data)
     },
-    tearcher(state, data) {
-        state.tearcher = this._vm.$util.cover(state.tearcher, data)
+    teacher(state, data) {
+        state.teacher = this._vm.$util.cover(state.teacher, data)
     },
     subject(state, data) {
         state.subject = this._vm.$util.cover(state.subject, data)

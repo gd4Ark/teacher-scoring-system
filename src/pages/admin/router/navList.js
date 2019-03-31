@@ -10,7 +10,7 @@ export default [{
     },
     {
         title: '教师管理',
-        index : '/tearcher',
+        index : '/teacher',
         icon : 'el-icon-ali-jiaoshi',
     },
     {

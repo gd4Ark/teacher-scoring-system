@@ -11,14 +11,16 @@
                  @click="handleDelete(multipleSelection)">删除</el-button>
     </div>
 
-    <v-table :data="subject.list"
-             :columns="columns">
+    <v-table :data="stateData.data"
+             :columns="columns"
+             @selection-change="handleSelectionChange"
+             @sort-change="handleSortChange">
       <el-table-column slot="columns-after"
                        label="操作"
                        align="center">
         <template slot-scope="scope">
           <modal-edit :title="`编辑 ${scope.row.name } 中`"
-                      :form-item="$v_data.subject.edit.item"
+                      :form-item="$v_data[module].edit.item"
                       :current="scope.row"
                       :module="module"
                       btn-size="mini"
@@ -30,16 +32,17 @@
       </el-table-column>
     </v-table>
 
-    <pagination :module="subject"
+    <pagination :module="stateData"
                 @get-data="getData" />
   </v-card>
 </template>
 <script>
+const __module = "subject";
 import vTable from "@/common/components/Table";
 import Pagination from "@/common/components/Pagination";
 import ModalEdit from "@/common/components/ModalEdit";
 import ManageTable from "@/common/mixins/ManageTable";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapMutations } from "vuex";
 export default {
   mixins: [ManageTable],
   components: {
@@ -54,11 +57,12 @@ export default {
     }
   },
   data: () => ({
-    module: "subject",
+    module: __module,
     columns: [
       {
         prop: "name",
-        label: "科目名称"
+        label: "科目名称",
+        sortable: "custom"
       }
     ]
   }),
@@ -66,8 +70,8 @@ export default {
     this.getData();
   },
   methods: {
-    ...mapActions({
-      delData: "deltemplate"
+    ...mapMutations({
+      setOrder: __module
     }),
     add() {
       this.$router.push({
@@ -76,7 +80,9 @@ export default {
     }
   },
   computed: {
-    ...mapState(["subject"])
+    ...mapState({
+      stateData: __module
+    })
   }
 };
 </script>

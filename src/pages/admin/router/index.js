@@ -9,7 +9,7 @@ import Home from "@/common/layouts/Home";
 
 import Score from "./routers/score";
 import Group from "./routers/group";
-import Tearcher from "./routers/tearcher";
+import Teacher from "./routers/teacher";
 import Subject from "./routers/subject";
 
 import Login from "../views/Login";
@@ -31,7 +31,7 @@ const routerConfig = {
             children: [
                 ...Score,
                 ...Group,
-                ...Tearcher,
+                ...Teacher,
                 ...Subject,
                 {
                     path: '/404',
