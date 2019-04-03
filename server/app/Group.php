@@ -17,4 +17,21 @@ class Group extends Model
     {
         return $this->hasOne('App\Student','group_id','id');
     }
+
+    public function rules($array = ['name']){
+        $data = [];
+        $rules = [
+            'name' => 'unique:groups,name,' . $this->id,
+        ];
+        foreach($array as $item){
+            $data[$item] =  $rules[$item];
+        }
+        return $data;
+    }
+
+    public function ruleMessage(){
+        return [
+            'name.unique' => 'Name already exists',
+        ];
+    }
 }

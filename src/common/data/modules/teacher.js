@@ -20,7 +20,7 @@ export default {
 
     edit: {
         item: [{
-            label: "教师名字",
+            label: "教师姓名",
             key: "name",
             type: "text",
         }, ],
@@ -36,7 +36,7 @@ export default {
             type: "text",
             operation: '=',
         }, {
-            label: "姓名",
+            label: "教师姓名",
             key: "name",
             type: "text",
             operation: 'like',

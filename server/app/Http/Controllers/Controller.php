@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Laravel\Lumen\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class Controller extends BaseController
 {
@@ -80,6 +81,18 @@ class Controller extends BaseController
             $query->orderBy($orderBy, $direction);
         }
         return $query;
+    }
+
+    public function ruleValidator($rule=[], $message=[])
+    {
+        $validator = Validator::make($this->req->all(), $rule, $message);
+
+        if($validator->fails()){
+            foreach($validator->errors()->getMessages() as $message){
+                return $this->error($message[0]);
+            }
+        }
+        return null;
     }
 
 }

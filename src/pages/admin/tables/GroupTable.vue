@@ -37,7 +37,7 @@
                        @click="toStudent(scope.row.id)">学生管理</el-button>
             <el-button size="mini"
                        @click="toCourse(scope.row.id)">课程管理</el-button>
-            <modal-edit :title=" `编辑 ${scope.row.name} 配置`"
+            <modal-edit :title=" `编辑班级 ${scope.row.name} 中`"
                         :form-item="$v_data[module].edit.item"
                         :current="scope.row"
                         :module="module"
@@ -128,19 +128,19 @@ export default {
         name: "addGroup"
       });
     },
-    toStudent(id) {
+    toStudent(group) {
       this.$router.push({
         name: "student",
         params: {
-          id
+          group
         }
       });
     },
-    toCourse(id) {
+    toCourse(group) {
       this.$router.push({
         name: "course",
         params: {
-          id
+          group
         }
       });
     }

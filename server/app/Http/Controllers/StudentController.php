@@ -2,21 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Group;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Validator;
+use App\Student;
 
-class GroupController extends Controller
+class StudentController extends Controller
 {
 
     public function index()
     {
-        $query = Group::query()->withCount([
-            'students as student_count',
-            'students as complete_count' => function ($query) {
-                $query->where('complete', 1);
-            }
-        ]);
+        if (!$this->req->has('group')){
+            return $this->error('Necessary to have the `group` parameter');
+        }
+        $group = $this->req->input('group');
+        $query =  Student::query()->where('group_id',$group);
         $query = $this->queryFilter($query);
         if ($this->req->get('getOptions') == 1) {
             return $this->getOptions($query);

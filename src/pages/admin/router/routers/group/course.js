@@ -3,7 +3,7 @@ import Course from "@/pages/admin/views/course";
 import Add from "@/pages/admin/views/course/children/Add";
 
 export default [{
-    path: ':id/course',
+    path: ':group/course',
     component: Course,
     name: 'course',
     meta: {
@@ -12,7 +12,7 @@ export default [{
     children: [{
         path: 'add',
         component: Add,
-        name : 'addCourse',
+        name: 'addCourse',
         meta: {
             title: "添加课程",
         }

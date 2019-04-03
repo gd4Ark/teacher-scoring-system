@@ -18,20 +18,20 @@ use Carbon\Carbon;
 
 $factory->define(Group::class, function (Faker\Generator $faker) {
     return [
-        'name' => $faker->word,
+        'name' => $faker->unique()->word,
         'allow' => rand(0,1),
     ];
 });
 
 $factory->define(Teacher::class, function (Faker\Generator $faker) {
     return [
-        'name' => $faker->word,
+        'name' => $faker->unique()->word,
     ];
 });
 
 $factory->define(Subject::class, function (Faker\Generator $faker) {
     return [
-        'name' => $faker->word,
+        'name' => $faker->unique()->word,
     ];
 });
 

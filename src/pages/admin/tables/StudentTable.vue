@@ -11,7 +11,7 @@
                  @click="handleDelete(multipleSelection)">删除</el-button>
     </div>
 
-    <v-table :data="student.list"
+    <v-table :data="stateData.list"
              :columns="columns">
       <template slot="columns-after">
         <el-table-column label="是否已评"
@@ -33,15 +33,16 @@
       </template>
     </v-table>
 
-    <pagination :module="student"
+    <pagination :module="stateData"
                 @get-data="getData" />
   </v-card>
 </template>
 <script>
+const __module = "subject";
 import vTable from "@/common/components/Table";
 import Pagination from "@/common/components/Pagination";
 import ManageTable from "@/common/mixins/ManageTable";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapMutations } from "vuex";
 export default {
   mixins: [ManageTable],
   components: {
@@ -55,6 +56,7 @@ export default {
     }
   },
   data: () => ({
+    module: __module,
     columns: [
       {
         prop: "name",
@@ -69,6 +71,9 @@ export default {
     ...mapActions({
       delData: "deltemplate"
     }),
+    ...mapMutations({
+      setOrder: __module
+    }),
     add() {
       this.$router.push({
         name: "addStudent"
@@ -76,7 +81,9 @@ export default {
     }
   },
   computed: {
-    ...mapState(["student"])
+    ...mapState({
+      stateData: __module
+    })
   }
 };
 </script>

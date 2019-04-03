@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Teacher;
+use App\Teaching;
 use Illuminate\Http\Request;
 
 class TeacherController extends Controller
@@ -18,13 +19,18 @@ class TeacherController extends Controller
         }
     }
 
-    public function create(Request $request)
+    public function create()
     {
         try {
-            $input = $request->all();
-            // Todo: Validate
-            $item = Teacher::query()->insert($input);
-            return $this->json($item);
+            $groups = $this->req->all();
+            $res = true;
+            foreach ($groups as $group){
+                // Todo: Validate
+                $res = Teacher::query()->firstOrCreate([
+                    'name' => $group['name']
+                ]);
+            }
+            return $this->json($res);
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }
@@ -36,11 +42,15 @@ class TeacherController extends Controller
         return $this->json($item);
     }
 
-    public function update(Request $request, $id)
+    public function update($id)
     {
         $item = Teacher::query()->findOrFail($id);
+        $validator = $this->ruleValidator($item->rules(),$item->ruleMessage());
+        if ($validator){
+            return $validator;
+        }
         try {
-            $input = $request->all();
+            $input = $this->req->all();
             // Todo: Validate
             $item->update($input);
             return $this->json($item);
@@ -60,31 +70,9 @@ class TeacherController extends Controller
         }
     }
 
-    public function updateBatch(Request $request)
+    public function deleteBatch()
     {
-        if ($request->input('all') == 1){
-            $data = $request->except('all');
-            try {
-                Teacher::query()->update($data);
-                return $this->json();
-            } catch (\Exception $e) {
-                return $this->error($e->getMessage());
-            }
-        }
-
-        $ids = (array)$request->get('ids');
-        $data = $request->except('ids');
-        try {
-            Teacher::query()->whereIn('id', $ids)->update($data);
-            return $this->json();
-        } catch (\Exception $e) {
-            return $this->error($e->getMessage());
-        }
-    }
-
-    public function deleteBatch(Request $request)
-    {
-        $ids = (array)$request->get('ids');
+        $ids = (array)$this->req->get('ids');
         try {
             Teacher::query()->whereIn('id', $ids)->delete();
             return $this->json();

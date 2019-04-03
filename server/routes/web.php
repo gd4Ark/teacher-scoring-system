@@ -19,3 +19,4 @@ $router->post('login', 'AuthController@login');
 $router->resource('group', 'GroupController');
 $router->resource('teacher', 'TeacherController');
 $router->resource('subject', 'SubjectController');
+$router->resource('student', 'StudentController');

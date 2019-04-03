@@ -27,5 +27,15 @@ export default {
             doCommit: !id,
         });
     },
+    async getStudent(ctx, id) {
+        return console.log(ctx.store);
+        const module = 'student';
+        const url = id ? module + `/${id}` : module + `?group=${group}`;
+        return await ctx.dispatch('get', {
+            module,
+            url,
+            doCommit: !id,
+        });
+    },
     ...actions,
 }

@@ -3,7 +3,7 @@ import Student from "@/pages/admin/views/student";
 import Add from "@/pages/admin/views/student/children/Add";
 
 export default [{
-    path: ':id/student',
+    path: ':group/student',
     component: Student,
     name: 'student',
     meta: {
