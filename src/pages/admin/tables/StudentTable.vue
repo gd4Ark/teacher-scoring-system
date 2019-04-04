@@ -11,20 +11,26 @@
                  @click="handleDelete(multipleSelection)">删除</el-button>
     </div>
 
-    <v-table :data="stateData.list"
-             :columns="columns">
+    <v-table :data="stateData.data"
+             :columns="columns"
+             @selection-change="handleSelectionChange"
+             @sort-change="handleSortChange">
       <template slot="columns-after">
         <el-table-column label="是否已评"
                          align="center">
           <template slot-scope="scope">
-            <span :class="['display-status',scope.row.status ? 'yes' : 'no']"></span>
+            <span :class="['status',scope.row.complete ? 'yes' : 'no']"></span>
           </template>
         </el-table-column>
         <el-table-column label="操作"
                          align="center">
           <template slot-scope="scope">
-            <el-button size="mini"
-                       @click="handleDelete([scope.row.id])">编辑</el-button>
+            <modal-edit :title=" `编辑学生 ${scope.row.name} 中`"
+                        :form-item="$v_data[module].edit.item"
+                        :current="scope.row"
+                        :module="module"
+                        btn-size="mini"
+                        @get-data="getData" />
             <el-button size="mini"
                        type="danger"
                        @click="handleDelete([scope.row.id])">删除</el-button>
@@ -38,29 +44,26 @@
   </v-card>
 </template>
 <script>
-const __module = "subject";
+const __module = "student";
 import vTable from "@/common/components/Table";
 import Pagination from "@/common/components/Pagination";
 import ManageTable from "@/common/mixins/ManageTable";
+import ModalEdit from "@/common/components/ModalEdit";
 import { mapActions, mapState, mapMutations } from "vuex";
 export default {
   mixins: [ManageTable],
   components: {
     vTable,
-    Pagination
-  },
-  props: {
-    title: {
-      type: String,
-      default: "16春计网专（1）班学生表"
-    }
+    Pagination,
+    ModalEdit,
   },
   data: () => ({
     module: __module,
     columns: [
       {
         prop: "name",
-        label: "名字"
+        label: "名字",
+        sortable: "custom"
       }
     ]
   }),
@@ -68,9 +71,6 @@ export default {
     this.getData();
   },
   methods: {
-    ...mapActions({
-      delData: "deltemplate"
-    }),
     ...mapMutations({
       setOrder: __module
     }),
@@ -83,7 +83,10 @@ export default {
   computed: {
     ...mapState({
       stateData: __module
-    })
+    }),
+    title() {
+      return `${this.stateData.group.name} 学生表`;
+    }
   }
 };
 </script>

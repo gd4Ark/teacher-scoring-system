@@ -1,17 +1,38 @@
 export default {
 
-    form: {
+    add: {
         item: [{
-            label: "名字",
-            key: "name",
+            label: "学生姓名",
+            key: "name_list",
             type: "textarea",
             row: 20,
-            placeholder: `请输入名字，一行一个。\np.s：如已存在或重复将自动忽略。`,
+            placeholder: `请输入学生姓名，一行一个。\np.s：如已存在或重复将自动忽略。`,
+            disabledEvent: true,
+            rules: [{
+                required: true,
+                trigger: 'blur',
+            }]
+        }, ],
+        data: () => ({
+            name_list: '',
+        })
+    },
+
+    edit: {
+        item: [{
+            label: "学生姓名",
+            key: "name",
+            type: "text",
+            rules: [{
+                required: true,
+                trigger: 'blur',
+            }]
         }, ],
         data: () => ({
             name: '',
         })
     },
+
 
     search: {
         item: [{
@@ -20,13 +41,13 @@ export default {
             type: "text",
             operation: '=',
         }, {
-            label: "名字",
+            label: "学生姓名",
             key: "name",
             type: "text",
             operation: 'like',
         }, {
             label: "是否已评",
-            key: "status",
+            key: "complete",
             type: "select",
             operation: '=',
             options: [{
@@ -46,7 +67,7 @@ export default {
         data: () => ({
             id: '',
             name: '',
-            status: '',
+            complete: '',
         })
     }
 

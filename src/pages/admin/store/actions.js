@@ -28,9 +28,11 @@ export default {
         });
     },
     async getStudent(ctx, id) {
-        return console.log(ctx.store);
+        const {
+            group_id
+        } = ctx.state.student;
         const module = 'student';
-        const url = id ? module + `/${id}` : module + `?group=${group}`;
+        const url = id ? module + `/${id}` : module + `?groupId=${group_id}`;
         return await ctx.dispatch('get', {
             module,
             url,

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Group;
 use App\Student;
 
 class StudentController extends Controller
@@ -9,28 +10,30 @@ class StudentController extends Controller
 
     public function index()
     {
-        if (!$this->req->has('group')){
+        if (!$this->req->has('groupId')){
             return $this->error('Necessary to have the `group` parameter');
         }
-        $group = $this->req->input('group');
-        $query =  Student::query()->where('group_id',$group);
+        $groupId = $this->req->input('groupId');
+        $query =  Student::query()->where('group_id',$groupId);
         $query = $this->queryFilter($query);
         if ($this->req->get('getOptions') == 1) {
             return $this->getOptions($query);
         } else {
-            return $this->paginate($query);
+            return $this->json(array_merge([
+                'group' => Group::query()->where('id',$groupId)->first(),
+            ], $this->paginate($query,false)->toArray()));
         }
     }
 
     public function create()
     {
         try {
-            $groups = $this->req->all();
+            $students = $this->req->all();
             $res = true;
-            foreach ($groups as $group){
+            foreach ($students as $student){
                 // Todo: Validate
-                $res = Group::query()->firstOrCreate([
-                    'name' => $group['name']
+                $res = Student::query()->firstOrCreate([
+                    'name' => $student['name']
                 ]);
             }
             return $this->json($res);
@@ -47,7 +50,7 @@ class StudentController extends Controller
 
     public function update($id)
     {
-        $item = Group::query()->findOrFail($id);
+        $item = Student::query()->findOrFail($id);
         $validator = $this->ruleValidator($item->rules(),$item->ruleMessage());
         if ($validator){
             return $validator;
@@ -64,7 +67,7 @@ class StudentController extends Controller
 
     public function delete($id)
     {
-        $item = Group::query()->findOrFail($id);
+        $item = Student::query()->findOrFail($id);
         try {
             $item->delete();
             return $this->json();
@@ -78,7 +81,7 @@ class StudentController extends Controller
         if ($this->req->input('all') == 1){
             $data = $this->req->except('all');
             try {
-                Group::query()->update($data);
+                Student::query()->update($data);
                 return $this->json();
             } catch (\Exception $e) {
                 return $this->error($e->getMessage());
@@ -88,7 +91,7 @@ class StudentController extends Controller
         $ids = (array)$this->req->get('ids');
         $data = $this->req->except('ids');
         try {
-            Group::query()->whereIn('id', $ids)->update($data);
+            Student::query()->whereIn('id', $ids)->update($data);
             return $this->json();
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
@@ -99,7 +102,7 @@ class StudentController extends Controller
     {
         $ids = (array)$this->req->get('ids');
         try {
-            Group::query()->whereIn('id', $ids)->delete();
+            Student::query()->whereIn('id', $ids)->delete();
             return $this->json();
         } catch (\Exception $e) {
             return $this->error('Delete failed');

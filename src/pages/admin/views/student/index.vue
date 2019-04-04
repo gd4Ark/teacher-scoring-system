@@ -24,8 +24,9 @@ export default {
   },
   created() {
     this.setData({
-      group: this.$route.params.group
+      group_id: this.$route.params.group_id
     });
+    this.getData();
   }
 };
 </script>

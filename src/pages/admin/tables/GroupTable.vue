@@ -128,11 +128,11 @@ export default {
         name: "addGroup"
       });
     },
-    toStudent(group) {
+    toStudent(group_id) {
       this.$router.push({
         name: "student",
         params: {
-          group
+          group_id
         }
       });
     },

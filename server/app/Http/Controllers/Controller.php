@@ -35,30 +35,19 @@ class Controller extends BaseController
         return $this->json([], true, $msg, $statusCode);
     }
 
-    /**
-     * @param $query \Illuminate\Database\Eloquent\Builder
-     * @return \Illuminate\Http\JsonResponse
-     */
     protected function getOptions($query)
     {
         $query->select('id as value', 'name as label');
         return $this->json($query->get());
     }
 
-    /**
-     * @param $query \Illuminate\Database\Eloquent\Builder
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function paginate($query)
+    protected function paginate($query,$isJson = true)
     {
         $per = (int)$this->req->get('per_page') ?: 15;
-        return $this->json($query->paginate($per));
+        $res = $query->paginate($per);
+        return $isJson ? $this->json($res) : $res;
     }
 
-    /**
-     * @param $query \Illuminate\Database\Eloquent\Builder
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
     protected function queryFilter($query)
     {
         $wheres = $this->req->get('where');
