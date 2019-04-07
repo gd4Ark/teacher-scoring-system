@@ -14,7 +14,7 @@ class Teacher extends Model
     public function rules($array = ['name']){
         $data = [];
         $rules = [
-            'name' => 'unique:teachers,name,' . $this->id,
+            'name' => 'sometimes|required|string|min:1|max:32|unique:teachers,name,' . $this->id,
         ];
         foreach($array as $item){
             $data[$item] =  $rules[$item];

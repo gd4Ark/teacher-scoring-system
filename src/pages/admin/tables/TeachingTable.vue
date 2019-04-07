@@ -11,7 +11,7 @@
                  @click="handleDelete(multipleSelection)">删除</el-button>
     </div>
 
-    <v-table :data="course.list"
+    <v-table :data="teaching.list"
              :columns="columns">
       <el-table-column slot="columns-after"
                        label="操作"
@@ -26,7 +26,7 @@
       </el-table-column>
     </v-table>
 
-    <pagination :module="course"
+    <pagination :module="teaching"
                 @get-data="getData" />
   </v-card>
 </template>
@@ -68,12 +68,12 @@ export default {
     }),
     add() {
       this.$router.push({
-        name : 'addCourse',
+        name : 'addTeaching',
       });
     }
   },
   computed: {
-    ...mapState(["course"])
+    ...mapState(["teaching"])
   }
 };
 </script>

@@ -11,7 +11,7 @@ class StudentController extends Controller
     public function index()
     {
         if (!$this->req->has('groupId')){
-            return $this->error('Necessary to have the `group` parameter');
+            return $this->error('Necessary to have the `groupId` parameter');
         }
         $groupId = $this->req->input('groupId');
         $query =  Student::query()->where('group_id',$groupId);
@@ -29,14 +29,19 @@ class StudentController extends Controller
     {
         try {
             $students = $this->req->all();
-            $res = true;
+            $create_count = count($students);
+            $new_count = 0;
             foreach ($students as $student){
                 // Todo: Validate
-                $res = Student::query()->firstOrCreate([
-                    'name' => $student['name']
-                ]);
+                $item = Student::query()->firstOrCreate($student);
+                if ($item->wasRecentlyCreated){
+                    $new_count++;
+                }
             }
-            return $this->json($res);
+            return $this->json([
+                'create_count' => $create_count,
+                'new_count' => $new_count,
+            ]);
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }

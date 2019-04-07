@@ -28,6 +28,10 @@ export default {
       type: Function,
       default: data => true
     },
+    afterSuccess: {
+      type: Function,
+      default: data => data
+    },
     module: {
       type: String,
       default: ""

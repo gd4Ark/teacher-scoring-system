@@ -1,6 +1,7 @@
 <?php
 namespace App;
 use Illuminate\Database\Eloquent\Model;
+
 class Group extends Model
 {
 
@@ -18,10 +19,11 @@ class Group extends Model
         return $this->hasOne('App\Student','group_id','id');
     }
 
-    public function rules($array = ['name']){
+    public function rules($array = ['name','allow']){
         $data = [];
         $rules = [
-            'name' => 'unique:groups,name,' . $this->id,
+            'name' => 'sometimes|required|string|min:1|max:32|unique:groups,name,' . $this->id,
+            'allow' => 'boolean'
         ];
         foreach($array as $item){
             $data[$item] =  $rules[$item];
@@ -31,7 +33,7 @@ class Group extends Model
 
     public function ruleMessage(){
         return [
-            'name.unique' => 'Name already exists',
+
         ];
     }
 }

@@ -22,19 +22,19 @@ export default {
         module,
         data
     }) {
-        return await this._vm.$axios.post(`/${module}`, data);
+        return console.log( await this._vm.$axios.post(`/${module}s`, data));
     },
     async uploadAdd(ctx, {
         module,
         data,
     }) {
-        return await this._vm.$axios.upload(`/${module}`, data);
+        return await this._vm.$axios.upload(`/${module}s`, data);
     },
     async update(ctx, {
         module,
         data,
     }) {
-        return await this._vm.$axios.put(`/${module}/${data.id}`, data);
+        return console.log(await this._vm.$axios.put(`/${module}s/${data.id}`, data));
     },
     async updateBatch(ctx, {
         module,
@@ -47,7 +47,7 @@ export default {
         } : {
             ids
         }
-        await this._vm.$axios.put(`/${module}`, {
+        await this._vm.$axios.put(`/${module}s`, {
             ...item,
             ...data,
         })
@@ -56,7 +56,7 @@ export default {
         module,
         ids
     }) {
-        return await this._vm.$axios.delete(`/${module}`, {
+        return await this._vm.$axios.delete(`/${module}s`, {
             ids
         })
     },

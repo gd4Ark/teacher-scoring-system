@@ -25,8 +25,12 @@
         <el-table-column label="切换评分状态"
                          align="center">
           <template slot-scope="scope">
-            <span :class="['status','toggle',scope.row.allow ? 'yes' : 'no']"
-                  @click="toggleAllow(scope.row)"></span>
+            <el-switch v-model="scope.row.allow"
+                       :active-value="1"
+                       :inactive-value="0"
+                       active-color="#13ce66"
+                       inactive-color="#ff4949"
+                       @change="toggleAllow(scope.row)" />
           </template>
         </el-table-column>
         <el-table-column label="操作"
@@ -36,7 +40,7 @@
             <el-button size="mini"
                        @click="toStudent(scope.row.id)">学生管理</el-button>
             <el-button size="mini"
-                       @click="toCourse(scope.row.id)">课程管理</el-button>
+                       @click="toTeaching(scope.row.id)">课程管理</el-button>
             <modal-edit :title=" `编辑班级 ${scope.row.name} 中`"
                         :form-item="$v_data[module].edit.item"
                         :current="scope.row"
@@ -108,7 +112,7 @@ export default {
         module: this.module,
         data: {
           id: row.id,
-          allow: row.allow === 1 ? 0 : 1
+          allow: row.allow,
         }
       });
       this.getData();
@@ -136,9 +140,9 @@ export default {
         }
       });
     },
-    toCourse(group) {
+    toTeaching(group) {
       this.$router.push({
-        name: "course",
+        name: "teaching",
         params: {
           group
         }

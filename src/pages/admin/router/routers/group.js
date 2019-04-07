@@ -3,7 +3,7 @@ import Group from "@/pages/admin/views/group";
 import Add from "@/pages/admin/views/group/children/Add";
 
 import Student from "./group/student";
-import Course from "./group/course";
+import Teaching from "./group/teaching";
 
 export default [{
     path: '/group',
@@ -14,7 +14,7 @@ export default [{
     },
     children: [
         ...Student,
-        ...Course,
+        ...Teaching,
         {
             path: 'add',
             component: Add,

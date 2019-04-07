@@ -14,7 +14,7 @@ class Subject extends Model
     public function rules($array = ['name']){
         $data = [];
         $rules = [
-            'name' => 'unique:subjects,name,' . $this->id,
+            'name' => 'sometimes|required|string|min:1|max:32|unique:subjects,name,' . $this->id,
         ];
         foreach($array as $item){
             $data[$item] =  $rules[$item];

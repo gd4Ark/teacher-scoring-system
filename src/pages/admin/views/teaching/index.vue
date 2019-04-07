@@ -1,16 +1,16 @@
 <template>
-  <not-sub-router name="course">
-    <search module="course" />
-    <course-table />
+  <not-sub-router name="teaching">
+    <search module="teaching" />
+    <teaching-table />
   </not-sub-router>
 </template>
 <script>
 import Search from "@/common/components/Search";
-import CourseTable from "@/pages/admin/tables/CourseTable";
+import TeachingTable from "@/pages/admin/tables/TeachingTable";
 import { mapActions } from "vuex";
 export default {
   components: {
-    CourseTable,
+    TeachingTable,
     Search
   },
   ...mapActions({

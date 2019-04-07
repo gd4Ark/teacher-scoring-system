@@ -2,7 +2,8 @@ import actions from "@/common/store/actions";
 export default {
     async getGroup(ctx, id = null) {
         const module = 'group';
-        const url = id ? module + `/${id}` : module;
+        let url = module + 's';
+        url = id ? url + `/${id}` : url;
         return await ctx.dispatch('get', {
             module,
             url,
@@ -11,7 +12,8 @@ export default {
     },
     async getTeacher(ctx, id = null) {
         const module = 'teacher';
-        const url = id ? module + `/${id}` : module;
+        let url = module + 's';
+        url = id ? url + `/${id}` : url;
         return await ctx.dispatch('get', {
             module,
             url,
@@ -20,7 +22,8 @@ export default {
     },
     async getSubject(ctx, id = null) {
         const module = 'subject';
-        const url = id ? module + `/${id}` : module;
+        let url = module + 's';
+        url = id ? url + `/${id}` : url;
         return await ctx.dispatch('get', {
             module,
             url,
@@ -32,7 +35,8 @@ export default {
             group_id
         } = ctx.state.student;
         const module = 'student';
-        const url = id ? module + `/${id}` : module + `?groupId=${group_id}`;
+        let url = module + 's';
+        url = id ? url + `/${id}` : url + `?groupId=${group_id}`;
         return await ctx.dispatch('get', {
             module,
             url,
