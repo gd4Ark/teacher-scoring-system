@@ -1,22 +1,27 @@
 <template>
   <div class="app-container">
-    <v-card title="添加教师">
-      <add :form-item="$v_data.teacher.add.item"
-           :get-form-data="$v_data.teacher.add.data"
+    <v-card :title="title">
+      <add :form-item="$v_data[module].add.item"
+           :get-form-data="$v_data[module].add.data"
            :before-submit="splitNameList"
-           module="teacher"
-           :style="{width:'50%'}">
-      </add>
+           :success-message="successMessage"
+           :style="{width:'50%'}"
+           :module="module" />
     </v-card>
   </div>
 </template>
 <script>
 import Add from "@/common/components/Add";
 import splitNameList from "@/common/mixins/splitNameList";
+import successMessage from "@/common/mixins/successMessage";
 export default {
-  mixins: [splitNameList],
+  mixins: [splitNameList, successMessage],
   components: {
     Add
-  }
+  },
+  data: () => ({
+    module: "teacher",
+    title: "添加教师"
+  })
 };
 </script>

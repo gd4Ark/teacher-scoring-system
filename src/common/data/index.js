@@ -4,7 +4,7 @@ import teacher from "./modules/teacher";
 import group from "./modules/group";
 import subject from "./modules/subject";
 import student from "./modules/student";
-import teachings from "./modules/teachings";
+import teaching from "./modules/teaching";
 
 export default {
     install(Vue) {
@@ -16,7 +16,7 @@ export default {
             group,
             subject,
             student,
-            teachings,
+            teaching,
         };
     }
 }

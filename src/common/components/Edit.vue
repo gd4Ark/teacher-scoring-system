@@ -19,11 +19,6 @@ export default {
   props: {
     formItem: Array,
     current: Object,
-    module: String,
-    btnText: {
-      type: String,
-      default: "更新"
-    },
     beforeSubmit: {
       type: Function,
       default: data => data
@@ -31,6 +26,22 @@ export default {
     beforeVerify: {
       type: Function,
       default: data => true
+    },
+    successMessage: {
+      type: Function,
+      default: data => null
+    },
+    module: {
+      type: String,
+      default: ""
+    },
+    useBtn: {
+      type: Boolean,
+      default: true
+    },
+    btnText: {
+      type: String,
+      default: "更新"
     }
   },
   methods: {
@@ -51,7 +62,8 @@ export default {
         }
       });
       if (res) {
-        this.$util.msg.success("更新成功");
+        const message = this.successMessage(res) || "更新成功！";
+        this.$util.msg.success(message);
         this.$emit("get-data");
         this.$emit("success");
       }

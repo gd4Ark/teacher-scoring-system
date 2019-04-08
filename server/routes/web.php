@@ -20,3 +20,4 @@ $router->resource('groups', 'GroupController');
 $router->resource('teachers', 'TeacherController');
 $router->resource('subjects', 'SubjectController');
 $router->resource('students', 'StudentController');
+$router->resource('teachings', 'TeachingController');

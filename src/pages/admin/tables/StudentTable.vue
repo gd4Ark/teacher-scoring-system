@@ -1,5 +1,6 @@
 <template>
-  <v-card class="table-card"
+  <v-card v-if="load"
+          class="table-card"
           :title="title">
     <div class="toolbar"
          slot="toolbar">
@@ -50,15 +51,17 @@ import Pagination from "@/common/components/Pagination";
 import ManageTable from "@/common/mixins/ManageTable";
 import ModalEdit from "@/common/components/ModalEdit";
 import { mapActions, mapState, mapMutations } from "vuex";
+import { setTimeout } from "timers";
 export default {
   mixins: [ManageTable],
   components: {
     vTable,
     Pagination,
-    ModalEdit,
+    ModalEdit
   },
   data: () => ({
     module: __module,
+    load: false,
     columns: [
       {
         prop: "name",
@@ -67,8 +70,11 @@ export default {
       }
     ]
   }),
-  created() {
-    this.getData();
+  async created() {
+    await this.getData();
+    setTimeout(() => {
+      this.load = true;
+    }, 0);
   },
   methods: {
     ...mapMutations({

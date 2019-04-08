@@ -59,7 +59,7 @@ export default {
         o.msg = (() => {
 
             const m = {};
-            const duration = 1000;
+            const duration = 1500;
 
             ['success', 'warning', 'error', 'info'].forEach(el => {
                 m[el] = (message) => {

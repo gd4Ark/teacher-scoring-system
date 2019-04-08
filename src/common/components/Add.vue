@@ -28,9 +28,9 @@ export default {
       type: Function,
       default: data => true
     },
-    afterSuccess: {
+    successMessage: {
       type: Function,
-      default: data => data
+      default: data => null
     },
     module: {
       type: String,
@@ -63,7 +63,8 @@ export default {
         data
       });
       if (res) {
-        this.$util.msg.success("添加成功！");
+        const message = this.successMessage(res) || "添加成功！";
+        this.$util.msg.success(message);
         this.resetData();
         this.$emit("success");
       }

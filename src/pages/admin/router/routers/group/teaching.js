@@ -3,7 +3,7 @@ import Teaching from "@/pages/admin/views/teaching";
 import Add from "@/pages/admin/views/teaching/children/Add";
 
 export default [{
-    path: ':group/teaching',
+    path: ':group_id/teaching',
     component: Teaching,
     name: 'teaching',
     meta: {

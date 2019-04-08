@@ -12,7 +12,7 @@ import Group from "./routers/group";
 import Teacher from "./routers/teacher";
 import Subject from "./routers/subject";
 
-import Login from "../views/Login";
+import Login from "../views/login";
 
 const routerConfig = {
     mode: process.env.NODE_ENV == 'development' ? 'history' : 'hash',

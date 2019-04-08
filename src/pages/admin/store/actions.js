@@ -43,5 +43,18 @@ export default {
             doCommit: !id,
         });
     },
+    async getTeaching(ctx, id) {
+        const {
+            group_id
+        } = ctx.state.teaching;
+        const module = 'teaching';
+        let url = module + 's';
+        url = id ? url + `/${id}` : url + `?groupId=${group_id}`;
+        return await ctx.dispatch('get', {
+            module,
+            url,
+            doCommit: !id,
+        });
+    },
     ...actions,
 }

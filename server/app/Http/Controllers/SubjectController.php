@@ -20,15 +20,20 @@ class SubjectController extends Controller
     public function create()
     {
         try {
-            $groups = $this->req->all();
-            $res = true;
-            foreach ($groups as $group){
+            $students = $this->req->all();
+            $create_count = count($students);
+            $new_count = 0;
+            foreach ($students as $student){
                 // Todo: Validate
-                $res = Subject::query()->firstOrCreate([
-                    'name' => $group['name']
-                ]);
+                $item = Subject::query()->firstOrCreate($student);
+                if ($item->wasRecentlyCreated){
+                    $new_count++;
+                }
             }
-            return $this->json($res);
+            return $this->json([
+                'create_count' => $create_count,
+                'new_count' => $new_count,
+            ]);
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }

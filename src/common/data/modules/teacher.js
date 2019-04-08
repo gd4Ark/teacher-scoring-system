@@ -23,6 +23,10 @@ export default {
             label: "教师姓名",
             key: "name",
             type: "text",
+            rules: [{
+                required: true,
+                trigger: 'blur',
+            }]
         }, ],
         data: () => ({
             name: '',

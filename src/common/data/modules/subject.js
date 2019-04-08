@@ -23,6 +23,10 @@ export default {
             label: "科目名称",
             key: "name",
             type: "text",
+            rules: [{
+                required: true,
+                trigger: 'blur',
+            }]
         }, ],
         data: () => ({
             name: '',

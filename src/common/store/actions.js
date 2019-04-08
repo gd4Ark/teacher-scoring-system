@@ -12,7 +12,7 @@ export default {
         return res;
     },
     async getOptions(ctx, module) {
-        const path = module + '?getOptions=1';
+        const path = module + 's' + '?getOptions=1';
         const res = await this._vm.$axios.get(`/${path}`);
         ctx.commit(module, {
             options: res
@@ -22,7 +22,7 @@ export default {
         module,
         data
     }) {
-        return console.log( await this._vm.$axios.post(`/${module}s`, data));
+        return await this._vm.$axios.post(`/${module}s`, data);
     },
     async uploadAdd(ctx, {
         module,
@@ -34,7 +34,7 @@ export default {
         module,
         data,
     }) {
-        return console.log(await this._vm.$axios.put(`/${module}s/${data.id}`, data));
+        return await this._vm.$axios.put(`/${module}s/${data.id}`, data);
     },
     async updateBatch(ctx, {
         module,

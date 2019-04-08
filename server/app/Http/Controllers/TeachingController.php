@@ -2,18 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Teacher;
+use App\Group;
+use App\Teaching;
 
-class TeacherController extends Controller
+class TeachingController extends Controller
 {
 
     public function index()
     {
-        $query = $this->queryFilter(Teacher::query());
+        if (!$this->req->has('groupId')){
+            return $this->error('Necessary to have the `groupId` parameter');
+        }
+        $groupId = $this->req->input('groupId');
+        $query =  Teaching::query()->where('group_id',$groupId);
+        $query = $this->queryFilter($query);
         if ($this->req->get('getOptions') == 1) {
             return $this->getOptions($query);
         } else {
-            return $this->paginate($query);
+            return $this->json(array_merge([
+                'group' => Group::query()->where('id',$groupId)->first(),
+            ], $this->paginate($query,false)->toArray()));
         }
     }
 
@@ -25,7 +33,7 @@ class TeacherController extends Controller
             $new_count = 0;
             foreach ($students as $student){
                 // Todo: Validate
-                $item = Teacher::query()->firstOrCreate($student);
+                $item = Student::query()->firstOrCreate($student);
                 if ($item->wasRecentlyCreated){
                     $new_count++;
                 }
@@ -41,13 +49,13 @@ class TeacherController extends Controller
 
     public function show($id)
     {
-        $item = Teacher::query()->findOrFail($id);
+        $item = Group::query()->findOrFail($id);
         return $this->json($item);
     }
 
     public function update($id)
     {
-        $item = Teacher::query()->findOrFail($id);
+        $item = Student::query()->findOrFail($id);
         $validator = $this->ruleValidator($item->rules(),$item->ruleMessage());
         if ($validator){
             return $validator;
@@ -64,7 +72,7 @@ class TeacherController extends Controller
 
     public function delete($id)
     {
-        $item = Teacher::query()->findOrFail($id);
+        $item = Student::query()->findOrFail($id);
         try {
             $item->delete();
             return $this->json();
@@ -73,11 +81,33 @@ class TeacherController extends Controller
         }
     }
 
+    public function updateBatch()
+    {
+        if ($this->req->input('all') == 1){
+            $data = $this->req->except('all');
+            try {
+                Student::query()->update($data);
+                return $this->json();
+            } catch (\Exception $e) {
+                return $this->error($e->getMessage());
+            }
+        }
+
+        $ids = (array)$this->req->get('ids');
+        $data = $this->req->except('ids');
+        try {
+            Student::query()->whereIn('id', $ids)->update($data);
+            return $this->json();
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage());
+        }
+    }
+
     public function deleteBatch()
     {
         $ids = (array)$this->req->get('ids');
         try {
-            Teacher::query()->whereIn('id', $ids)->delete();
+            Student::query()->whereIn('id', $ids)->delete();
             return $this->json();
         } catch (\Exception $e) {
             return $this->error('Delete failed');

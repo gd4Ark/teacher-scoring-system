@@ -13,8 +13,8 @@
             <h2 class="card-title">{{ $route.meta.title }}</h2>
           </div>
           <base-form btn="登录"
-                     :form-item="$vData.login.item"
-                     :get-form-data="$vData.login.data"
+                     :form-item="$v_data.login.item"
+                     :get-form-data="$v_data.login.data"
                      @submit="submit" />
         </el-card>
       </div>
@@ -33,9 +33,9 @@ export default {
   },
   methods: {
     ...mapActions(["login"]),
-    async submit(formData) {
+    async submit(data) {
       await this.login({
-        data: formData
+        data
       });
       this.$router.push("/index");
     }
@@ -49,7 +49,7 @@ export default {
   @include flex-column;
   @include mask;
   justify-content: space-around;
-  background: url("../../../common/images/login_bg.jpg");
+  background: url("../../../../common/images/login_bg.jpg");
   background-size: cover;
   .inner-container {
     flex: 1;

@@ -8,7 +8,7 @@ import teacher from "./modules/teacher";
 import group from "./modules/group";
 import subject from "./modules/subject";
 import student from "./modules/student";
-import teachings from "./modules/teachings";
+import teaching from "./modules/teaching";
 
 import mutations from "./mutations";
 import actions from "./actions";
@@ -23,7 +23,7 @@ export default new vuex.Store({
         group,
         subject,
         student,
-        teachings,
+        teaching,
     },
     mutations: {
         ...mutations,

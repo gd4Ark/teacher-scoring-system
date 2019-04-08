@@ -1,24 +1,28 @@
 <template>
   <div class="app-container">
-    <v-card title="添加学生">
-      <add :form-item="$v_data.student.add.item"
-           :get-form-data="$v_data.student.add.data"
+    <v-card :title="title">
+      <add :form-item="$v_data[module].add.item"
+           :get-form-data="$v_data[module].add.data"
            :before-submit="_splitNameList"
-           :after-success="afterSuccess"
-           module="student"
-           :style="{width:'50%'}">
-      </add>
+           :success-message="successMessage"
+           :style="{width:'50%'}"
+           :module="module" />
     </v-card>
   </div>
 </template>
 <script>
 import Add from "@/common/components/Add";
 import splitNameList from "@/common/mixins/splitNameList";
+import successMessage from "@/common/mixins/successMessage";
 export default {
-  mixins: [splitNameList],
+  mixins: [splitNameList, successMessage],
   components: {
     Add
   },
+  data: () => ({
+    module: "student",
+    title: "添加学生"
+  }),
   methods: {
     _splitNameList(data) {
       const nameList = this.splitNameList(data);
@@ -26,9 +30,6 @@ export default {
         el.group_id = this.$route.params.group_id;
       });
       return nameList;
-    },
-    afterSuccess(res){
-      console.log(res);
     }
   }
 };

@@ -1,5 +1,6 @@
 <template>
-  <v-card class="table-card"
+  <v-card v-if="load"
+          class="table-card"
           :title="title">
     <div class="toolbar"
          slot="toolbar">
@@ -58,6 +59,7 @@ export default {
   },
   data: () => ({
     module: __module,
+    load: false,
     columns: [
       {
         prop: "name",
@@ -66,8 +68,11 @@ export default {
       }
     ]
   }),
-  created() {
-    this.getData();
+  async created() {
+    await this.getData();
+    setTimeout(() => {
+      this.load = true;
+    }, 0);
   },
   methods: {
     ...mapMutations({

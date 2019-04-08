@@ -50,6 +50,10 @@ export default {
       type: Function,
       default: data => true
     },
+    successMessage: {
+      type: Function,
+      default: data => null
+    },
     module: String,
     formItem: Array,
     current: Object,
@@ -103,7 +107,8 @@ export default {
         });
       }
       if (res) {
-        this.$util.msg.success("更新成功");
+        const message = this.successMessage(res) || "更新成功！";
+        this.$util.msg.success(message);
         this.$emit("get-data");
         this.$emit("success");
         this.$refs.modal.hidden();
