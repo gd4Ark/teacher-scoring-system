@@ -4,7 +4,6 @@
          :btn-text="btnText"
          :btn-size="btnSize"
          :btn-type="btnType"
-         :before-open="onBeforeOpen"
          @submit="submit"
          @open="reset">
     <baseForm slot="body"
@@ -12,7 +11,7 @@
               :use-btn="false"
               :btn-text="btnText"
               :form-item="formItem"
-              :form-data="formData"
+              :get-form-data="getFormData"
               @submit="handleSubmit" />
   </modal>
 </template>
@@ -28,11 +27,11 @@ export default {
   props: {
     title: {
       type: String,
-      default: "编辑"
+      default: "添加"
     },
     btnText: {
       type: String,
-      default: "编辑"
+      default: "添加"
     },
     btnSize: {
       type: String,
@@ -40,7 +39,7 @@ export default {
     },
     btnType: {
       type: String,
-      default: ""
+      default: "primary"
     },
     beforeSubmit: {
       type: Function,
@@ -56,23 +55,10 @@ export default {
     },
     module: String,
     formItem: Array,
-    current: Object,
-    getFormData: Function,
-    ids: Array,
-    isBatch: {
-      type: Boolean,
-      default: false
-    }
+    getFormData: Function
   },
   methods: {
-    ...mapActions(["update", "updateBatch"]),
-    onBeforeOpen() {
-      if (this.isBatch && this.ids.length === 0) {
-        this.$util.msg.warning("没有选中项！");
-        return false;
-      }
-      return true;
-    },
+    ...mapActions(["add"]),
     submit() {
       this.$refs.baseForm.submit();
     },
@@ -87,34 +73,17 @@ export default {
         return;
       }
       data = this.beforeSubmit(data);
-      let res = null;
-      if (this.isBatch) {
-        res = await this.updateBatch({
-          module: this.module,
-          ids: this.ids,
-          data
-        });
-      } else {
-        res = await this.update({
-          module: this.module,
-          data: {
-            ...data,
-            id: this.current.id
-          }
-        });
-      }
+      const res = await this.add({
+        module: this.module,
+        data
+      });
       if (res) {
-        const message = this.successMessage(res) || "更新成功！";
+        const message = this.successMessage(res) || "添加成功！";
         this.$util.msg.success(message);
         this.$emit("get-data");
         this.$emit("success");
         this.$refs.modal.hidden();
       }
-    }
-  },
-  computed: {
-    formData() {
-      return this.getFormData ? this.getFormData() : this.current;
     }
   }
 };

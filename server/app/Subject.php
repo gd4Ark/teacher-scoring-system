@@ -3,14 +3,24 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 class Subject extends Model
 {
+    /**
+     * @var array
+     */
     protected $fillable = [
         'name',
         'meta'
     ];
+    /**
+     * @var array
+     */
     protected $casts = [
         'meta' => 'array'
     ];
 
+    /**
+     * @param array $array
+     * @return array
+     */
     public function rules($array = ['name']){
         $data = [];
         $rules = [
@@ -22,6 +32,9 @@ class Subject extends Model
         return $data;
     }
 
+    /**
+     * @return array
+     */
     public function ruleMessage(){
         return [
             'name.unique' => 'Name already exists',

@@ -1,5 +1,10 @@
 export default {
     methods: {
+        /**
+         * 
+         * @param {*} res 
+         * @returns {string}
+         */
         successMessage(res) {
             const {
                 create_count,

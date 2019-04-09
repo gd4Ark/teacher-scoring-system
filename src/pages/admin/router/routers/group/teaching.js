@@ -1,6 +1,4 @@
-import Teaching from "@/pages/admin/views/teaching";
-
-import Add from "@/pages/admin/views/teaching/children/Add";
+import Teaching from "@/pages/admin/views/group/childrens/teaching";
 
 export default [{
     path: ':group_id/teaching',
@@ -9,12 +7,5 @@ export default [{
     meta: {
         title: "课程管理",
     },
-    children: [{
-        path: 'add',
-        component: Add,
-        name: 'addTeaching',
-        meta: {
-            title: "添加课程",
-        }
-    }],
+    children: [],
 }]

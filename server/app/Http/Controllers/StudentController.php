@@ -4,10 +4,28 @@ namespace App\Http\Controllers;
 
 use App\Group;
 use App\Student;
+use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
+    /**
+     * GroupController constructor.
+     * @param Request $request
+     */
+    public function __construct(Request $request)
+    {
+        parent::__construct($request);
+        /**
+         * 需要验证权限
+         */
+        $this->middleware('auth:api',[
+            'only' => ['create','update','updateBatch','delete','deleteBatch']
+        ]);
+    }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index()
     {
         if (!$this->req->has('groupId')){
@@ -21,10 +39,13 @@ class StudentController extends Controller
         } else {
             return $this->json(array_merge([
                 'group' => Group::query()->where('id',$groupId)->first(),
-            ], $this->paginate($query,false)->toArray()));
+            ],$this->paginate($query)->toArray()));
         }
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function create()
     {
         try {
@@ -47,12 +68,20 @@ class StudentController extends Controller
         }
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function show($id)
     {
         $item = Group::query()->findOrFail($id);
         return $this->json($item);
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse|null
+     */
     public function update($id)
     {
         $item = Student::query()->findOrFail($id);
@@ -70,6 +99,10 @@ class StudentController extends Controller
         }
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function delete($id)
     {
         $item = Student::query()->findOrFail($id);
@@ -81,6 +114,9 @@ class StudentController extends Controller
         }
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateBatch()
     {
         if ($this->req->input('all') == 1){
@@ -103,6 +139,9 @@ class StudentController extends Controller
         }
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function deleteBatch()
     {
         $ids = (array)$this->req->get('ids');

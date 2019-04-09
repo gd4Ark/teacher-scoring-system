@@ -4,10 +4,28 @@ namespace App\Http\Controllers;
 
 use App\Group;
 use App\Teaching;
+use Illuminate\Http\Request;
 
 class TeachingController extends Controller
 {
+    /**
+    * GroupController constructor.
+    * @param Request $request
+    */
+    public function __construct(Request $request)
+    {
+        parent::__construct($request);
+        /**
+         * 需要验证权限
+         */
+        $this->middleware('auth:api',[
+            'only' => ['create','update','updateBatch','delete','deleteBatch']
+        ]);
+    }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index()
     {
         if (!$this->req->has('groupId')){
@@ -21,45 +39,41 @@ class TeachingController extends Controller
         } else {
             return $this->json(array_merge([
                 'group' => Group::query()->where('id',$groupId)->first(),
-            ], $this->paginate($query,false)->toArray()));
+            ],$this->paginate($query)->toArray()));
         }
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function create()
     {
         try {
-            $students = $this->req->all();
-            $create_count = count($students);
-            $new_count = 0;
-            foreach ($students as $student){
-                // Todo: Validate
-                $item = Student::query()->firstOrCreate($student);
-                if ($item->wasRecentlyCreated){
-                    $new_count++;
-                }
-            }
-            return $this->json([
-                'create_count' => $create_count,
-                'new_count' => $new_count,
-            ]);
+            $input = $this->req->all();
+            $item = Teaching::query()->firstOrCreate($input);
+            return $this->json($item);
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function show($id)
     {
-        $item = Group::query()->findOrFail($id);
+        $item = Teaching::query()->findOrFail($id);
         return $this->json($item);
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update($id)
     {
-        $item = Student::query()->findOrFail($id);
-        $validator = $this->ruleValidator($item->rules(),$item->ruleMessage());
-        if ($validator){
-            return $validator;
-        }
+        $item = Teaching::query()->findOrFail($id);
         try {
             $input = $this->req->all();
             // Todo: Validate
@@ -70,9 +84,13 @@ class TeachingController extends Controller
         }
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function delete($id)
     {
-        $item = Student::query()->findOrFail($id);
+        $item = Teaching::query()->findOrFail($id);
         try {
             $item->delete();
             return $this->json();
@@ -81,12 +99,15 @@ class TeachingController extends Controller
         }
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateBatch()
     {
         if ($this->req->input('all') == 1){
             $data = $this->req->except('all');
             try {
-                Student::query()->update($data);
+                Teaching::query()->update($data);
                 return $this->json();
             } catch (\Exception $e) {
                 return $this->error($e->getMessage());
@@ -96,18 +117,21 @@ class TeachingController extends Controller
         $ids = (array)$this->req->get('ids');
         $data = $this->req->except('ids');
         try {
-            Student::query()->whereIn('id', $ids)->update($data);
+            Teaching::query()->whereIn('id', $ids)->update($data);
             return $this->json();
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function deleteBatch()
     {
         $ids = (array)$this->req->get('ids');
         try {
-            Student::query()->whereIn('id', $ids)->delete();
+            Teaching::query()->whereIn('id', $ids)->delete();
             return $this->json();
         } catch (\Exception $e) {
             return $this->error('Delete failed');

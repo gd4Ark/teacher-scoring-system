@@ -5,16 +5,26 @@ use Illuminate\Validation\Rule;
 
 class Student extends Model
 {
+    /**
+     * @var array
+     */
     protected $fillable = [
         'name',
         'group_id',
         'complete',
         'meta'
     ];
+    /**
+     * @var array
+     */
     protected $casts = [
         'meta' => 'array'
     ];
 
+    /**
+     * @param array $array
+     * @return array
+     */
     public function rules($array = ['name','complete']){
         $data = [];
         $rules = [
@@ -35,6 +45,9 @@ class Student extends Model
         return $data;
     }
 
+    /**
+     * @return array
+     */
     public function ruleMessage(){
         return [
 

@@ -4,9 +4,13 @@
           :title="title">
     <div class="toolbar"
          slot="toolbar">
-      <el-button size="small"
-                 type="primary"
-                 @click="toAdd">添加</el-button>
+      <modal-add title="添加班级"
+                 :form-item="$v_data[module].add.item"
+                 :get-form-data="$v_data[module].add.data"
+                 :module="module"
+                 :before-submit="splitNameList"
+                 :success-message="successMessage"
+                 @get-data="getData" />
       <el-button size="small"
                  type="primary"
                  @click="allToggleAllow(1)">一键允许评分</el-button>
@@ -64,15 +68,19 @@
 const __module = "group";
 import vTable from "@/common/components/Table";
 import Pagination from "@/common/components/Pagination";
-import ManageTable from "@/common/mixins/ManageTable";
 import ModalEdit from "@/common/components/ModalEdit";
+import ModalAdd from "@/common/components/ModalAdd";
+import ManageTable from "@/common/mixins/ManageTable";
+import splitNameList from "@/common/mixins/splitNameList";
+import successMessage from "@/common/mixins/successMessage";
 import { mapActions, mapState, mapMutations } from "vuex";
 export default {
-  mixins: [ManageTable],
+  mixins: [ManageTable, splitNameList, successMessage],
   components: {
     vTable,
     Pagination,
-    ModalEdit
+    ModalEdit,
+    ModalAdd
   },
   props: {
     title: {
@@ -84,6 +92,11 @@ export default {
     module: __module,
     load: false,
     columns: [
+      {
+        prop: "id",
+        label: "编号",
+        sortable: "custom"
+      },
       {
         prop: "name",
         label: "班级名称",
@@ -131,11 +144,6 @@ export default {
         }
       });
       await this.getData();
-    },
-    toAdd() {
-      this.$router.push({
-        name: "addGroup"
-      });
     },
     toStudent(group_id) {
       this.$router.push({

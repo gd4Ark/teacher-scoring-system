@@ -2,6 +2,11 @@
 import qs from "qs";
 
 export default {
+    /**
+     * 
+     * @param {*} Vue 
+     * @param {*} options 
+     */
     install(Vue, options) {
         let vm = Vue.prototype;
 
@@ -79,6 +84,11 @@ export default {
 
         // 请求方法
 
+        /**
+         * 
+         * @param {*} url 
+         * @param {*} data 
+         */
         const get = (url, data = {}) => {
             return axios({
                 method: "get",
@@ -87,6 +97,11 @@ export default {
             });
         };
 
+        /**
+         * 
+         * @param {*} url 
+         * @param {*} data 
+         */
         const post = (url, data = {}) => {
             data = qs.stringify(data);
             return axios({
@@ -96,6 +111,11 @@ export default {
             });
         };
 
+        /**
+         * 
+         * @param {*} url 
+         * @param {*} data 
+         */
         const put = (url, data = {}) => {
             data = qs.stringify(data);
             return axios({
@@ -105,6 +125,11 @@ export default {
             });
         };
 
+        /**
+         * 
+         * @param {*} url 
+         * @param {*} data 
+         */
         const del = (url, data = {}) => {
             return axios({
                 method: "delete",
@@ -113,6 +138,11 @@ export default {
             });
         };
 
+        /**
+         * 
+         * @param {*} url 
+         * @param {*} data 
+         */
         const upload = (url, data = {}) => {
             return axios({
                 method: "post",
@@ -124,8 +154,9 @@ export default {
             });
         };
 
-        // 所有方法
-
+        /**
+         * 所有方法
+         */
         const methods = {
             get,
             post,
@@ -134,8 +165,9 @@ export default {
             upload
         };
 
-        // 封装函数
-
+        /**
+         * 封装函数
+         */
         const ax = {};
 
         Object.keys(methods).forEach(key => {

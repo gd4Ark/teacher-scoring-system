@@ -4,11 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Group;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Validator;
 
 class GroupController extends Controller
 {
+    /**
+     * GroupController constructor.
+     * @param Request $request
+     */
+    public function __construct(Request $request)
+    {
+        parent::__construct($request);
+        /**
+         * 需要验证权限
+         */
+        $this->middleware('auth:api',[
+            'only' => ['create','update','updateBatch','delete','deleteBatch']
+        ]);
+    }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index()
     {
         $query = Group::query()->withCount([
@@ -21,10 +37,13 @@ class GroupController extends Controller
         if ($this->req->get('getOptions') == 1) {
             return $this->getOptions($query);
         } else {
-            return $this->paginate($query);
+            return $this->paginateToJson($query);
         }
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function create()
     {
         try {
@@ -47,12 +66,20 @@ class GroupController extends Controller
         }
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function show($id)
     {
         $item = Group::query()->findOrFail($id);
         return $this->json($item);
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse|null
+     */
     public function update($id)
     {
         $item = Group::query()->findOrFail($id);
@@ -70,6 +97,10 @@ class GroupController extends Controller
         }
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function delete($id)
     {
         $item = Group::query()->findOrFail($id);
@@ -81,6 +112,9 @@ class GroupController extends Controller
         }
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateBatch()
     {
         if ($this->req->input('all') == 1){
@@ -103,6 +137,9 @@ class GroupController extends Controller
         }
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function deleteBatch()
     {
         $ids = (array)$this->req->get('ids');

@@ -1,6 +1,9 @@
 import mutations from "@/common/store/mutations";
 export default {
     ...mutations,
+    login(state, data) {
+        state.login = this._vm.$util.cover(state.login, data)
+    },
     score(state, data) {
         state.score = this._vm.$util.cover(state.score, data)
     },

@@ -3,20 +3,41 @@
 namespace App\Http\Controllers;
 
 use App\Teacher;
+use Illuminate\Http\Request;
 
 class TeacherController extends Controller
 {
+    /**
+     * GroupController constructor.
+     * @param Request $request
+     */
+    public function __construct(Request $request)
+    {
+        parent::__construct($request);
+        /**
+         * 需要验证权限
+         */
+        $this->middleware('auth:api',[
+            'only' => ['create','update','updateBatch','delete','deleteBatch']
+        ]);
+    }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index()
     {
         $query = $this->queryFilter(Teacher::query());
         if ($this->req->get('getOptions') == 1) {
             return $this->getOptions($query);
         } else {
-            return $this->paginate($query);
+            return $this->paginateToJson($query);
         }
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function create()
     {
         try {
@@ -39,12 +60,20 @@ class TeacherController extends Controller
         }
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function show($id)
     {
         $item = Teacher::query()->findOrFail($id);
         return $this->json($item);
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse|null
+     */
     public function update($id)
     {
         $item = Teacher::query()->findOrFail($id);
@@ -62,6 +91,10 @@ class TeacherController extends Controller
         }
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function delete($id)
     {
         $item = Teacher::query()->findOrFail($id);
@@ -73,6 +106,9 @@ class TeacherController extends Controller
         }
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function deleteBatch()
     {
         $ids = (array)$this->req->get('ids');

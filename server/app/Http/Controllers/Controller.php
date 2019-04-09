@@ -16,6 +16,13 @@ class Controller extends BaseController
         $this->req = $request;
     }
 
+    /**
+     * @param array $data;
+     * @param bool $status
+     * @param string $msg
+     * @param int $statusCode
+     * @return \Illuminate\Http\JsonResponse;
+     */
     public function json($data = [], $status = true, $msg = '', $statusCode = 200)
     {
         return response()->json([
@@ -25,29 +32,59 @@ class Controller extends BaseController
         ])->setStatusCode($statusCode);
     }
 
+
+    /**
+     * @param $msg
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function msg($msg)
     {
         return $this->json([], true, $msg);
     }
 
+    /**
+     * @param $msg
+     * @param int $statusCode
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function error($msg, $statusCode = 500)
     {
         return $this->json([], true, $msg, $statusCode);
     }
 
+    /**
+     * @param $query\Illuminate\Database\Eloquent\Builder
+     * @return \Illuminate\Http\JsonResponse
+     */
     protected function getOptions($query)
     {
         $query->select('id as value', 'name as label');
         return $this->json($query->get());
     }
 
-    protected function paginate($query,$isJson = true)
+    /**
+     * @param $query \Illuminate\Database\Eloquent\Builder
+     * @return mixed
+     */
+    protected function paginate($query)
     {
         $per = (int)$this->req->get('per_page') ?: 15;
-        $res = $query->paginate($per);
-        return $isJson ? $this->json($res) : $res;
+        return $query->paginate($per);
     }
 
+    /**
+     * @param $query \Illuminate\Database\Eloquent\Builder
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function paginateToJson($query)
+    {
+        return $this->json($this->paginate($query));
+    }
+
+    /**
+     * @param $query \Illuminate\Database\Eloquent\Builder
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
     protected function queryFilter($query)
     {
         $wheres = $this->req->get('where');
@@ -72,6 +109,11 @@ class Controller extends BaseController
         return $query;
     }
 
+    /**
+     * @param array $rule
+     * @param array $message
+     * @return \Illuminate\Http\JsonResponse|null
+     */
     public function ruleValidator($rule=[], $message=[])
     {
         $validator = Validator::make($this->req->all(), $rule, $message);

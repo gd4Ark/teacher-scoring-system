@@ -1,6 +1,4 @@
-import Student from "@/pages/admin/views/student";
-
-import Add from "@/pages/admin/views/student/children/Add";
+import Student from "@/pages/admin/views/group/childrens/student";
 
 export default [{
     path: ':group_id/student',
@@ -9,12 +7,5 @@ export default [{
     meta: {
         title: "学生管理",
     },
-    children: [{
-        path: 'add',
-        name : 'addStudent',
-        component: Add,
-        meta: {
-            title: "添加学生",
-        }
-    }],
+    children: [],
 }]

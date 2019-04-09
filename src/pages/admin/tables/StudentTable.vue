@@ -4,9 +4,13 @@
           :title="title">
     <div class="toolbar"
          slot="toolbar">
-      <el-button size="small"
-                 type="primary"
-                 @click="add">添加</el-button>
+      <modal-add title="添加学生"
+                 :form-item="$v_data[module].add.item"
+                 :get-form-data="$v_data[module].add.data"
+                 :module="module"
+                 :before-submit="_splitNameList"
+                 :success-message="successMessage"
+                 @get-data="getData" />
       <el-button size="small"
                  type="danger"
                  @click="handleDelete(multipleSelection)">删除</el-button>
@@ -48,21 +52,30 @@
 const __module = "student";
 import vTable from "@/common/components/Table";
 import Pagination from "@/common/components/Pagination";
-import ManageTable from "@/common/mixins/ManageTable";
 import ModalEdit from "@/common/components/ModalEdit";
+import ModalAdd from "@/common/components/ModalAdd";
+import ManageTable from "@/common/mixins/ManageTable";
+import splitNameList from "@/common/mixins/splitNameList";
+import successMessage from "@/common/mixins/successMessage";
 import { mapActions, mapState, mapMutations } from "vuex";
 import { setTimeout } from "timers";
 export default {
-  mixins: [ManageTable],
+  mixins: [ManageTable, splitNameList, successMessage],
   components: {
     vTable,
     Pagination,
-    ModalEdit
+    ModalEdit,
+    ModalAdd
   },
   data: () => ({
     module: __module,
     load: false,
     columns: [
+      {
+        prop: "id",
+        label: "编号",
+        sortable: "custom"
+      },
       {
         prop: "name",
         label: "名字",
@@ -80,10 +93,12 @@ export default {
     ...mapMutations({
       setOrder: __module
     }),
-    add() {
-      this.$router.push({
-        name: "addStudent"
+    _splitNameList(data) {
+      const nameList = this.splitNameList(data);
+      nameList.forEach(el => {
+        el.group_id = this.$route.params.group_id;
       });
+      return nameList;
     }
   },
   computed: {

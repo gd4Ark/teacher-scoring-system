@@ -4,9 +4,12 @@
           :title="title">
     <div class="toolbar"
          slot="toolbar">
-      <el-button size="small"
-                 type="primary"
-                 @click="add">添加</el-button>
+      <modal-add title="添加科目"
+                 :form-item="$v_data[module].add.item"
+                 :get-form-data="$v_data[module].add.data"
+                 :module="module"
+                 :before-submit="beforeSubmit"
+                 @get-data="getData" />
       <el-button size="small"
                  type="danger"
                  @click="handleDelete(multipleSelection)">删除</el-button>
@@ -17,7 +20,7 @@
              @selection-change="handleSelectionChange"
              @sort-change="handleSortChange">
       <template slot="columns-after">
-        <el-table-column label="教师名称"
+        <el-table-column label="教师姓名"
                          align="center">
           <template slot-scope="scope">
             <span>{{ getTeacherName(scope.row.teacher_id) }}</span>
@@ -32,7 +35,7 @@
         <el-table-column label="操作"
                          align="center">
           <template slot-scope="scope">
-            <modal-edit :title=" `编辑学生 ${scope.row.name} 中`"
+            <modal-edit :title=" `编辑科目 ${getSubjectName(scope.row.subject_id)} 中`"
                         :form-item="$v_data[module].edit.item"
                         :current="scope.row"
                         :module="module"
@@ -54,15 +57,17 @@
 const __module = "teaching";
 import vTable from "@/common/components/Table";
 import Pagination from "@/common/components/Pagination";
-import ManageTable from "@/common/mixins/ManageTable";
 import ModalEdit from "@/common/components/ModalEdit";
+import ModalAdd from "@/common/components/ModalAdd";
+import ManageTable from "@/common/mixins/ManageTable";
 import { mapActions, mapState, mapMutations } from "vuex";
 export default {
   mixins: [ManageTable],
   components: {
     vTable,
     Pagination,
-    ModalEdit
+    ModalEdit,
+    ModalAdd
   },
   data: () => ({
     module: __module,
@@ -72,6 +77,7 @@ export default {
   async created() {
     await this.getData();
     await this.getOptions("teacher");
+    await this.getOptions("subject");
     setTimeout(() => {
       this.load = true;
     }, 0);
@@ -81,17 +87,16 @@ export default {
     ...mapMutations({
       setOrder: __module
     }),
-    add() {
-      this.$router.push({
-        name: "addTeaching"
-      });
+    beforeSubmit(data) {
+      data.group_id = this.stateData.group_id;
+      return data;
     },
     getTeacherName(id) {
       const item = this.teacher.options.find(el => el.value === id);
       return item ? item.label : "";
     },
     getSubjectName(id) {
-      const item = this.teacher.options.find(el => el.value === id);
+      const item = this.subject.options.find(el => el.value === id);
       return item ? item.label : "";
     }
   },

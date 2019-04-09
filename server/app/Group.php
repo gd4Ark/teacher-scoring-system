@@ -5,20 +5,33 @@ use Illuminate\Database\Eloquent\Model;
 class Group extends Model
 {
 
+    /**
+     * @var array
+     */
     protected $fillable = [
         'name',
         'allow',
         'meta'
     ];
+    /**
+     * @var array
+     */
     protected $casts = [
         'meta' => 'array'
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function students()
     {
         return $this->hasOne('App\Student','group_id','id');
     }
 
+    /**
+     * @param array $array
+     * @return array
+     */
     public function rules($array = ['name','allow']){
         $data = [];
         $rules = [
@@ -31,6 +44,9 @@ class Group extends Model
         return $data;
     }
 
+    /**
+     * @return array
+     */
     public function ruleMessage(){
         return [
 
