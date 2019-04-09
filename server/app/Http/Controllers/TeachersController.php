@@ -2,32 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Subject;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
 
-class SubjectController extends Controller
+class TeachersController extends Controller
 {
-    /**
-     * GroupController constructor.
-     * @param Request $request
-     */
     public function __construct(Request $request)
     {
         parent::__construct($request);
-        /**
-         * 需要验证权限
-         */
         $this->middleware('auth:api',[
-            'only' => ['create','update','updateBatch','delete','deleteBatch']
+            'except' => ['index','show']
         ]);
     }
 
-    /**
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function index()
     {
-        $query = $this->queryFilter(Subject::query());
+        $query = $this->queryFilter(Teacher::query());
         if ($this->req->get('getOptions') == 1) {
             return $this->getOptions($query);
         } else {
@@ -35,9 +25,12 @@ class SubjectController extends Controller
         }
     }
 
-    /**
-     * @return \Illuminate\Http\JsonResponse
-     */
+    public function show($id)
+    {
+        $item = Teacher::query()->findOrFail($id);
+        return $this->json($item);
+    }
+
     public function create()
     {
         try {
@@ -46,7 +39,7 @@ class SubjectController extends Controller
             $new_count = 0;
             foreach ($students as $student){
                 // Todo: Validate
-                $item = Subject::query()->firstOrCreate($student);
+                $item = Teacher::query()->firstOrCreate($student);
                 if ($item->wasRecentlyCreated){
                     $new_count++;
                 }
@@ -60,23 +53,9 @@ class SubjectController extends Controller
         }
     }
 
-    /**
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function show($id)
-    {
-        $item = Subject::query()->findOrFail($id);
-        return $this->json($item);
-    }
-
-    /**
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse|null
-     */
     public function update($id)
     {
-        $item = Subject::query()->findOrFail($id);
+        $item = Teacher::query()->findOrFail($id);
         $validator = $this->ruleValidator($item->rules(),$item->ruleMessage());
         if ($validator){
             return $validator;
@@ -91,13 +70,9 @@ class SubjectController extends Controller
         }
     }
 
-    /**
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function delete($id)
     {
-        $item = Subject::query()->findOrFail($id);
+        $item = Teacher::query()->findOrFail($id);
         try {
             $item->delete();
             return $this->json();
@@ -106,14 +81,11 @@ class SubjectController extends Controller
         }
     }
 
-    /**
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function deleteBatch()
     {
         $ids = (array)$this->req->get('ids');
         try {
-            Subject::query()->whereIn('id', $ids)->delete();
+            Teacher::query()->whereIn('id', $ids)->delete();
             return $this->json();
         } catch (\Exception $e) {
             return $this->error('Delete failed');

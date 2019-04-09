@@ -26,9 +26,9 @@ class Router extends BaseRouter
         $this->addRoute('POST', $uri, $controller . '@create');
         $this->match(['PUT', 'PATCH'], $uri, $controller . '@updateBatch');
         $this->addRoute('DELETE', $uri, $controller . '@deleteBatch');
-        $this->addRoute('GET', $uri . '/{id}', $controller . '@show');
-        $this->match(['PUT', 'PATCH'], $uri . '/{id}', $controller . '@update');
-        $this->addRoute('DELETE', $uri . '/{id}', $controller . '@delete');
+        $this->addRoute('GET', $uri . '/{id:[\d]+}', $controller . '@show');
+        $this->match(['PUT', 'PATCH'], $uri . '/{id:[\d]+}', $controller . '@update');
+        $this->addRoute('DELETE', $uri . '/{id:[\d]+}', $controller . '@delete');
     }
 
 }

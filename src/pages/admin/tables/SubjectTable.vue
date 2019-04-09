@@ -1,6 +1,5 @@
-<template>
-  <v-card v-if="load"
-          class="table-card"
+<template v-if="load">
+  <v-card class="table-card"
           :title="title">
     <div class="toolbar"
          slot="toolbar">
@@ -69,11 +68,6 @@ export default {
     module: __module,
     load: false,
     columns: [
-      {
-        prop: "id",
-        label: "编号",
-        sortable: "custom"
-      },
       {
         prop: "name",
         label: "科目名称",

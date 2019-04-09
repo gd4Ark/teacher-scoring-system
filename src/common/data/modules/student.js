@@ -36,11 +36,6 @@ export default {
 
     search: {
         item: [{
-            label: "编号",
-            key: "id",
-            type: "text",
-            operation: '=',
-        }, {
             label: "学生姓名",
             key: "name",
             type: "text",
@@ -65,7 +60,6 @@ export default {
             ]
         }],
         data: () => ({
-            id: '',
             name: '',
             complete: '',
         })

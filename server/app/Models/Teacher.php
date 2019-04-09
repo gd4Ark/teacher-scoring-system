@@ -1,6 +1,7 @@
 <?php
-namespace App;
-use Illuminate\Database\Eloquent\Model;
+
+namespace App\Models;
+
 class Teacher extends Model
 {
     /**

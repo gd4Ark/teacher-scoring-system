@@ -1,6 +1,6 @@
 <?php
-namespace App;
-use Illuminate\Database\Eloquent\Model;
+
+namespace App\Models;
 
 class Group extends Model
 {
@@ -25,7 +25,7 @@ class Group extends Model
      */
     public function students()
     {
-        return $this->hasOne('App\Student','group_id','id');
+        return $this->hasOne('App\Models\Student','group_id','id');
     }
 
     /**

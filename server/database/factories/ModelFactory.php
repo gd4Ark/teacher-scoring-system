@@ -9,12 +9,11 @@
 | database. Just tell the factory how a default model should look.
 |
 */
-use App\Group;
-use App\Teacher;
-use App\Subject;
-use App\Student;
-use App\Teaching;
-use Carbon\Carbon;
+use App\Models\Group;
+use App\Models\Teacher;
+use App\Models\Subject;
+use App\Models\Student;
+use App\Models\Teaching;
 
 $factory->define(Group::class, function (Faker\Generator $faker) {
     return [

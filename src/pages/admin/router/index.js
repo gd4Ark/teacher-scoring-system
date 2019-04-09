@@ -13,17 +13,18 @@ import Teacher from "./routers/teacher";
 import Subject from "./routers/subject";
 
 import Login from "../views/login";
+import Password from "../views/password";
 
 const routerConfig = {
     mode: process.env.NODE_ENV == 'development' ? 'history' : 'hash',
     navList,
     routes: [{
             path: '/',
-            redirect: '/score',
+            redirect: '/index',
         },
         {
             path: '/index',
-            redirect: "/flow",
+            redirect: "/score",
         },
         {
             path: '/',
@@ -33,6 +34,14 @@ const routerConfig = {
                 ...Group,
                 ...Teacher,
                 ...Subject,
+                {
+                    path: '/password',
+                    component: Password,
+                    name: 'password',
+                    meta: {
+                        title: "修改密码",
+                    },
+                },
                 {
                     path: '/404',
                     component: notFound,

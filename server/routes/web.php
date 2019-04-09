@@ -16,13 +16,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         $router->post('logout', 'AuthController@logout');
         $router->post('refresh', 'AuthController@refresh');
+        $router->post('reset', 'AuthController@resetPassword');
 
     });
 
-    $router->resource('groups', 'GroupController');
-    $router->resource('teachers', 'TeacherController');
-    $router->resource('subjects', 'SubjectController');
-    $router->resource('students', 'StudentController');
-    $router->resource('teachings', 'TeachingController');
+    $router->resource('groups', 'GroupsController');
+    $router->resource('teachers', 'TeachersController');
+    $router->resource('subjects', 'SubjectsController');
+    $router->resource('students', 'StudentsController');
+    $router->resource('teachings', 'TeachingsController');
 
 });

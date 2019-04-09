@@ -1,11 +1,13 @@
 <?php
-use App\Group;
-use App\Student;
-use App\Subject;
-use App\Teacher;
-use App\Teaching;
-use App\User;
+
+use App\Models\Group;
+use App\Models\Student;
+use App\Models\Subject;
+use App\Models\Teacher;
+use App\Models\Teaching;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+
 class DatabaseSeeder extends Seeder
 {
     /**

@@ -17,11 +17,11 @@ class Controller extends BaseController
     }
 
     /**
-     * @param array $data;
+     * @param array $data
      * @param bool $status
      * @param string $msg
      * @param int $statusCode
-     * @return \Illuminate\Http\JsonResponse;
+     * @return \Illuminate\Http\JsonResponse
      */
     public function json($data = [], $status = true, $msg = '', $statusCode = 200)
     {
@@ -53,7 +53,7 @@ class Controller extends BaseController
     }
 
     /**
-     * @param $query\Illuminate\Database\Eloquent\Builder
+     * @param $query \Illuminate\Database\Eloquent\Builder
      * @return \Illuminate\Http\JsonResponse
      */
     protected function getOptions($query)

@@ -1,6 +1,5 @@
-<template>
-  <v-card v-if="load"
-          class="table-card"
+<template v-if="load">
+  <v-card class="table-card"
           :title="title">
     <div class="toolbar"
          slot="toolbar">
@@ -26,7 +25,7 @@
             <span>{{ getTeacherName(scope.row.teacher_id) }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="科目名称"
+        <el-table-column label="所教科目"
                          align="center">
           <template slot-scope="scope">
             <span>{{ getSubjectName(scope.row.subject_id) }}</span>

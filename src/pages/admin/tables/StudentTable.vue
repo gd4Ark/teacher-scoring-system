@@ -1,6 +1,5 @@
-<template>
-  <v-card v-if="load"
-          class="table-card"
+<template v-if="load">
+  <v-card class="table-card"
           :title="title">
     <div class="toolbar"
          slot="toolbar">
@@ -72,11 +71,6 @@ export default {
     load: false,
     columns: [
       {
-        prop: "id",
-        label: "编号",
-        sortable: "custom"
-      },
-      {
         prop: "name",
         label: "名字",
         sortable: "custom"
@@ -106,7 +100,9 @@ export default {
       stateData: __module
     }),
     title() {
-      return `${this.stateData.group.name} 学生表`;
+      const group = this.stateData.group;
+      const name = group ? group.name : '';
+      return `${name} 学生表`;
     }
   }
 };

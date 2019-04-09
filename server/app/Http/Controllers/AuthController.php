@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -35,6 +35,31 @@ class AuthController extends Controller
     {
         Auth::logout();
         return $this->msg('Successfully logged out');
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function resetPassword(Request $request)
+    {
+        try {
+            /**
+             * @var $user User
+             */
+            $user = Auth::user();
+            if (!password_verify($request->get('password_current'), $user['password'])) {
+                throw new \Exception('Current password wrong');
+            }
+            if ($request->get('password') !== $request->get('password_confirm')) {
+                throw new \Exception('Password & confirm are not equal');
+            }
+            $user['password'] = password_hash($request->get('password'), PASSWORD_DEFAULT);
+            $user->save();
+            return $this->msg('Reset Successfully');
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage());
+        }
     }
 
     /**

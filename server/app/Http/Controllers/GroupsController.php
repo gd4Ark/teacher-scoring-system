@@ -2,32 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Teacher;
+use App\Models\Group;
 use Illuminate\Http\Request;
 
-class TeacherController extends Controller
+class GroupsController extends Controller
 {
-    /**
-     * GroupController constructor.
-     * @param Request $request
-     */
+
     public function __construct(Request $request)
     {
         parent::__construct($request);
-        /**
-         * 需要验证权限
-         */
         $this->middleware('auth:api',[
-            'only' => ['create','update','updateBatch','delete','deleteBatch']
+            'except' => ['index','show']
         ]);
     }
 
-    /**
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function index()
     {
-        $query = $this->queryFilter(Teacher::query());
+        $query = Group::query()->withCount([
+            'students as student_count',
+            'students as complete_count' => function ($query) {
+                $query->where('complete', 1);
+            }
+        ]);
+        $query = $this->queryFilter($query);
         if ($this->req->get('getOptions') == 1) {
             return $this->getOptions($query);
         } else {
@@ -35,9 +32,12 @@ class TeacherController extends Controller
         }
     }
 
-    /**
-     * @return \Illuminate\Http\JsonResponse
-     */
+    public function show($id)
+    {
+        $item = Group::query()->findOrFail($id);
+        return $this->json($item);
+    }
+
     public function create()
     {
         try {
@@ -46,7 +46,7 @@ class TeacherController extends Controller
             $new_count = 0;
             foreach ($students as $student){
                 // Todo: Validate
-                $item = Teacher::query()->firstOrCreate($student);
+                $item = Group::query()->firstOrCreate($student);
                 if ($item->wasRecentlyCreated){
                     $new_count++;
                 }
@@ -60,23 +60,9 @@ class TeacherController extends Controller
         }
     }
 
-    /**
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function show($id)
-    {
-        $item = Teacher::query()->findOrFail($id);
-        return $this->json($item);
-    }
-
-    /**
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse|null
-     */
     public function update($id)
     {
-        $item = Teacher::query()->findOrFail($id);
+        $item = Group::query()->findOrFail($id);
         $validator = $this->ruleValidator($item->rules(),$item->ruleMessage());
         if ($validator){
             return $validator;
@@ -91,13 +77,9 @@ class TeacherController extends Controller
         }
     }
 
-    /**
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function delete($id)
     {
-        $item = Teacher::query()->findOrFail($id);
+        $item = Group::query()->findOrFail($id);
         try {
             $item->delete();
             return $this->json();
@@ -106,14 +88,33 @@ class TeacherController extends Controller
         }
     }
 
-    /**
-     * @return \Illuminate\Http\JsonResponse
-     */
+    public function updateBatch()
+    {
+        if ($this->req->input('all') == 1){
+            $data = $this->req->except('all');
+            try {
+                Group::query()->update($data);
+                return $this->json();
+            } catch (\Exception $e) {
+                return $this->error($e->getMessage());
+            }
+        }
+
+        $ids = (array)$this->req->get('ids');
+        $data = $this->req->except('ids');
+        try {
+            Group::query()->whereIn('id', $ids)->update($data);
+            return $this->json();
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage());
+        }
+    }
+
     public function deleteBatch()
     {
         $ids = (array)$this->req->get('ids');
         try {
-            Teacher::query()->whereIn('id', $ids)->delete();
+            Group::query()->whereIn('id', $ids)->delete();
             return $this->json();
         } catch (\Exception $e) {
             return $this->error('Delete failed');
