@@ -8,8 +8,8 @@
     <el-table-column type="selection"></el-table-column>
     <el-table-column v-for="(column,index) in columns"
                      :key="index"
-                     align="center"
-                     v-bind="column">
+                     v-bind="column"
+                     align="center">
       <template slot-scope="scope">
         <p>{{ scope.row[column.prop] }}</p>
       </template>
@@ -19,6 +19,7 @@
 </template>
 <script>
 export default {
+  name: "Table",
   props: {
     data: Array,
     columns: Array

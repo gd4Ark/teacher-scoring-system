@@ -7,6 +7,7 @@
 </template>
 <script>
 export default {
+  name: "NotSubRouter",
   props: {
     name: {
       type: String

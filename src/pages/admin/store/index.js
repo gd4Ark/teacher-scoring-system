@@ -1,31 +1,24 @@
 import Vue from 'vue'
 import vuex from 'vuex'
 
+import {
+    fileListToObject
+} from "@/common/utils/readFile";
+
 import createPersist from 'vuex-localstorage'
 
-import login from "./modules/login";
-import score from "./modules/score";
-import teacher from "./modules/teacher";
-import group from "./modules/group";
-import subject from "./modules/subject";
-import student from "./modules/student";
-import teaching from "./modules/teaching";
+const modulesFiles = require.context('./modules', false, /\.js$/)
+const modules = fileListToObject(modulesFiles);
 
-import mutations from "./mutations";
-import actions from "./actions";
-import getters from "./getters";
+import mutations from "./mutations"
+import actions from "./actions"
+import getters from "./getters"
 
-Vue.use(vuex);
+Vue.use(vuex)
 
 export default new vuex.Store({
     state: {
-        login,
-        score,
-        teacher,
-        group,
-        subject,
-        student,
-        teaching,
+        ...modules,
     },
     mutations: {
         ...mutations,
@@ -39,7 +32,7 @@ export default new vuex.Store({
     plugins: [createPersist({
         namespace: process.env.APP_NAME,
         initialState: {},
-        // ONE_WEEK
+        // one week
         expires: 7 * 24 * 60 * 60 * 1e3
     })]
 })

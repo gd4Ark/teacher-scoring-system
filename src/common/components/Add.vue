@@ -1,74 +1,17 @@
 <template>
-  <div :style="{width:'40%'}">
-    <baseForm ref="baseForm"
-              :use-btn="useBtn"
-              :btn-text="btnText"
-              :form-item="formItem"
-              :get-form-data="getFormData"
-              @submit="submit">
-      <slot></slot>
-    </baseForm>
-  </div>
+  <baseForm ref="baseForm"
+            :use-btn="useBtn"
+            :btn-text="btnText"
+            :form-item="formItem"
+            :get-form-data="getFormData"
+            @submit="submit">
+    <slot></slot>
+  </baseForm>
 </template>
 <script>
-import BaseForm from "@/common/components/BaseForm";
-import { mapActions } from "vuex";
+import Add from "@/common/mixins/Add";
 export default {
-  components: {
-    BaseForm
-  },
-  props: {
-    formItem: Array,
-    getFormData: Function,
-    beforeSubmit: {
-      type: Function,
-      default: data => data
-    },
-    beforeVerify: {
-      type: Function,
-      default: data => true
-    },
-    successMessage: {
-      type: Function,
-      default: data => null
-    },
-    module: {
-      type: String,
-      default: ""
-    },
-    useBtn: {
-      type: Boolean,
-      default: true
-    },
-    btnText: {
-      type: String,
-      default: "添加"
-    }
-  },
-  methods: {
-    ...mapActions(["add"]),
-    resetData() {
-      this.$refs.baseForm.reset();
-    },
-    async submit(data) {
-      if (!this.module) {
-        return this.$emit("submit", data);
-      }
-      if (!this.beforeVerify(data)) {
-        return;
-      }
-      data = this.beforeSubmit(data);
-      const res = await this.add({
-        module: this.module,
-        data
-      });
-      if (res) {
-        const message = this.successMessage(res) || "添加成功！";
-        this.$util.msg.success(message);
-        this.resetData();
-        this.$emit("success");
-      }
-    }
-  }
+  name: "Add",
+  mixins: [Add]
 };
 </script>

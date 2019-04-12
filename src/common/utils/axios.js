@@ -1,31 +1,28 @@
 ﻿import axios from "axios";
 import qs from "qs";
+import {
+    log
+} from "./index"
+import {
+    error
+} from "./message"
+import config from "@/common/config"
 
 export default {
-    /**
-     * 
-     * @param {*} Vue 
-     * @param {*} options 
-     */
-    install(Vue, options) {
-        let vm = Vue.prototype;
 
-        let config = vm.$config;
-
-        let router = options.router;
-
-        let store = options.store;
-
-        const useToekn = options.useToekn;
+    install(Vue, {
+        router,
+        store,
+        needAuth = false
+    }) {
 
         axios.defaults.baseURL = config.server_url;
 
-        // 请求拦截器
-
+        // request interceptor
         axios.interceptors.request.use(
             config => {
                 // Add Token
-                if (useToekn) {
+                if (needAuth) {
                     const login = store.state.login;
                     if (login && login.access_token) {
                         const token = login.access_token;
@@ -54,13 +51,13 @@ export default {
                 }
                 return config;
             },
-            err => {
-                vm.$util.msg.error("请求超时!");
-                return Promise.reject(err);
+            error => {
+                error("timed out!");
+                return Promise.reject(error);
             }
         );
 
-        // 响应拦截器
+        // response interceptor
         axios.interceptors.response.use(
             data => {
                 return data.data.data || data.data;
@@ -69,20 +66,20 @@ export default {
                 const status = err.response.status;
                 const message = err.response.data.msg;
                 if (process.env.NODE_ENV === 'development') {
-                    console.error(message);
+                    log('error: ' + message);
                 }
                 if (status === 401) {
-                    vm.$util.msg.error(message).then(() => {
+                    error(message).then(() => {
                         router.push("/login");
                     });
                 } else {
-                    vm.$util.msg.error(message || "发生错误！");
+                    error(message || "an error occurred!");
                 }
                 return Promise.reject(err);
             }
         );
 
-        // 请求方法
+        // request methods
 
         /**
          * 
@@ -155,7 +152,7 @@ export default {
         };
 
         /**
-         * 所有方法
+         * all methods
          */
         const methods = {
             get,
@@ -166,7 +163,7 @@ export default {
         };
 
         /**
-         * 封装函数
+         * package function
          */
         const ax = {};
 

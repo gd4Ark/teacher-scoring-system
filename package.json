@@ -12,6 +12,8 @@
     "axios": "^0.18.0",
     "core-js": "^3.0.0",
     "element-ui": "^2.4.11",
+    "path-to-regexp": "^3.0.0",
+    "screenfull": "^4.2.0",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",

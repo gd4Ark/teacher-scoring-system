@@ -12,7 +12,9 @@
   </el-upload>
 </template>
 <script>
+import { warning } from "@/common/utils/message";
 export default {
+  name: "UploadControl",
   props: {
     item: Object,
     model: [Object, String, File]
@@ -45,17 +47,17 @@ export default {
     },
     onBeforeUpload(file) {
       if (!this.isAllowExtension(file)) {
-        this.$util.msg.warning(`无法上传此格式的文件！`);
+        warning(`无法上传此格式的文件！`);
         return false;
       }
       if (this.isLtMaxSize(file)) {
-        this.$util.msg.warning(`文件最多可上传${this.maxSize}M！`);
+        warning(`文件最多可上传${this.maxSize}M！`);
         return false;
       }
       return true;
     },
     onExceed() {
-      this.$util.msg.warning(`最多只能上传${this.limit}个文件`);
+      warning(`最多只能上传${this.limit}个文件`);
     },
     clearFiles() {
       this.fileList.length = 0;

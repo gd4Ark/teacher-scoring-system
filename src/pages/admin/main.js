@@ -1,41 +1,31 @@
 import Vue from 'vue'
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
 
-Vue.use(ElementUI);
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+Vue.use(ElementUI)
+
+import config from "@/common/config"
+Vue.prototype.$config = config
+
+import data from "@/common/data/index"
+Vue.prototype.$v_data = data
 
 import App from '@/common/App'
-
-import config from "@/common/config/config";
-Vue.use(config);
-
-import router from './router/index';
-
+import router from './router/index'
 import store from './store/index'
 
-import util from "@/common/utils/util";
-Vue.use(util);
-
-import vData from "@/common/data/index";
-
-Vue.use(vData);
-
-import axios from "@/common/utils/axios";
-
+import axios from "@/common/utils/axios"
 Vue.use(axios, {
   router,
   store,
-  useToekn: true,
-});
+  needAuth: true,
+})
 
-import vCard from "@/common/components/Card";
-Vue.component('vCard', vCard);
+import vCard from "@/common/components/Card"
+Vue.component('vCard', vCard)
 
-import cForm from "@/common/components/Form";
-Vue.component('cForm', cForm);
-
-import NotSubRouter from "@/common/components/NotSubRouter";
-Vue.component('NotSubRouter', NotSubRouter);
+import NotSubRouter from "@/common/components/NotSubRouter"
+Vue.component('NotSubRouter', NotSubRouter)
 
 Vue.config.productionTip = false
 

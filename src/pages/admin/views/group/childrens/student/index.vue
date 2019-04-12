@@ -20,7 +20,7 @@ export default {
     }),
     ...mapMutations({
       setData: "student"
-    })
+    }),
   },
   created() {
     this.setData({

@@ -23,8 +23,9 @@
 </template>
 <script>
 import FormItem from "@/common/components/FormItem";
-import { setTimeout } from "timers";
+import { warning } from "@/common/utils/message";
 export default {
+  name: "Form",
   components: {
     FormItem
   },
@@ -54,11 +55,10 @@ export default {
         if (valid) {
           this.$emit("submit");
         } else {
-          this.$util.msg.warning("请填写正确！");
+          warning("请填写正确！");
         }
       });
     },
-
     initRules(formItem, key = "") {
       formItem.forEach(el => {
         const k = key ? key + "." + el.key : el.key;

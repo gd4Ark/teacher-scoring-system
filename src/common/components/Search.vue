@@ -18,7 +18,9 @@
 <script>
 import cForm from "@/common/components/Form";
 import { mapActions } from "vuex";
+import { firstUpperCase } from "@/common/utils";
 export default {
+  name: "Search",
   components: {
     cForm
   },
@@ -84,7 +86,7 @@ export default {
       return this.$store.state[this.module].search_data;
     },
     s_module() {
-      return this.$util.firstUpperCase(this.module);
+      return firstUpperCase(this.module);
     }
   }
 };

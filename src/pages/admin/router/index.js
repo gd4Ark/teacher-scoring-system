@@ -1,19 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router';
 
-import notFound from "@/common/layouts/404";
+import {
+    fileListToArray
+} from "@/common/utils/readFile";
 
 import navList from "./navList";
 
-import Home from "@/common/layouts/Home";
-
-import Score from "./routers/score";
-import Group from "./routers/group";
-import Teacher from "./routers/teacher";
-import Subject from "./routers/subject";
-
-import Login from "../views/login";
-import Password from "../views/password";
+const modulesFiles = require.context('./routers', false, /\.js$/)
+const routers = fileListToArray(modulesFiles);
 
 const routerConfig = {
     mode: process.env.NODE_ENV == 'development' ? 'history' : 'hash',
@@ -23,20 +18,13 @@ const routerConfig = {
             redirect: '/index',
         },
         {
-            path: '/index',
-            redirect: "/score",
-        },
-        {
             path: '/',
-            component: Home,
+            component: () => import("@/common/layouts/Home"),
             children: [
-                ...Score,
-                ...Group,
-                ...Teacher,
-                ...Subject,
+                ...routers,
                 {
                     path: '/password',
-                    component: Password,
+                    component: () => import("../views/password"),
                     name: 'password',
                     meta: {
                         title: "修改密码",
@@ -44,7 +32,7 @@ const routerConfig = {
                 },
                 {
                     path: '/404',
-                    component: notFound,
+                    component: () => import("@/common/layouts/404"),
                     meta: {
                         title: '404',
                     }
@@ -53,7 +41,7 @@ const routerConfig = {
         },
         {
             path: '/login',
-            component: Login,
+            component: () => import("../views/login"),
             meta: {
                 title: '登录',
             }
@@ -70,8 +58,6 @@ Vue.use(VueRouter);
 const router = new VueRouter(
     routerConfig,
 );
-
-var routeList = []
 
 router.beforeEach(async (to, from, next) => {
     if (to.meta.title) {

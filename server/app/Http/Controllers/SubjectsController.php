@@ -34,12 +34,12 @@ class SubjectsController extends Controller
     public function create()
     {
         try {
-            $students = $this->req->all();
-            $create_count = count($students);
+            $nameList = $this->req->input('nameList',[]);
+            $create_count = count($nameList);
             $new_count = 0;
-            foreach ($students as $student){
+            foreach ($nameList as $name){
                 // Todo: Validate
-                $item = Subject::query()->firstOrCreate($student);
+                $item = Subject::query()->firstOrCreate($name);
                 if ($item->wasRecentlyCreated){
                     $new_count++;
                 }

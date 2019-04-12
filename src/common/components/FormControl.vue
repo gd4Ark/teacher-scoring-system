@@ -39,8 +39,8 @@
     </el-input-number>
     <!-- 上传 -->
     <template v-else-if="item.type === 'file'">
-      <upload :item="item"
-              :model.sync="val" />
+      <upload-control :item="item"
+                      :model.sync="val" />
     </template>
     <!-- 开关 -->
     <el-switch v-else-if="item.type === 'switch'"
@@ -61,11 +61,12 @@
   </div>
 </template>
 <script>
-import Upload from "./Upload";
+import UploadControl from "./UploadControl";
 import { setTimeout } from "timers";
 export default {
+  name: "FormControl",
   components: {
-    Upload
+    UploadControl
   },
   props: {
     item: Object,

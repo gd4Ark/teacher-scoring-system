@@ -1,17 +1,18 @@
-import Group from "@/pages/admin/views/group";
+import {
+    fileListToArray
+} from "@/common/utils/readFile";
 
-import Student from "./group/student";
-import Teaching from "./group/teaching";
+const modulesFiles = require.context('./group', false, /\.js$/)
+const routers = fileListToArray(modulesFiles);
 
 export default [{
     path: '/group',
-    component: Group,
+    component: () => import("@/pages/admin/views/group"),
     name: 'group',
     meta: {
         title: "班级管理",
     },
     children: [
-        ...Student,
-        ...Teaching,
+        ...routers,
     ],
 }]

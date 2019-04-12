@@ -4,6 +4,7 @@
     <div class="content-box">
       <v-aside />
       <div id="content">
+        <breadcrumb class="breadcrumb-container" />
         <transition name="el-fade-in">
           <router-view v-show="load"></router-view>
         </transition>
@@ -16,11 +17,13 @@
 import vHeader from "./Header";
 import vAside from "./Aside";
 import vFooter from "./Footer";
+import Breadcrumb from "@/common/components/Breadcrumb";
 export default {
   components: {
     vHeader,
     vAside,
-    vFooter
+    vFooter,
+    Breadcrumb
   },
   data: () => ({
     load: false
@@ -44,6 +47,7 @@ export default {
   #content {
     @include flex-column;
     @include padding;
+    padding-top: 0;
     flex: 1;
     padding-bottom: 0;
     background: #f2f2f2;

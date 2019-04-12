@@ -1,6 +1,6 @@
 export default [{
         title: '分数概览',
-        index: '/score',
+        index: '/index',
         icon : 'el-icon-ali-shuju',
     },
     {

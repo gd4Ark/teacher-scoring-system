@@ -38,6 +38,11 @@ export default {
   data: () => ({
     activeIndex: ""
   }),
+  watch: {
+    $route() {
+      this.updateActive();
+    }
+  },
   mounted() {
     this.updateActive();
   },

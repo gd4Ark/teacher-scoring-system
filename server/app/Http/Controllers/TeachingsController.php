@@ -42,9 +42,12 @@ class TeachingsController extends Controller
     public function create()
     {
         try {
-            $input = $this->req->all();
+            $input = $this->req->only(['group_id','subject_id','teacher_id']);
             $item = Teaching::query()->firstOrCreate($input);
-            return $this->json($item);
+            if ($item->wasRecentlyCreated){
+                return $this->json($item);
+            }
+            return $this->error('existed');
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }

@@ -1,8 +1,6 @@
-import Teaching from "@/pages/admin/views/group/childrens/teaching";
-
 export default [{
     path: ':group_id/teaching',
-    component: Teaching,
+    component: () => import("@/pages/admin/views/group/childrens/teaching"),
     name: 'teaching',
     meta: {
         title: "课程管理",

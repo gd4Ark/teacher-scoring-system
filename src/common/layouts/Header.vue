@@ -3,37 +3,41 @@
     <h1 class="title">
       <router-link to="/index">{{ $config.app_title }}</router-link>
     </h1>
-    <div class="header-navbar">
-      <slot name="header-navbar"></slot>
-      <div class="header-userpannel">
-        <el-dropdown trigger="click">
-          <p class="el-dropdown-link">
-            admin
-            <i class="el-icon-arrow-down el-icon--right"></i>
-          </p>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item v-for="(item, index) in s_userMenuList"
-                              :key="index">
-              <router-link v-if="item.path"
-                           :to="item.path">
-                {{ item.label }}
-              </router-link>
-              <span v-else-if="item.click"
-                    @click="item.click">
-                {{ item.label }}
-              </span>
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </div>
+    <div class="right-menu">
+
+      <screenfull class="right-menu-item hover-effect" />
+
+      <el-dropdown class="avatar-container right-menu-item"
+                   trigger="click">
+        <p class="avatar-wrapper">
+          admin
+          <i class="el-icon-arrow-down el-icon--right"></i>
+        </p>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item v-for="(item, index) in s_userMenuList"
+                            :key="index">
+            <router-link v-if="item.path"
+                         :to="item.path">
+              {{ item.label }}
+            </router-link>
+            <span v-else-if="item.click"
+                  @click="item.click">
+              {{ item.label }}
+            </span>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
     </div>
   </div>
 </template>
 <script>
+import Screenfull from "@/common/components/Screenfull";
+import { success } from "@/common/utils/message";
 import { mapActions } from "vuex";
-import CurrentUser from "@/common/mixins/CurrentUser";
 export default {
-  mixins: [CurrentUser],
+  components: {
+    Screenfull
+  },
   props: {
     userMenuList: {
       type: Array,
@@ -60,7 +64,7 @@ export default {
     ...mapActions(["logout"]),
     async handleLogout() {
       await this.logout();
-      await this.$util.msg.success("退出成功！");
+      await success("退出成功！");
       this.$router.push("/login");
     }
   }
@@ -79,15 +83,15 @@ export default {
   .title {
     font-size: 1.3rem;
   }
-  .header-navbar {
+  .right-menu {
     @include flex;
-    .header-userpannel {
-      margin-left: 30px;
-      .el-dropdown-link {
-        cursor: pointer;
-        color: white;
-        @include no-user-select;
-      }
+    height: 100%;
+    .right-menu-item {
+      @include no-user-select;
+      @include sub-center;
+      @include padding;
+      color: white;
+      cursor: pointer;
     }
   }
 }

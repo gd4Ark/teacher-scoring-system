@@ -9,6 +9,7 @@
   </div>
 </template>
 <script>
+import { warning, success } from "@/common/utils/message";
 import BaseForm from "@/common/components/BaseForm";
 import { mapActions } from "vuex";
 export default {
@@ -20,12 +21,12 @@ export default {
     async submit(data) {
       const { password, password_confirm } = data;
       if (password !== password_confirm) {
-        return this.$util.msg.warning("密码不一致！");
+        return warning("密码不一致！");
       }
       await this.resetPassword({
         data
       });
-      await this.$util.msg.success("修改成功！");
+      await success("修改成功！");
       this.$router.push("/login");
     }
   }

@@ -5,7 +5,10 @@
          style="display:inline;">
       <slot name="btn">
         <el-button :size="btnSize"
-                   :type="btnType">{{btnText}}</el-button>
+                   :type="btnType"
+                   :style="btnStyle">
+          {{btnText}}
+        </el-button>
       </slot>
     </div>
     <el-dialog :title="title"
@@ -21,9 +24,11 @@
       <span slot="footer"
             class="dialog-footer">
         <slot name="footer">
-          <el-button @click="hidden">取 消</el-button>
+          <el-button @click="hidden"
+                     size="medium">取 消</el-button>
           <el-button type="primary"
-                     @click="submit">确 定</el-button>
+                     @click="submit"
+                     size="medium">确 定</el-button>
         </slot>
       </span>
     </el-dialog>
@@ -31,11 +36,10 @@
 </template>
 <script>
 export default {
-  data() {
-    return {
-      dialogVisible: false
-    };
-  },
+  name: "Modal",
+  data: () => ({
+    dialogVisible: false
+  }),
   props: {
     title: {
       type: String,
@@ -52,6 +56,12 @@ export default {
     btnType: {
       type: String,
       default: ""
+    },
+    btnStyle: {
+      type: Object,
+      default: () => {
+        return {};
+      }
     },
     beforeOpen: {
       type: Function,

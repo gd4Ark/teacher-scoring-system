@@ -1,5 +1,5 @@
 <template>
-  <not-sub-router name="score">
+  <not-sub-router name="index">
     <search module="score" />
     <score-table />
   </not-sub-router>

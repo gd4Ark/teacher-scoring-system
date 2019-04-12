@@ -88,11 +88,11 @@ export default {
       setOrder: __module
     }),
     _splitNameList(data) {
-      const nameList = this.splitNameList(data);
-      nameList.forEach(el => {
+      const res = this.splitNameList(data);
+      res.nameList.forEach(el => {
         el.group_id = this.$route.params.group_id;
       });
-      return nameList;
+      return res;
     }
   },
   computed: {

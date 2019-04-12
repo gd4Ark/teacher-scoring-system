@@ -1,8 +1,6 @@
-import Teacher from "@/pages/admin/views/teacher";
-
 export default [{
     path: '/teacher',
-    component: Teacher,
+    component: () => import("@/pages/admin/views/teacher"),
     name: 'teacher',
     meta: {
         title: "教师管理",

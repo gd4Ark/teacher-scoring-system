@@ -1,7 +1,7 @@
 <template>
-  <c-form v-if="s_formData!==null"
+  <c-form v-if="sformData!==null"
           :form-item="formItem"
-          :form-data="s_formData"
+          :form-data="sformData"
           @submit="handleSubmit"
           ref="form">
     <el-form-item>
@@ -17,7 +17,9 @@
 </template>
 <script>
 import cForm from "@/common/components/Form";
+import { clone, retainKeys } from "@/common/utils";
 export default {
+  name: "BaseForm",
   components: {
     cForm
   },
@@ -38,22 +40,22 @@ export default {
     }
   },
   data: () => ({
-    s_formData: null
+    sformData: null
   }),
   mounted() {
     this.reset();
   },
   methods: {
     reset() {
-      this.s_formData = this.formData
-        ? this.$util.clone(this.formData)
+      this.sformData = this.formData
+        ? clone(this.formData)
         : this.getFormData();
     },
     submit() {
       this.$refs.form.submit();
     },
     handleSubmit() {
-      const data = this.$util.retainKeys(this.s_formData, this.getKeys());
+      const data = retainKeys(this.sformData, this.getKeys());
       this.$emit("submit", data);
     },
     getKeys() {

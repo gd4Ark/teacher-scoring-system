@@ -1,6 +1,11 @@
 import {
     mapActions,
 } from "vuex";
+import {
+    warning,
+    success
+} from "@/common/utils/message";
+import confirm from "@/common/utils/confirm"
 export default {
     data: () => ({
         multipleSelection: []
@@ -14,10 +19,9 @@ export default {
         },
         handleDelete(ids) {
             if (ids.length === 0) {
-                return this.$util.msg.warning("没有选中项！");
+                return warning("没有选中项！");
             }
-            this.$util
-                .confirm({
+            confirm({
                     content: "确认删除？"
                 })
                 .then(() => {
@@ -33,7 +37,7 @@ export default {
                 ids
             });
             this.getData();
-            this.$util.msg.success("删除成功!");
+            success("删除成功!");
         },
         handleSelectionChange(val) {
             this.multipleSelection = val.map(el => el.id);
