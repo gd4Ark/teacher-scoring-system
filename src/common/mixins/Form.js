@@ -45,9 +45,9 @@ export default {
     },
     methods: {
         reset() {
-            setTimeout(() => {
+            this.$nexttick(() => {
                 this.$refs.baseForm.reset()
-            }, 0);
+            });
         },
         async submit(data) {
             if (!this.module) {

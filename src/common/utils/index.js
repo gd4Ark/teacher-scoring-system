@@ -69,6 +69,6 @@ export function numberToW(num) {
  * @return {string}
  */
 export function firstUpperCase(str) {
-    const res = /( |^)[a-z]/g
+    const reg = /( |^)[a-z]/g
     return str.toLowerCase().replace(reg, L => L.toUpperCase())
 }

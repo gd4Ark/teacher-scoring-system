@@ -57,7 +57,6 @@ import ManageTable from "@/common/mixins/ManageTable";
 import splitNameList from "@/common/mixins/splitNameList";
 import successMessage from "@/common/mixins/successMessage";
 import { mapActions, mapState, mapMutations } from "vuex";
-import { setTimeout } from "timers";
 export default {
   mixins: [ManageTable, splitNameList, successMessage],
   components: {

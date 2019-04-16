@@ -62,7 +62,6 @@
 </template>
 <script>
 import UploadControl from "./UploadControl";
-import { setTimeout } from "timers";
 export default {
   name: "FormControl",
   components: {

@@ -1,5 +1,5 @@
 import {
-    Confirm
+    MessageBox
 } from 'element-ui'
 
 /**
@@ -12,7 +12,7 @@ export default function ({
     type = "warning",
 }) {
     return new Promise((resolve, reject) => {
-        Confirm(content, title, {
+        return MessageBox.confirm(content, title, {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 type,

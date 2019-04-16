@@ -15,7 +15,8 @@
                :visible.sync="dialogVisible"
                @open="open"
                @close="close"
-               width="90%">
+               width="90%"
+               v-el-drag-dialog>
 
       <slot name="body">
 
@@ -35,8 +36,10 @@
   </div>
 </template>
 <script>
+import elDragDialog from "@/common/directive/el-drag-dialog"; // base on element-ui
 export default {
   name: "Modal",
+  directives: { elDragDialog },
   data: () => ({
     dialogVisible: false
   }),
