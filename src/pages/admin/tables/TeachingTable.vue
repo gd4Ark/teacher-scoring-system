@@ -1,24 +1,27 @@
-<template v-if="load">
-  <v-card class="table-card"
+<template>
+  <v-card v-if="load"
+          class="table-card"
           :title="title">
     <div class="toolbar"
          slot="toolbar">
-      <modal-add title="添加科目"
+      <modal-add title="添加学生"
+                 :btn-size="respBtnSize"
                  :form-item="$v_data[module].add.item"
                  :get-form-data="$v_data[module].add.data"
                  :module="module"
                  :before-submit="beforeSubmit"
+                 :success-message="successMessage"
                  @get-data="getData" />
-      <el-button size="small"
+      <el-button :size="respBtnSize"
                  type="danger"
                  @click="handleDelete(multipleSelection)">删除</el-button>
     </div>
 
-    <v-table :data="stateData.data"
+    <v-table :data="state.data"
              :columns="columns"
              @selection-change="handleSelectionChange"
              @sort-change="handleSortChange">
-      <template slot="columns-after">
+      <template slot="append">
         <el-table-column label="教师姓名"
                          align="center">
           <template slot-scope="scope">
@@ -32,9 +35,10 @@
           </template>
         </el-table-column>
         <el-table-column label="操作"
-                         align="center">
+                         align="center"
+                         min-width="140">
           <template slot-scope="scope">
-            <modal-edit :title=" `编辑科目 ${getSubjectName(scope.row.subject_id)} 中`"
+            <modal-edit :title="`编辑学生 ${scope.row.name } 中`"
                         :form-item="$v_data[module].edit.item"
                         :current="scope.row"
                         :module="module"
@@ -46,22 +50,26 @@
           </template>
         </el-table-column>
       </template>
+
     </v-table>
 
-    <pagination :module="stateData"
+    <pagination :state="state"
+                :module="module"
                 @get-data="getData" />
   </v-card>
 </template>
 <script>
-const __module = "teaching";
-import vTable from "@/common/components/Table";
-import Pagination from "@/common/components/Pagination";
-import ModalEdit from "@/common/components/ModalEdit";
-import ModalAdd from "@/common/components/ModalAdd";
-import ManageTable from "@/common/mixins/ManageTable";
-import { mapActions, mapState, mapMutations } from "vuex";
+const __module = 'teachings'
+import vTable from '@/common/components/Table'
+import Pagination from '@/common/components/Pagination'
+import ModalEdit from '@/common/components/ModalEdit'
+import ModalAdd from '@/common/components/ModalAdd'
+import ManageTable from '@/common/mixins/ManageTable'
+import splitNameList from '@/common/mixins/splitNameList'
+import successMessage from '@/common/mixins/successMessage'
+import { mapActions, mapState, mapMutations } from 'vuex'
 export default {
-  mixins: [ManageTable],
+  mixins: [ManageTable, splitNameList, successMessage],
   components: {
     vTable,
     Pagination,
@@ -70,43 +78,40 @@ export default {
   },
   data: () => ({
     module: __module,
-    load: false,
     columns: []
   }),
   async created() {
-    await this.getData();
-    await this.getOptions("teacher");
-    await this.getOptions("subject");
-    setTimeout(() => {
-      this.load = true;
-    }, 0);
+    await this.getData()
+    await this.getOptions('teachers')
+    await this.getOptions('subjects')
+    this.loaded()
   },
   methods: {
-    ...mapActions(["getOptions"]),
-    ...mapMutations({
-      setOrder: __module
+    ...mapActions(['getOptions']),
+    ...mapMutations(__module, {
+      setOrder: 'update'
     }),
     beforeSubmit(data) {
-      data.group_id = this.stateData.group_id;
-      return data;
+      data.group_id = this.state.group_id
+      return data
     },
     getTeacherName(id) {
-      const item = this.teacher.options.find(el => el.value === id);
-      return item ? item.label : "";
+      const item = this.teachers.options.find(el => el.value === id)
+      return item ? item.label : ''
     },
     getSubjectName(id) {
-      const item = this.subject.options.find(el => el.value === id);
-      return item ? item.label : "";
+      const item = this.subjects.options.find(el => el.value === id)
+      return item ? item.label : ''
     }
   },
   computed: {
     ...mapState({
-      stateData: __module
+      state: __module
     }),
-    ...mapState(["teacher", "subject"]),
+    ...mapState(['teachers', 'subjects']),
     title() {
-      return `${this.stateData.group.name} 课程表`;
+      return `${this.state.group.name} 课程表`
     }
   }
-};
+}
 </script>

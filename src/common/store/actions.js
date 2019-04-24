@@ -4,37 +4,41 @@ export default {
         url = null,
         doCommit = true,
     }) {
-        const path = url ? url : module;
-        const res = await this._vm.$axios.get(`/${path}`, ctx.getters.requestData(ctx.state[module]));
+        const path = url ? url : module
+        const res = await this._vm.$axios.get(`/${path}`, ctx.getters.requestData(ctx.rootState[module]))
         if (doCommit) {
-            ctx.commit(module, res);
+            ctx.commit(`${module}/update`, res, {
+                root: true
+            })
         }
-        return res;
+        return res
     },
     async getOptions(ctx, module) {
-        const path = module + 's' + '?getOptions=1';
-        const res = await this._vm.$axios.get(`/${path}`);
-        ctx.commit(module, {
+        const path = module + '?getOptions=1'
+        const res = await this._vm.$axios.get(`/${path}`)
+        ctx.commit(`${module}/update`, {
             options: res
-        });
+        }, {
+            root: true,
+        })
     },
     async add(ctx, {
         module,
         data
     }) {
-        return await this._vm.$axios.post(`/${module}s`, data);
+        return await this._vm.$axios.post(`/${module}`, data)
     },
     async uploadAdd(ctx, {
         module,
         data,
     }) {
-        return await this._vm.$axios.upload(`/${module}s`, data);
+        return await this._vm.$axios.upload(`/${module}`, data)
     },
     async update(ctx, {
         module,
         data,
     }) {
-        return await this._vm.$axios.put(`/${module}s/${data.id}`, data);
+        return await this._vm.$axios.put(`/${module}/${data.id}`, data)
     },
     async updateBatch(ctx, {
         module,
@@ -47,7 +51,7 @@ export default {
         } : {
             ids
         }
-        await this._vm.$axios.put(`/${module}s`, {
+        await this._vm.$axios.put(`/${module}`, {
             ...item,
             ...data,
         })
@@ -56,39 +60,21 @@ export default {
         module,
         ids
     }) {
-        return await this._vm.$axios.delete(`/${module}s`, {
+        return await this._vm.$axios.delete(`/${module}`, {
             ids
         })
     },
-    async login({
-        commit
-    }, {
-        data
-    }) {
-        commit('login', await this._vm.$axios.post(`/login`, data));
-    },
-    async checkLogin() {
-        return await this._vm.$axios.post(`/checkLogin`);
-    },
-    async logout() {
-        return await this._vm.$axios.post(`/logout`);
-    },
-    async resetPassword(ctx, {
-        data
-    }) {
-        return await this._vm.$axios.post(`/reset`, data);
-    },
     async resetSearchData(ctx, module) {
-        ctx.commit(module, {
+        ctx.commit(`${module}/update`, {
             search_data: this._vm.$v_data[module].search.data(),
-        });
+        })
     },
     async updateSearchKeyword(ctx, {
         module,
         search_keyword = []
     }) {
-        ctx.commit(module, {
+        ctx.commit(`${module}/update`, {
             search_keyword,
-        });
+        })
     }
 }

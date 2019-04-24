@@ -1,12 +1,22 @@
 export default {
     item: [{
-        label: "用户名",
         key: "username",
         type: "text",
+        placeholder: '请输入用户名',
+        slot: {
+            name: 'prepend',
+            type: 'icon',
+            value: 'el-icon-ali-ai-user',
+        }
     }, {
-        label: "密码",
         key: "password",
         type: "password",
+        placeholder: '请输入密码',
+        slot: {
+            name: 'prepend',
+            type: 'icon',
+            value: 'el-icon-ali-mima',
+        }
     }, ],
 
     data: () => ({

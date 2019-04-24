@@ -1,8 +1,10 @@
-import Form from "@/common/mixins/Form";
-import { success } from "@/common/utils/message";
+import Form from "@/common/mixins/Form"
+import {
+    success
+} from "@/common/utils/message"
 import {
     mapActions
-} from "vuex";
+} from "vuex"
 export default {
     mixins: [Form],
     props: {
@@ -20,13 +22,14 @@ export default {
     methods: {
         ...mapActions(["update", "updateBatch"]),
         async submiting(data) {
-            const submitMethod = this.isBatch ? "batchSubmit" : "baseSubmit";
-            const res = await this[submitMethod](data);
+            const submitMethod = this.isBatch ? "batchSubmit" : "baseSubmit"
+            const res = await this[submitMethod](data)
             if (res) {
-                const message = this.successMessage(res) || "更新成功！";
-                success(message);
-                this.$emit("success");
-                this.afterSuccess();
+                this.done()
+                const message = this.successMessage(res) || "更新成功！"
+                success(message)
+                this.$emit("success")
+                this.afterSuccess()
             }
         },
         async baseSubmit(data) {
@@ -36,14 +39,14 @@ export default {
                     ...data,
                     id: this.current.id
                 }
-            });
+            })
         },
         async batchSubmit(data) {
             return await this.updateBatch({
                 module: this.module,
                 ids: this.ids,
                 data
-            });
+            })
         }
     }
 }

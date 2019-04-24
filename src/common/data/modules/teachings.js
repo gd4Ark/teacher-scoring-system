@@ -5,7 +5,7 @@ export default {
             label: "教师姓名",
             key: "teacher_id",
             type: "select",
-            option_module: 'teacher',
+            option_module: 'teachers',
             rules: [{
                 required: true,
                 trigger: 'blur',
@@ -14,7 +14,7 @@ export default {
             label: "科目名称",
             key: "subject_id",
             type: "select",
-            option_module: 'subject',
+            option_module: 'subjects',
             rules: [{
                 required: true,
                 trigger: 'blur',
@@ -32,7 +32,7 @@ export default {
             label: "教师姓名",
             key: "teacher_id",
             type: "select",
-            option_module: 'teacher',
+            option_module: 'teachers',
             rules: [{
                 required: true,
                 trigger: 'blur',
@@ -41,7 +41,7 @@ export default {
             label: "科目名称",
             key: "subject_id",
             type: "select",
-            option_module: 'subject',
+            option_module: 'subjects',
             rules: [{
                 required: true,
                 trigger: 'blur',

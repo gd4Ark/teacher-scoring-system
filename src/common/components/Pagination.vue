@@ -1,29 +1,58 @@
 <template>
-  <el-Pagination background
-                 layout="total,sizes, prev, pager, next, jumper"
-                 :total="module.total"
-                 :current-page.sync="module.current_page"
-                 :page-size.sync="module.per_page"
-                 @current-change="handleCurrentChange"
-                 @size-change="handleSizeChange">
-  </el-Pagination>
+  <el-pagination background
+                 :small="isMobile"
+                 :layout="layout"
+                 :total="total"
+                 :pager-count="pagerCount"
+                 :current-page.sync="currentPage"
+                 :page-size.sync="perPage"
+                 :page-sizes="pageSizes" />
 </template>
 <script>
+import { mapGetters } from 'vuex'
 export default {
-  name: "Pagination",
+  name: 'Pagination',
   props: {
-    module: Object
+    state: Object,
+    module: String
   },
   methods: {
     getData() {
-      this.$emit("get-data");
+      this.$emit('get-data')
+    }
+  },
+  computed: {
+    ...mapGetters(['device','isMobile']),
+    layout() {
+      return this.isMobile ? this.state.small_layout : this.state.layout
     },
-    handleCurrentChange() {
-      this.getData();
+    total() {
+      return this.state.total
     },
-    handleSizeChange(val) {
-      this.getData();
+    pagerCount() {
+      return this.state.pager_count
+    },
+    pageSizes(){
+      return this.state.page_sizes
+    },
+    currentPage: {
+      get() {
+        return this.state.current_page
+      },
+      set(value) {
+        this.$store.commit(`${this.module}/currentPage`, value)
+        this.getData()
+      }
+    },
+    perPage: {
+      get() {
+        return this.state.per_page
+      },
+      set(value) {
+        this.$store.commit(`${this.module}/sizeChange`, value)
+        this.getData()
+      }
     }
   }
-};
+}
 </script>

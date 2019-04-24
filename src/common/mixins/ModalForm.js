@@ -1,4 +1,4 @@
-import Modal from "@/common/components/Modal";
+import Modal from "@/common/components/Modal"
 export default {
     components: {
         Modal
@@ -6,18 +6,18 @@ export default {
     props: {
         btnStyle: {
             type: Object,
-            default: ()=>{
+            default: () => {
                 return {}
             }
         },
     },
     methods: {
         baseFormSubmit() {
-            this.$refs.baseForm.submit();
+            this.$refs.baseForm.submit()
         },
         afterSuccess() {
-            this.$emit("get-data");
-            this.$refs.modal.hidden();
+            this.$emit("get-data")
+            this.$refs.modal.hidden()
         }
     }
 }

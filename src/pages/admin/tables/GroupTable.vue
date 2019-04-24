@@ -1,32 +1,34 @@
-<template  v-if="load">
-  <v-card class="table-card"
+<template >
+  <v-card v-if="load"
+          class="table-card"
           :title="title">
     <div class="toolbar"
          slot="toolbar">
       <modal-add title="添加班级"
+                 :btn-size="respBtnSize"
                  :form-item="$v_data[module].add.item"
                  :get-form-data="$v_data[module].add.data"
                  :module="module"
                  :before-submit="splitNameList"
                  :success-message="successMessage"
                  @get-data="getData" />
-      <el-button size="small"
+      <el-button :size="respBtnSize"
                  type="primary"
-                 @click="allToggleAllow(1)">一键允许评分</el-button>
-      <el-button size="small"
+                 @click="handleUpdateAllowBatch(1)">全部允许评分</el-button>
+      <el-button :size="respBtnSize"
                  type="danger"
-                 @click="allToggleAllow(0)">一键禁止评分</el-button>
-      <el-button size="small"
+                 @click="handleUpdateAllowBatch(0)">全部禁止评分</el-button>
+      <el-button :size="respBtnSize"
                  type="danger"
                  @click="handleDelete(multipleSelection)">删除</el-button>
     </div>
 
-    <v-table :data="stateData.data"
+    <v-table :data="state.data"
              :columns="columns"
              @selection-change="handleSelectionChange"
              @sort-change="handleSortChange">
-      <template slot="columns-after">
-        <el-table-column label="切换评分状态"
+      <template slot="append">
+        <el-table-column label="评分状态"
                          align="center">
           <template slot-scope="scope">
             <el-switch v-model="scope.row.allow"
@@ -34,11 +36,11 @@
                        :inactive-value="0"
                        active-color="#13ce66"
                        inactive-color="#ff4949"
-                       @change="toggleAllow(scope.row)" />
+                       @change="handleUpdateAllow(scope.row)" />
           </template>
         </el-table-column>
         <el-table-column label="操作"
-                         width="330"
+                         min-width="295"
                          align="center">
           <template slot-scope="scope">
             <el-button size="mini"
@@ -59,20 +61,21 @@
       </template>
     </v-table>
 
-    <pagination :module="stateData"
+    <pagination :state="state"
+                :module="module"
                 @get-data="getData" />
   </v-card>
 </template>
 <script>
-const __module = "group";
-import vTable from "@/common/components/Table";
-import Pagination from "@/common/components/Pagination";
-import ModalEdit from "@/common/components/ModalEdit";
-import ModalAdd from "@/common/components/ModalAdd";
-import ManageTable from "@/common/mixins/ManageTable";
-import splitNameList from "@/common/mixins/splitNameList";
-import successMessage from "@/common/mixins/successMessage";
-import { mapActions, mapState, mapMutations } from "vuex";
+const __module = 'groups'
+import vTable from '@/common/components/Table'
+import Pagination from '@/common/components/Pagination'
+import ModalEdit from '@/common/components/ModalEdit'
+import ModalAdd from '@/common/components/ModalAdd'
+import ManageTable from '@/common/mixins/ManageTable'
+import splitNameList from '@/common/mixins/splitNameList'
+import successMessage from '@/common/mixins/successMessage'
+import { mapActions, mapState, mapMutations } from 'vuex'
 export default {
   mixins: [ManageTable, splitNameList, successMessage],
   components: {
@@ -84,82 +87,75 @@ export default {
   props: {
     title: {
       type: String,
-      default: "班级表"
+      default: '班级表'
     }
   },
   data: () => ({
     module: __module,
-    load: false,
     columns: [
       {
-        prop: "name",
-        label: "班级名称",
-        sortable: "custom"
+        prop: 'name',
+        label: '班级名称',
+        sortable: 'custom',
+        minWidth:100,
       },
       {
-        prop: "student_count",
-        label: "人数",
-        sortable: "custom"
+        prop: 'student_count',
+        label: '人数',
+        sortable: 'custom'
       },
       {
-        prop: "complete_count",
-        label: "已评人数",
-        sortable: "custom"
+        prop: 'complete_count',
+        label: '已评人数',
+        sortable: 'custom',
+        minWidth:100
       }
     ]
   }),
   async created() {
-    await this.getData();
-    setTimeout(() => {
-      this.load = true;
-    }, 0);
+    await this.getData()
+    this.loaded()
   },
   methods: {
-    ...mapActions(["update", "updateBatch"]),
-    ...mapMutations({
-      setOrder: __module
+    ...mapActions(__module, ['updateAllow']),
+    ...mapMutations(__module, {
+      setOrder: 'update'
     }),
-    async toggleAllow(row) {
-      await this.update({
-        module: this.module,
-        data: {
-          id: row.id,
-          allow: row.allow
-        }
-      });
-      this.getData();
+    async handleUpdateAllow(row) {
+      await this.updateAllow({
+        id: row.id,
+        allow: row.allow
+      })
+      this.getData()
     },
-    async allToggleAllow(allow) {
-      await this.updateBatch({
-        module: this.module,
+    async handleUpdateAllowBatch(allow) {
+      await this.updateAllow({
         all: 1,
-        data: {
-          allow
-        }
-      });
-      await this.getData();
+        allow
+      })
+      await this.getData()
     },
     toStudent(group_id) {
       this.$router.push({
-        name: "student",
+        name: 'students',
         params: {
           group_id
         }
-      });
+      })
     },
     toTeaching(group_id) {
       this.$router.push({
-        name: "teaching",
+        name: 'teachings',
         params: {
           group_id
         }
-      });
+      })
     }
   },
   computed: {
     ...mapState({
-      stateData: __module
+      state: __module
     })
   }
-};
+}
 </script>

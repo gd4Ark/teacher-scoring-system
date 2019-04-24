@@ -1,4 +1,4 @@
-import BaseForm from "@/common/components/BaseForm";
+import BaseForm from "@/common/components/BaseForm"
 export default {
     components: {
         BaseForm
@@ -12,11 +12,11 @@ export default {
         },
         beforeVerify: {
             type: Function,
-            default: data => true
+            default: data => data
         },
         successMessage: {
             type: Function,
-            default: data => null
+            default: () => null
         },
         module: {
             type: String,
@@ -43,27 +43,34 @@ export default {
             default: false
         }
     },
+    data: () => ({
+        btnDisabled: false,
+    }),
     methods: {
+        done(){
+            this.btnDisabled = false
+        },
         reset() {
-            this.$nexttick(() => {
+            this.$nextTick(() => {
                 this.$refs.baseForm.reset()
-            });
+            })
         },
         async submit(data) {
             if (!this.module) {
-                return this.$emit("submit", data);
+                return this.$emit("submit", data)
             }
             if (!this.beforeVerify(data)) {
-                return;
+                return
             }
-            data = this.beforeSubmit(data);
-            await this.submiting(data);
+            this.btnDisabled = true
+            data = this.beforeSubmit(data)
+            await this.submiting(data)
         },
-        async submiting(data) {
-
+        async submiting() {
+            // Placeholder
         },
         afterSuccess() {
-
+            // Placeholder
         }
     }
 }

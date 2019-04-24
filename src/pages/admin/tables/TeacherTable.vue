@@ -1,27 +1,30 @@
-<template v-if="load">
-  <v-card class="table-card"
+<template>
+  <v-card v-if="load"
+          class="table-card"
           :title="title">
     <div class="toolbar"
          slot="toolbar">
       <modal-add title="添加教师"
+      :btn-size="respBtnSize"
                  :form-item="$v_data[module].add.item"
                  :get-form-data="$v_data[module].add.data"
                  :module="module"
                  :before-submit="splitNameList"
                  :success-message="successMessage"
                  @get-data="getData" />
-      <el-button size="small"
+      <el-button :size="respBtnSize"
                  type="danger"
                  @click="handleDelete(multipleSelection)">删除</el-button>
     </div>
 
-    <v-table :data="stateData.data"
+    <v-table :data="state.data"
              :columns="columns"
              @selection-change="handleSelectionChange"
              @sort-change="handleSortChange">
-      <el-table-column slot="columns-after"
+      <el-table-column slot="append"
                        label="操作"
-                       align="center">
+                       align="center"
+                       min-width="140">
         <template slot-scope="scope">
           <modal-edit :title="`编辑教师 ${scope.row.name } 中`"
                       :form-item="$v_data[module].edit.item"
@@ -36,20 +39,21 @@
       </el-table-column>
     </v-table>
 
-    <pagination :module="stateData"
+    <pagination :state="state"
+                :module="module"
                 @get-data="getData" />
   </v-card>
 </template>
 <script>
-const __module = "teacher";
-import vTable from "@/common/components/Table";
-import Pagination from "@/common/components/Pagination";
-import ModalEdit from "@/common/components/ModalEdit";
-import ModalAdd from "@/common/components/ModalAdd";
-import ManageTable from "@/common/mixins/ManageTable";
-import splitNameList from "@/common/mixins/splitNameList";
-import successMessage from "@/common/mixins/successMessage";
-import { mapActions, mapState, mapMutations } from "vuex";
+const __module = 'teachers'
+import vTable from '@/common/components/Table'
+import Pagination from '@/common/components/Pagination'
+import ModalEdit from '@/common/components/ModalEdit'
+import ModalAdd from '@/common/components/ModalAdd'
+import ManageTable from '@/common/mixins/ManageTable'
+import splitNameList from '@/common/mixins/splitNameList'
+import successMessage from '@/common/mixins/successMessage'
+import { mapState, mapMutations } from 'vuex'
 export default {
   mixins: [ManageTable, splitNameList, successMessage],
   components: {
@@ -61,35 +65,32 @@ export default {
   props: {
     title: {
       type: String,
-      default: "教师表"
+      default: '教师表'
     }
   },
   data: () => ({
     module: __module,
-    load: false,
     columns: [
       {
-        prop: "name",
-        label: "教师姓名",
-        sortable: "custom"
+        prop: 'name',
+        label: '教师姓名',
+        sortable: 'custom'
       }
     ]
   }),
   async created() {
-    await this.getData();
-    setTimeout(() => {
-      this.load = true;
-    }, 0);
+    await this.getData()
+    this.loaded()
   },
   methods: {
-    ...mapMutations({
-      setOrder: __module
+    ...mapMutations(__module, {
+      setOrder: 'update'
     })
   },
   computed: {
     ...mapState({
-      stateData: __module
+      state: __module
     })
   }
-};
+}
 </script>

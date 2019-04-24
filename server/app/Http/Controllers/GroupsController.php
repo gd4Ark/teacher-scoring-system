@@ -90,16 +90,6 @@ class GroupsController extends Controller
 
     public function updateBatch()
     {
-        if ($this->req->input('all') == 1){
-            $data = $this->req->except('all');
-            try {
-                Group::query()->update($data);
-                return $this->json();
-            } catch (\Exception $e) {
-                return $this->error($e->getMessage());
-            }
-        }
-
         $ids = (array)$this->req->get('ids');
         $data = $this->req->except('ids');
         try {
@@ -118,6 +108,21 @@ class GroupsController extends Controller
             return $this->json();
         } catch (\Exception $e) {
             return $this->error('Delete failed');
+        }
+    }
+
+    public function updateAllow(){
+        $query = Group::query();
+        if ($this->req->get('all') != 1) {
+            $query = $query->findOrFail($this->req->get('id'));
+        }
+        try{
+            $query->update([
+                'allow' => $this->req->get('allow')
+            ]);
+        }
+        catch (\Exception $e){
+            return $this->error($e->getMessage());
         }
     }
 

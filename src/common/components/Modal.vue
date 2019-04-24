@@ -4,7 +4,8 @@
     <div @click="visible()"
          style="display:inline;">
       <slot name="btn">
-        <el-button :size="btnSize"
+        <el-button class="btn"
+                   :size="btnSize"
                    :type="btnType"
                    :style="btnStyle">
           {{btnText}}
@@ -15,7 +16,7 @@
                :visible.sync="dialogVisible"
                @open="open"
                @close="close"
-               width="90%"
+               width="95%"
                v-el-drag-dialog>
 
       <slot name="body">
@@ -26,19 +27,22 @@
             class="dialog-footer">
         <slot name="footer">
           <el-button @click="hidden"
-                     size="medium">取 消</el-button>
+                     :size="respBtnSize">取消</el-button>
           <el-button type="primary"
+                     :disabled="btnDisabled"
                      @click="submit"
-                     size="medium">确 定</el-button>
+                     :size="respBtnSize">提交</el-button>
         </slot>
       </span>
     </el-dialog>
   </div>
 </template>
 <script>
-import elDragDialog from "@/common/directive/el-drag-dialog"; // base on element-ui
+import elDragDialog from '@/common/directive/el-drag-dialog' // base on element-ui
+import ResponsiveSize from '@/common/mixins/ResponsiveSize'
 export default {
-  name: "Modal",
+  name: 'Modal',
+  mixins: [ResponsiveSize],
   directives: { elDragDialog },
   data: () => ({
     dialogVisible: false
@@ -46,24 +50,28 @@ export default {
   props: {
     title: {
       type: String,
-      default: "弹窗"
+      default: '弹窗'
+    },
+    btnDisabled: {
+      type: Boolean,
+      default: false
     },
     btnText: {
       type: String,
-      default: "打开弹框"
+      default: '打开弹框'
     },
     btnSize: {
       type: String,
-      default: "small"
+      default: 'small'
     },
     btnType: {
       type: String,
-      default: ""
+      default: ''
     },
     btnStyle: {
       type: Object,
       default: () => {
-        return {};
+        return {}
       }
     },
     beforeOpen: {
@@ -74,22 +82,27 @@ export default {
   methods: {
     visible() {
       if (!this.beforeOpen()) {
-        return;
+        return
       }
-      this.dialogVisible = true;
+      this.dialogVisible = true
     },
     hidden() {
-      this.dialogVisible = false;
+      this.dialogVisible = false
     },
     open() {
-      this.$emit("open");
+      this.$emit('open')
     },
     close() {
-      this.$emit("close");
+      this.$emit('close')
     },
     submit() {
-      this.$emit("submit");
+      this.$emit('submit')
     }
   }
-};
+}
 </script>
+<style lang="scss" scoped>
+.btn {
+  margin-left: 10px;
+}
+</style>

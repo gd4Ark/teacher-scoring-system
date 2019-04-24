@@ -1,35 +1,38 @@
-<template v-if="load">
-  <v-card class="table-card"
+<template>
+  <v-card v-if="load"
+          class="table-card"
           :title="title">
     <div class="toolbar"
          slot="toolbar">
       <modal-add title="添加学生"
+                 :btn-size='respBtnSize'
                  :form-item="$v_data[module].add.item"
                  :get-form-data="$v_data[module].add.data"
                  :module="module"
-                 :before-submit="_splitNameList"
+                 :before-submit="beforeSubmit"
                  :success-message="successMessage"
                  @get-data="getData" />
-      <el-button size="small"
+      <el-button :size="respBtnSize"
                  type="danger"
                  @click="handleDelete(multipleSelection)">删除</el-button>
     </div>
 
-    <v-table :data="stateData.data"
+    <v-table :data="state.data"
              :columns="columns"
              @selection-change="handleSelectionChange"
              @sort-change="handleSortChange">
-      <template slot="columns-after">
+      <template slot="append">
         <el-table-column label="是否已评"
                          align="center">
           <template slot-scope="scope">
-            <span :class="['status',scope.row.complete ? 'yes' : 'no']"></span>
+            <span :class="['status',...getStatusClassName(scope.row.complete)]"></span>
           </template>
         </el-table-column>
         <el-table-column label="操作"
-                         align="center">
+                         align="center"
+                         min-width="140">
           <template slot-scope="scope">
-            <modal-edit :title=" `编辑学生 ${scope.row.name} 中`"
+            <modal-edit :title="`编辑学生 ${scope.row.name } 中`"
                         :form-item="$v_data[module].edit.item"
                         :current="scope.row"
                         :module="module"
@@ -41,24 +44,27 @@
           </template>
         </el-table-column>
       </template>
+
     </v-table>
 
-    <pagination :module="stateData"
+    <pagination :state="state"
+                :module="module"
                 @get-data="getData" />
   </v-card>
 </template>
 <script>
-const __module = "student";
-import vTable from "@/common/components/Table";
-import Pagination from "@/common/components/Pagination";
-import ModalEdit from "@/common/components/ModalEdit";
-import ModalAdd from "@/common/components/ModalAdd";
-import ManageTable from "@/common/mixins/ManageTable";
-import splitNameList from "@/common/mixins/splitNameList";
-import successMessage from "@/common/mixins/successMessage";
-import { mapActions, mapState, mapMutations } from "vuex";
+const __module = 'students'
+import vTable from '@/common/components/Table'
+import Pagination from '@/common/components/Pagination'
+import ModalEdit from '@/common/components/ModalEdit'
+import ModalAdd from '@/common/components/ModalAdd'
+import ManageTable from '@/common/mixins/ManageTable'
+import splitNameList from '@/common/mixins/splitNameList'
+import successMessage from '@/common/mixins/successMessage'
+import getStatusClassName from '@/common/mixins/getStatusClassName'
+import { mapState, mapMutations } from 'vuex'
 export default {
-  mixins: [ManageTable, splitNameList, successMessage],
+  mixins: [ManageTable, splitNameList, successMessage, getStatusClassName],
   components: {
     vTable,
     Pagination,
@@ -67,42 +73,38 @@ export default {
   },
   data: () => ({
     module: __module,
-    load: false,
     columns: [
       {
-        prop: "name",
-        label: "名字",
-        sortable: "custom"
+        prop: 'name',
+        label: '学生姓名',
+        sortable: 'custom',
+        minWidth: 100
       }
     ]
   }),
   async created() {
-    await this.getData();
-    setTimeout(() => {
-      this.load = true;
-    }, 0);
+    await this.getData()
+    this.loaded()
   },
   methods: {
-    ...mapMutations({
-      setOrder: __module
+    ...mapMutations(__module, {
+      setOrder: 'update'
     }),
-    _splitNameList(data) {
-      const res = this.splitNameList(data);
+    beforeSubmit(data) {
+      const res = this.splitNameList(data)
       res.nameList.forEach(el => {
-        el.group_id = this.$route.params.group_id;
-      });
-      return res;
+        el.group_id = this.$route.params.group_id
+      })
+      return res
     }
   },
   computed: {
     ...mapState({
-      stateData: __module
+      state: __module
     }),
     title() {
-      const group = this.stateData.group;
-      const name = group ? group.name : '';
-      return `${name} 学生表`;
+      return `${this.state.group.name} 学生表`
     }
   }
-};
+}
 </script>

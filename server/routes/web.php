@@ -21,6 +21,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     });
 
     $router->resource('groups', 'GroupsController');
+    $router->put('groups/allow', 'GroupsController@updateAllow');
     $router->resource('teachers', 'TeachersController');
     $router->resource('subjects', 'SubjectsController');
     $router->resource('students', 'StudentsController');

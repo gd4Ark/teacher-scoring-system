@@ -2,8 +2,8 @@
  * 
  * @param {*} msg 
  */
-export function log(msg){
-    console.log(msg);
+export function log(msg) {
+    window.console.log(msg)
 }
 /**
  * 
@@ -27,14 +27,19 @@ export function clone(object) {
  *
  * @param object1
  * @param object2
+ * @param callback
  * @returns {any}
  */
-export function cover(object1, object2) {
+export function cover(object1, object2, callback = null) {
     const a = Object.assign({}, object1)
     const b = Object.assign({}, object2)
     for (const key in a) {
         if (b[key] !== undefined) {
-            a[key] = b[key]
+            if (callback) {
+                callback(key, b[key])
+            } else {
+                a[key] = b[key]
+            }
         }
     }
     return a

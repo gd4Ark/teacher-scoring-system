@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="inner-container">
     404
   </div>
 </template>

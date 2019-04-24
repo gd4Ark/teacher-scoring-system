@@ -1,13 +1,13 @@
 <template>
   <router-view v-if="isSubRouter"></router-view>
-  <div class="app-container"
+  <div class="inner-container"
        v-else>
     <slot> </slot>
   </div>
 </template>
 <script>
 export default {
-  name: "NotSubRouter",
+  name: 'NotSubRouter',
   props: {
     name: {
       type: String
@@ -15,8 +15,8 @@ export default {
   },
   computed: {
     isSubRouter() {
-      return this.$route.name !== this.name;
+      return this.$route.name !== this.name
     }
   }
-};
+}
 </script>

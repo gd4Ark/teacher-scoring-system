@@ -3,7 +3,7 @@
     <!-- 选择 -->
     <el-select v-if="item.type === 'select'"
                v-model="val"
-               :size="item.size || ''"
+               :size="respFormControlSize"
                :placeholder="getPlaceholder('选择')"
                :clearable="true">
       <el-option v-for="option in getOptions()"
@@ -57,13 +57,26 @@
               :min="item.min"
               :max="item.max"
               v-model="val"
-              @keyup.enter.native="submit" />
+              :size="respFormControlSize"
+              @keyup.enter.native="submit">
+      <template v-if="item.slot"
+                :slot="item.slot.name">
+        <template v-if="item.slot.type === 'icon'">
+          <i :class="['icon',item.slot.value]"></i>
+        </template>
+        <template v-else>
+          {{ item.slot.value }}
+        </template>
+      </template>
+    </el-input>
   </div>
 </template>
 <script>
-import UploadControl from "./UploadControl";
+import UploadControl from './UploadControl'
+import ResponsiveSize from '@/common/mixins/ResponsiveSize'
 export default {
-  name: "FormControl",
+  name: 'FormControl',
+  mixins: [ResponsiveSize],
   components: {
     UploadControl
   },
@@ -73,52 +86,55 @@ export default {
   },
   data: () => ({
     load: false,
-    val: "",
+    val: '',
     options: []
   }),
   mounted() {
-    this.val = this.model;
-    this.load = true;
+    this.val = this.model
+    this.load = true
   },
   methods: {
     submit() {
-      if (this.item.disabledEvent) return;
-      this.$emit("submit");
+      if (this.item.disabledEvent) return
+      this.$emit('submit')
     },
-    getPlaceholder(type = "输入") {
-      return this.item.placeholder || `请${type}` + this.item.label;
+    getPlaceholder(type = '输入') {
+      return this.item.placeholder || `请${type}` + this.item.label
     },
     getOptions() {
-      if (this.item.options) return this.item.options;
-      const module = this.item.option_module;
-      return this.$store.state[module].options;
+      if (this.item.options) return this.item.options
+      const module = this.item.option_module
+      return this.$store.state[module].options
     }
   },
   watch: {
     val(val) {
-      this.$emit("update:model", val);
+      this.$emit('update:model', val)
     },
     model(val) {
       if (this.val !== val) {
-        this.val = val;
+        this.val = val
       }
     }
   },
   computed: {
     getActive() {
-      return this.item.active !== void 0 ? this.item.active : true;
+      return this.item.active !== void 0 ? this.item.active : true
     },
     getInactive() {
-      return this.item.inactive !== void 0 ? this.item.inactive : false;
+      return this.item.inactive !== void 0 ? this.item.inactive : false
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
-.el-form-item__content div {
+.el-form-item__content div:not(.el-input-group) {
   display: block;
 }
 .el-form-item {
   margin-bottom: 12px;
+}
+.icon {
+  font-size: 1.1rem;
 }
 </style>

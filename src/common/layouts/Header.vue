@@ -1,20 +1,25 @@
 <template>
   <div class="app-header">
-    <h1 class="title">
-      <router-link to="/index">{{ $config.app_title }}</router-link>
-    </h1>
+    <div class="left-menu">
+      <hamburger :is-active="sidebar.opened"
+                 :device="device"
+                 @toggle-click="toggleSidebar" />
+      <breadcrumb class="breadcrumb-container" />
+    </div>
     <div class="right-menu">
 
-      <screenfull class="right-menu-item hover-effect" />
+      <template v-if="device !== 'mobile'">
+        <screenfull class="right-menu-item hover-effect" />
+      </template>
 
       <el-dropdown class="avatar-container right-menu-item"
                    trigger="click">
         <p class="avatar-wrapper">
-          admin
+          {{ username }}
           <i class="el-icon-arrow-down el-icon--right"></i>
         </p>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item v-for="(item, index) in s_userMenuList"
+          <el-dropdown-item v-for="(item, index) in innerDropdownMenu"
                             :key="index">
             <router-link v-if="item.path"
                          :to="item.path">
@@ -31,44 +36,54 @@
   </div>
 </template>
 <script>
-import Screenfull from "@/common/components/Screenfull";
-import { success } from "@/common/utils/message";
-import { mapActions } from "vuex";
+import Hamburger from '@/common/components/Hamburger'
+import Screenfull from '@/common/components/Screenfull'
+import Breadcrumb from '@/common/components/Breadcrumb'
+import { success } from '@/common/utils/message'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   components: {
-    Screenfull
+    Hamburger,
+    Screenfull,
+    Breadcrumb
   },
   props: {
-    userMenuList: {
+    dropdownMenu: {
       type: Array,
       default: Array
     }
   },
   data: () => ({
-    s_userMenuList: []
+    innerDropdownMenu: []
   }),
   mounted() {
-    this.s_userMenuList = [
-      ...this.userMenuList,
+    this.innerDropdownMenu = [
+      ...this.dropdownMenu,
       {
-        path: "/password",
-        label: "修改密码"
+        path: '/password',
+        label: '修改密码'
       },
       {
         click: this.handleLogout,
-        label: "退出"
+        label: '退出登陆'
       }
-    ];
+    ]
   },
   methods: {
-    ...mapActions(["logout"]),
+    ...mapActions('user', ['logout']),
     async handleLogout() {
-      await this.logout();
-      await success("退出成功！");
-      this.$router.push("/login");
+      await this.logout()
+      await success('登出成功！')
+      this.$router.push('/login')
+    },
+    toggleSidebar() {
+      this.$store.dispatch('app/toggleSidebar')
     }
+  },
+  computed: {
+    ...mapGetters(['username', 'device', 'sidebar'])
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -80,8 +95,11 @@ export default {
   justify-content: space-between;
   background: $gighlight-color;
   color: white;
-  .title {
-    font-size: 1.3rem;
+  .left-menu {
+    @include sub-center;
+    .breadcrumb-container {
+      margin-left: 8px;
+    }
   }
   .right-menu {
     @include flex;

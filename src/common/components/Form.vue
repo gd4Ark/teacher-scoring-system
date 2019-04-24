@@ -4,9 +4,9 @@
            :show-message="false"
            :inline="inline"
            :rules="rules"
-           ref="form"
-           :label-width="showLabel ? '80px' : 0"
+           :label-width="showLabel ? '80px' : '0'"
            autocomplete="off"
+           ref="form"
            @submit.native.prevent>
 
     <form-item v-for="(item,index) in formItem"
@@ -22,10 +22,10 @@
   </el-form>
 </template>
 <script>
-import FormItem from "@/common/components/FormItem";
-import { warning } from "@/common/utils/message";
+import FormItem from '@/common/components/FormItem'
+import { warning } from '@/common/utils/message'
 export default {
-  name: "Form",
+  name: 'Form',
   components: {
     FormItem
   },
@@ -46,31 +46,31 @@ export default {
     load: false
   }),
   mounted() {
-    this.initRules(this.formItem);
-    this.load = true;
+    this.initRules(this.formItem)
+    this.load = true
   },
   methods: {
     submit() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          this.$emit("submit");
+          this.$emit('submit')
         } else {
-          warning("请填写正确！");
+          warning('请填写正确！')
         }
-      });
+      })
     },
-    initRules(formItem, key = "") {
+    initRules(formItem, key = '') {
       formItem.forEach(el => {
-        const k = key ? key + "." + el.key : el.key;
+        const k = key ? key + '.' + el.key : el.key
         if (el.rules) {
-          this.rules[k] = el.rules;
+          this.rules[k] = el.rules
         } else if (el.isGroup) {
-          this.initRules(el.group, k);
+          this.initRules(el.group, k)
         } else if (el.items) {
-          this.initRules(el.items, key);
+          this.initRules(el.items, key)
         }
-      });
+      })
     }
   }
-};
+}
 </script>

@@ -7,67 +7,71 @@
             class="no-redirect">{{
         item.meta.title }}</span>
       <a v-else
+         class="link"
          @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
     </el-breadcrumb-item>
   </el-breadcrumb>
 </template>
 
 <script>
-import pathToRegexp from "path-to-regexp";
+import pathToRegexp from 'path-to-regexp'
 export default {
-  name: "Breadcrumb",
+  name: 'Breadcrumb',
   data: () => ({
     levelList: null
   }),
   watch: {
     $route() {
-      this.getBreadcrumb();
+      this.getBreadcrumb()
     }
   },
   created() {
-    this.getBreadcrumb();
+    this.getBreadcrumb()
   },
   methods: {
     getBreadcrumb() {
-      let matched = this.$route.matched.filter(item => item.name);
-      const first = matched[0];
+      let matched = this.$route.matched.filter(item => item.name)
+      const first = matched[0]
       if (
         first &&
-        first.name.trim().toLocaleLowerCase() !== "index".toLocaleLowerCase()
+        first.name.trim().toLocaleLowerCase() !== 'index'.toLocaleLowerCase()
       ) {
-        matched = [{ path: "/index", meta: { title: "首页" } }].concat(matched);
+        matched = [{ path: '/index', meta: { title: '首页' } }].concat(matched)
       }
       this.levelList = matched.filter(
         item => item.meta && item.meta.title && item.meta.breadcrumb !== false
-      );
+      )
     },
     pathCompile(path) {
       // To solve this problem https://github.com/PanJiaChen/vue-element-admin/issues/561
-      const { params } = this.$route;
-      var toPath = pathToRegexp.compile(path);
-      return toPath(params);
+      const { params } = this.$route
+      var toPath = pathToRegexp.compile(path)
+      return toPath(params)
     },
     handleLink(item) {
-      const { redirect, path } = item;
+      const { redirect, path } = item
       if (redirect) {
-        this.$router.push(redirect);
-        return;
+        this.$router.push(redirect)
+        return
       }
-      this.$router.push(this.pathCompile(path));
+      this.$router.push(this.pathCompile(path))
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
 .app-breadcrumb.el-breadcrumb {
   display: inline-block;
-  font-size: 14px;
+  font-size: .85rem;
   line-height: 50px;
   margin-left: 8px;
   .no-redirect {
-    color: #97a8be;
+    color: #eee;
     cursor: text;
+  }
+  .link {
+    color: white;
   }
 }
 </style>

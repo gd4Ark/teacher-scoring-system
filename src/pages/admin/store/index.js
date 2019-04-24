@@ -3,32 +3,22 @@ import vuex from 'vuex'
 
 import {
     fileListToObject
-} from "@/common/utils/readFile";
+} from "@/common/utils/readFile"
 
 import createPersist from 'vuex-localstorage'
 
 const modulesFiles = require.context('./modules', false, /\.js$/)
-const modules = fileListToObject(modulesFiles);
+const modules = fileListToObject(modulesFiles)
 
-import mutations from "./mutations"
-import actions from "./actions"
-import getters from "./getters"
+import actions from './actions'
+import getters from './getters'
 
 Vue.use(vuex)
 
 export default new vuex.Store({
-    state: {
-        ...modules,
-    },
-    mutations: {
-        ...mutations,
-    },
-    actions: {
-        ...actions,
-    },
-    getters: {
-        ...getters,
-    },
+    modules,
+    actions,
+    getters,
     plugins: [createPersist({
         namespace: process.env.APP_NAME,
         initialState: {},

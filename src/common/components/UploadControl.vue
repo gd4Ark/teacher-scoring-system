@@ -12,9 +12,9 @@
   </el-upload>
 </template>
 <script>
-import { warning } from "@/common/utils/message";
+import { warning } from '@/common/utils/message'
 export default {
-  name: "UploadControl",
+  name: 'UploadControl',
   props: {
     item: Object,
     model: [Object, String, File]
@@ -26,68 +26,68 @@ export default {
       allowExtensions: []
     },
     fileList: [],
-    file: ""
+    file: ''
   }),
   watch: {
     file(file) {
-      this.$emit("update:model", file);
+      this.$emit('update:model', file)
     },
     model(file) {
       if (!file) {
-        return this.clearFiles();
+        return this.clearFiles()
       }
       if (this.file !== file) {
-        this.file = file;
+        this.file = file
       }
     }
   },
   methods: {
     onRquest({ file }) {
-      this.file = file;
+      this.file = file
     },
     onBeforeUpload(file) {
       if (!this.isAllowExtension(file)) {
-        warning(`无法上传此格式的文件！`);
-        return false;
+        warning(`无法上传此格式的文件！`)
+        return false
       }
       if (this.isLtMaxSize(file)) {
-        warning(`文件最多可上传${this.maxSize}M！`);
-        return false;
+        warning(`文件最多可上传${this.maxSize}M！`)
+        return false
       }
-      return true;
+      return true
     },
     onExceed() {
-      warning(`最多只能上传${this.limit}个文件`);
+      warning(`最多只能上传${this.limit}个文件`)
     },
     clearFiles() {
-      this.fileList.length = 0;
-      this.$refs.upload.clearFiles();
+      this.fileList.length = 0
+      this.$refs.upload.clearFiles()
     },
     isAllowExtension(file) {
-      if (this.allowExtensions.length < 1) return true;
-      const extension = file.name.split(".").pop();
-      const toLow = str => str.toLocaleLowerCase;
+      if (this.allowExtensions.length < 1) return true
+      const extension = file.name.split('.').pop()
+      const toLow = str => str.toLocaleLowerCase
       return this.allowExtensions.find(
         el => toLow(el) === toLow(this.allowExtensions)
-      );
+      )
     },
     isLtMaxSize(file) {
-      return file.size / 1024 / 1024 > this.maxSize;
+      return file.size / 1024 / 1024 > this.maxSize
     }
   },
   computed: {
     limit() {
-      return this.item.limit || this.default.limit;
+      return this.item.limit || this.default.limit
     },
     maxSize() {
-      return this.item.maxSize || this.default.maxSize;
+      return this.item.maxSize || this.default.maxSize
     },
     allowExtensions() {
-      return this.item.allowExtensions || this.default.allowExtensions;
+      return this.item.allowExtensions || this.default.allowExtensions
     },
     showAllowExtensions() {
-      return this.allowExtensions.join("/");
+      return this.allowExtensions.join('/')
     }
   }
-};
+}
 </script>

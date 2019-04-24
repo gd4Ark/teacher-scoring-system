@@ -5,6 +5,7 @@
          :btn-size="btnSize"
          :btn-type="btnType"
          :btn-style="btnStyle"
+         :btn-disabled="btnDisabled"
          @submit="baseFormSubmit"
          @open="reset">
     <baseForm slot="body"
@@ -16,20 +17,20 @@
   </modal>
 </template>
 <script>
-import Add from "@/common/mixins/Add";
-import ModalForm from "@/common/mixins/ModalForm";
+import Add from '@/common/mixins/Add'
+import ModalForm from '@/common/mixins/ModalForm'
 export default {
-  name: "ModalAdd",
+  name: 'ModalAdd',
   mixins: [Add, ModalForm],
   props: {
     title: {
       type: String,
-      default: "添加"
+      default: '添加'
     },
     btnType: {
       type: String,
-      default: "primary"
+      default: 'primary'
     }
   }
-};
+}
 </script>

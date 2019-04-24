@@ -39,9 +39,9 @@
   </div>
 </template>
 <script>
-import FormControl from "@/common/components/FormControl";
+import FormControl from '@/common/components/FormControl'
 export default {
-  name: "FormItem",
+  name: 'FormItem',
   components: {
     FormControl
   },
@@ -52,7 +52,7 @@ export default {
     },
     spliceKey: {
       type: String,
-      default: ""
+      default: ''
     },
     rules: Object,
     item: Object,
@@ -64,45 +64,45 @@ export default {
   }),
   methods: {
     showWhen(enableWhen) {
-      if (!enableWhen || !Object.keys(enableWhen)) return true;
+      if (!enableWhen || !Object.keys(enableWhen)) return true
       for (const key in enableWhen) {
-        if (this.getProperty(key) === enableWhen[key]) return true;
+        if (this.getProperty(key) === enableWhen[key]) return true
       }
     },
     getStyle(item) {
       return {
-        display: "inline-block",
-        width: item.width || "100%"
-      };
+        display: 'inline-block',
+        width: item.width || '100%'
+      }
     },
     getKey(item) {
-      if (!this.spliceKey) return item.key;
-      else if (!item.key) return this.spliceKey;
-      return this.spliceKey + "." + item.key;
+      if (!this.spliceKey) return item.key
+      else if (!item.key) return this.spliceKey
+      return this.spliceKey + '.' + item.key
     },
     setModel(path) {
-      const paths = path.split(".");
-      let curProp = this.formData;
+      const paths = path.split('.')
+      let curProp = this.formData
       for (let i = 0; i < paths.length - 1; i++) {
-        if (curProp[paths[i]] === undefined) return;
-        curProp = curProp[paths[i]];
+        if (curProp[paths[i]] === undefined) return
+        curProp = curProp[paths[i]]
       }
-      this.model = curProp;
+      this.model = curProp
     },
     getProperty(path) {
-      const paths = path.split(".");
-      let curProp = this.formData;
+      const paths = path.split('.')
+      let curProp = this.formData
       for (let i = 0; i < paths.length; i++) {
-        if (curProp[paths[i]] === undefined) return;
-        curProp = curProp[paths[i]];
+        if (curProp[paths[i]] === undefined) return
+        curProp = curProp[paths[i]]
       }
-      return curProp;
+      return curProp
     },
     submit() {
-      this.$emit("submit");
+      this.$emit('submit')
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 .el-form-item.hidden {

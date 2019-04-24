@@ -2,12 +2,15 @@
   <c-form v-if="sformData!==null"
           :form-item="formItem"
           :form-data="sformData"
+          :show-label="showLabel"
           @submit="handleSubmit"
           ref="form">
     <el-form-item>
       <slot></slot>
       <el-button v-if="useBtn"
-                 size="small"
+                 :size="btnSize || respBtnSize"
+                 :style="btnStyle"
+                 :disabled="btnDisabled"
                  type="primary"
                  @click="submit">{{
         btnText
@@ -16,10 +19,12 @@
   </c-form>
 </template>
 <script>
-import cForm from "@/common/components/Form";
-import { clone, retainKeys } from "@/common/utils";
+import cForm from '@/common/components/Form'
+import { clone, retainKeys } from '@/common/utils'
+import ResponsiveSize from '@/common/mixins/ResponsiveSize'
 export default {
-  name: "BaseForm",
+  name: 'BaseForm',
+  mixins: [ResponsiveSize],
   components: {
     cForm
   },
@@ -30,44 +35,58 @@ export default {
       default: null
     },
     getFormData: Function,
+    showLabel: {
+      type: Boolean,
+      default: true
+    },
     useBtn: {
       type: Boolean,
       default: true
     },
+    btnDisabled: {
+      type: Boolean,
+      default: false
+    },
+    btnSize: {
+      type: String,
+      default: ''
+    },
     btnText: {
       type: String,
-      default: "提交"
+      default: '提交'
+    },
+    btnStyle: {
+      type: Object,
+      default: Object
     }
   },
   data: () => ({
     sformData: null
   }),
   mounted() {
-    this.reset();
+    this.reset()
   },
   methods: {
     reset() {
-      this.sformData = this.formData
-        ? clone(this.formData)
-        : this.getFormData();
+      this.sformData = this.formData ? clone(this.formData) : this.getFormData()
     },
     submit() {
-      this.$refs.form.submit();
+      this.$refs.form.submit()
     },
     handleSubmit() {
-      const data = retainKeys(this.sformData, this.getKeys());
-      this.$emit("submit", data);
+      const data = retainKeys(this.sformData, this.getKeys())
+      this.$emit('submit', data)
     },
     getKeys() {
-      let keys = [];
+      let keys = []
       this.formItem.forEach(el => {
         if (el.items) {
-          return (keys = [...keys, ...el.items.map(el => el.key)]);
+          return (keys = [...keys, ...el.items.map(el => el.key)])
         }
-        return keys.push(el.key);
-      });
-      return keys;
+        return keys.push(el.key)
+      })
+      return keys
     }
   }
-};
+}
 </script>

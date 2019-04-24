@@ -12,7 +12,7 @@
 </template>
 <script>
 export default {
-  name: "Card",
+  name: 'Card',
   props: {
     useHeader: {
       type: Boolean,
@@ -20,8 +20,8 @@ export default {
     },
     title: {
       type: String,
-      default: ""
+      default: ''
     }
   }
-};
+}
 </script>

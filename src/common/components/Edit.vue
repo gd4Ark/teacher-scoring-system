@@ -1,6 +1,7 @@
 <template>
   <baseForm ref="baseForm"
             :btn-text="btnText"
+            :btn-disabled="btnDisabled"
             :form-item="formItem"
             :form-data="current"
             @submit="submit">
@@ -8,9 +9,9 @@
   </baseForm>
 </template>
 <script>
-import Edit from "@/common/mixins/Edit";
+import Edit from '@/common/mixins/Edit'
 export default {
-  name: "Edit",
+  name: 'Edit',
   mixins: [Edit]
-};
+}
 </script>

@@ -1,5 +1,10 @@
 <template>
   <div class="app-aside">
+    <div class="title-container">
+      <h1 class="title">
+        <router-link to="/index">{{ $config.app_title }}</router-link>
+      </h1>
+    </div>
     <el-menu :default-active="activeIndex"
              class="el-menu-vertical"
              unique-opened
@@ -36,40 +41,52 @@
 <script>
 export default {
   data: () => ({
-    activeIndex: ""
+    activeIndex: ''
   }),
   watch: {
     $route() {
-      this.updateActive();
+      this.updateActive()
     }
   },
   mounted() {
-    this.updateActive();
+    this.updateActive()
   },
   beforeUpdate() {
-    this.updateActive();
+    this.updateActive()
   },
   methods: {
     updateActive() {
-      this.activeIndex = this.$route.matched[1].path;
+      this.activeIndex = this.$route.matched[1].path
     }
   },
   computed: {
     navList() {
-      return this.$router.options.navList;
+      return this.$router.options.navList
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
 .app-aside {
-  width: 13%;
-  padding-top: 20px;
-  position: relative;
-  z-index: 1;
-  background: #f7f7f7;
-  box-shadow: 4px 1px 12px rgba(0, 55, 107, 0.04);
+  @include wh(220px, 100%);
+  @include flex-column;
+  & > .el-menu {
+    flex: 1;
+    box-shadow: 4px 1px 12px rgba(0, 55, 107, 0.04);
+    overflow-y: auto;
+    @include no-scrollbar;
+  }
+}
+.title-container {
+  @include wh(100%, 62px);
+  @include sub-center;
+  background: white;
+  background: $gighlight-color;
+  color: white;
+  .title {
+    font-size: 1.5rem;
+  }
 }
 span {
   @include no-user-select;
