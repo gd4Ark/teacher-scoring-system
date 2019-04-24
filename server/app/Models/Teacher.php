@@ -41,4 +41,14 @@ class Teacher extends Model
             'name.unique' => 'Name already exists',
         ];
     }
+
+    /**
+     * @return array
+     */
+    public function option(){
+        return [
+            'label' => $this->name,
+            'value' => $this->id,
+        ];
+    }
 }

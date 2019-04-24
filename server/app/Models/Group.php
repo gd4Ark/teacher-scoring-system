@@ -52,4 +52,14 @@ class Group extends Model
 
         ];
     }
+
+    /**
+     * @return array
+     */
+    public function option(){
+        return [
+            'label' => $this->name,
+            'value' => $this->id,
+        ];
+    }
 }

@@ -1,0 +1,83 @@
+.table-container,
+.btn {
+    width: 100%;
+}
+
+input[type=radio] {
+    display: none;
+}
+
+label {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    font-weight: normal;
+    transition: all 0.5s ease;
+}
+
+input[type=radio]:checked+label {
+    /*background:#c0efd5;*/
+}
+
+input[type=radio]:checked+label::after {
+    content: '\2714';
+}
+
+.btn {
+    margin-top: 10px;
+}
+
+table {
+    margin: 0 auto;
+    border-collapse: collapse;
+    font-size: 14px;
+    border: 3px solid #ccc;
+}
+
+th,
+td {
+    padding: 0;
+    margin: 0;
+    min-width: 120px;
+    height: 30px;
+    border: 1px solid #ccc;
+    text-align: center;
+    word-break: break-word;
+}
+
+td.title,
+td[data-sub-project] {
+    background: white;
+}
+
+td.select {
+    transition: all 0.8s ease;
+}
+
+td.select:hover {
+    /*background:#5dbbf6;*/
+}
+
+td.select.err {
+    background: #d9534f;
+}
+
+.project,
+tr.special {
+    border-top: 3px solid #ccc;
+}
+
+thead td span {
+    display: block;
+    width: 100%;
+    line-height: 2.5;
+}
+
+th {
+    height: 50px;
+}
+
+textarea {
+    resize: none;
+}

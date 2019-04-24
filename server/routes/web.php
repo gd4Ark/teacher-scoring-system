@@ -25,6 +25,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->resource('teachers', 'TeachersController');
     $router->resource('subjects', 'SubjectsController');
     $router->resource('students', 'StudentsController');
+    $router->post('students/login', 'StudentsController@login');
     $router->resource('teachings', 'TeachingsController');
 
 });

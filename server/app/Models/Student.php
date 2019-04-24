@@ -40,4 +40,8 @@ class Student extends Model
         }
         return $data;
     }
+
+    public function group(){
+        return $this->belongsTo('App\Models\Group');
+    }
 }

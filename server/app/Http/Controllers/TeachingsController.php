@@ -11,26 +11,36 @@ class TeachingsController extends Controller
     public function __construct(Request $request)
     {
         parent::__construct($request);
-        $this->middleware('auth:api',[
-            'except' => ['index','show']
+        $this->middleware('auth:api', [
+            'except' => ['index', 'show']
         ]);
     }
 
     public function index()
     {
-        if (!$this->req->has('groupId')){
+        if (!$this->req->has('groupId')) {
             return $this->error('Necessary to have the `groupId` parameter');
         }
         $groupId = $this->req->input('groupId');
-        $query =  Teaching::query()->where('group_id',$groupId);
+        $query = Teaching::query()->where('group_id', $groupId);
         $query = $this->queryFilter($query);
         if ($this->req->get('getOptions') == 1) {
             return $this->getOptions($query);
         } else {
             return $this->json(array_merge([
-                'group' => Group::query()->where('id',$groupId)->first(),
-            ],$this->paginate($query)->toArray()));
+                'group' => Group::query()->where('id', $groupId)->first(),
+            ], $this->paginate($query)->toArray()));
         }
+    }
+
+    public function getOptions($query)
+    {
+        $ret = [];
+        $data = $query->get();
+        foreach ($data as $item){
+            $ret[] = $item->data();
+        }
+        return $this->json($ret);
     }
 
     public function show($id)
@@ -42,9 +52,9 @@ class TeachingsController extends Controller
     public function create()
     {
         try {
-            $input = $this->req->only(['group_id','subject_id','teacher_id']);
+            $input = $this->req->only(['group_id', 'subject_id', 'teacher_id']);
             $item = Teaching::query()->firstOrCreate($input);
-            if ($item->wasRecentlyCreated){
+            if ($item->wasRecentlyCreated) {
                 return $this->json($item);
             }
             return $this->error('existed');
@@ -79,7 +89,7 @@ class TeachingsController extends Controller
 
     public function updateBatch()
     {
-        if ($this->req->input('all') == 1){
+        if ($this->req->input('all') == 1) {
             $data = $this->req->except('all');
             try {
                 Teaching::query()->update($data);

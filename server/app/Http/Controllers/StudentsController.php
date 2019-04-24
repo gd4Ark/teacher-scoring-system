@@ -12,7 +12,7 @@ class StudentsController extends Controller
     {
         parent::__construct($request);
         $this->middleware('auth:api',[
-            'except' => ['index','show']
+            'except' => ['index','show','login']
         ]);
     }
 
@@ -120,6 +120,23 @@ class StudentsController extends Controller
         } catch (\Exception $e) {
             return $this->error('Delete failed');
         }
+    }
+
+    public function login(){
+        if (!$this->req->has('groupId') || !$this->req->has('studentId')){
+            return $this->error('Necessary to have the `groupId` and `studentId` parameter');
+        }
+        $group = Group::query()->findOrFail($this->req->get('groupId'));
+        $student = Student::query()->findOrFail($this->req->get('studentId'));
+        if ($student->group->id !== $group->id){
+            return $this->error('该学生不存在');
+        }
+        if ($group->allow == 0){
+            return $this->error('禁止登录');
+        }
+        return $this->json(array_merge($student->toArray(),[
+            'group_name' => $group->name
+        ]));
     }
 
 }
