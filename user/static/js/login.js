@@ -3,68 +3,38 @@ jQuery(function ($) {
 
     var login = {
         init: function () {
+            this.initEvent()
+        },
+        initEvent() {
             var _this = this
-            this.getGroups()
+            $('#groups').on('change', function () {
+                // console.log()
+                location.href = './login?gid=' + BASE64.urlsafe_encode($(this).val());
+            })
+
             $('#login-btn').click(function () {
-                var group_id = $('#groups').val()
-                var student_id = $('#students').val()
-                if (!group_id || !student_id) {
+                var gid = $('#groups').val()
+                var stuid = $('#students').val()
+                if (!gid || !stuid) {
                     return alert('请填写完整！')
                 }
-                _this.submit(group_id, student_id)
+                _this.submit(gid, stuid)
             })
         },
-        getGroups: function () {
-            ajax({
-                method: 'get',
-                url: BASE_URL + '/groups?getOptions=1',
-                success: function (data) {
-                    data = data.data
-                    var html = '<option selected disabled>请选择您的班级</option>'
-                    data.forEach(function (item) {
-                        html += '<option value="' + item.value + '">' + item.label + '</option>'
-                    })
-                    $('#groups').html(html)
-
-                    $('#groups').on('change', function () {
-                        login.getStudents($(this).val())
-                    })
-                },
-                error: function () {
-                    alert('获取班级列表失败！')
-                }
-            })
-        },
-        getStudents: function (group_id) {
-            ajax({
-                method: 'get',
-                url: BASE_URL + '/students?getOptions=1&groupId=' + group_id,
-                success: function (data) {
-                    data = data.data
-                    var html = '<option selected disabled>请选择您的姓名</option>'
-                    data.forEach(function (item) {
-                        html += '<option value="' + item.value + '">' + item.label + '</option>'
-                    })
-                    $('#students').html(html)
-                },
-                error: function () {
-                    alert('获取学生列表失败！')
-                }
-            })
-        },
-        submit: function (group_id, student_id) {
+        submit: function (gid, stuid) {
             ajax({
                 method: 'post',
-                url: BASE_URL + '/students/login',
+                url: BASE_URL + 'students/login',
                 data: {
-                    groupId: group_id,
-                    studentId: student_id,
+                    groupId: gid,
+                    studentId: stuid,
                 },
-                success: function (data) {
-                    data = data.data
+                success: function (result) {
+                    var data = result.data
                     if (data.id) {
-                        store.set('user', data)
-                        location.href = './'
+                        gid = BASE64.urlsafe_encode(gid)
+                        stuid = BASE64.urlsafe_encode(stuid)
+                        location.href = './?gid=' + gid + '&stuid=' + stuid
                     }
                 },
                 error: function (err) {

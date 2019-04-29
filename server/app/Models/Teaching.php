@@ -21,10 +21,6 @@ class Teaching extends Model
         'meta' => 'array'
     ];
 
-    public function group(){
-        return $this->belongsTo('App\Models\Group');
-    }
-
     public function subject(){
         return $this->belongsTo('App\Models\Subject');
     }
@@ -36,7 +32,6 @@ class Teaching extends Model
     public function data(){
         return [
             'id' => $this->id,
-            'group' => $this->group->option(),
             'subject' => $this->subject->option(),
             'teacher' => $this->teacher->option(),
         ];

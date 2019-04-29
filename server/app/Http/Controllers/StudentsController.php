@@ -35,7 +35,7 @@ class StudentsController extends Controller
 
     public function show($id)
     {
-        $item = Group::query()->findOrFail($id);
+        $item = Student::query()->findOrFail($id);
         return $this->json($item);
     }
 
@@ -134,9 +134,7 @@ class StudentsController extends Controller
         if ($group->allow == 0){
             return $this->error('禁止登录');
         }
-        return $this->json(array_merge($student->toArray(),[
-            'group_name' => $group->name
-        ]));
+        return $this->json($student);
     }
 
 }

@@ -1,53 +1,119 @@
 jQuery(function ($) {
-    var ajax = $.ajax
+
+    var teaching_attr = 'data-teaching-id'
 
     var scoring = {
-        user: null,
         init: function () {
-            if (!store.has('user')) {
-                return location.href = './login.html'
-            }
-            this.user = store.get('user')
-            this.getTeachers()
-            this.initUserInfo()
             this.initEvent()
-        },
-        initUserInfo() {
-            $('.group_name').html(this.user.group_name)
-            $('.user_name').html(this.user.name)
-        },
-        initTeachingInfo(data) {
-            var html = ''
-            data.forEach(function (item) {
-                html += '<td class="teacher_info" data-teaching-id="' + item.id + '">' +
-                    '<span>' + item.subject.label + '</span>' +
-                    '<span>' + item.teacher.label + '</span>' +
-                    '</td>'
-            })
-            $('table thead .head-info').append(html)
         },
         initEvent() {
             var _this = this
+            // 登出
             $('#logout-btn').click(function () {
                 _this.logout()
             })
-        },
-        getTeachers: function () {
-            var _this = this
-            var group_id = store.get('user').group_id
-            ajax({
-                method: 'get',
-                url: BASE_URL + '/teachings?getOptions=1&groupId=' + group_id,
-                success: function (data) {
-                    _this.initTeachingInfo(data.data)
-                },
-                error: function () {
-                    alert('获取任课列表失败！')
-                }
+            // 选择
+            $('.radio').on('change', function () {
+                _this.select(this)
+            })
+            // 提交
+            $('.submit-btn').on('click', function () {
+                _this.submit()
             })
         },
+        select(self) {
+            var id = $(self).attr(teaching_attr)
+            var count = 0
+
+            $('.radio[' + teaching_attr + '=' + id + ']:checked').each(function () {
+                count += parseFloat($(this).val())
+            })
+
+            $('.assess-score-count[' + teaching_attr + '=' + id + ']').text(count)
+        },
+        isCompleted() {
+            var status = true
+
+            $('td[data-sub-project]').each(function () {
+                var project = $(this).attr('data-sub-project')
+                $('.teacher_info').each(function () {
+                    var teaching_id = $(this).attr(teaching_attr)
+                    var name = project + '-' + teaching_id
+                    var select = '.radio[name=' + name + ']'
+
+                    // 无选中
+                    if (!$(select + ':checked').length) {
+                        status = false
+                        $(select).parent().addClass('err')
+                        setTimeout(function () {
+                            $(select).parent().removeClass('err')
+                        }, 500)
+                    }
+                })
+            })
+
+            return status
+        },
+        getScore() {
+            var data = {};
+
+            var teaching_ids = $('.teacher_info').map(function () {
+                return $(this).attr('data-teaching-id');
+            }).get();
+
+
+            for (var i = 0; i < teaching_ids.length; i++) {
+                var id = teaching_ids[i];
+                var suggest = $('.suggest').eq(i).val();
+                $('td.title').each(function () {
+                    var project = $(this).text();
+                    var score = 0;
+                    var radios = $('.radio[name^=' + project + '][' + teaching_attr + '=' + id + ']:checked');
+                    $(radios).each(function () {
+                        score += parseFloat($(this).val());
+                    });
+                    if (score) {
+                        if (!data[id]) {
+                            data[id] = {
+                                projects: {},
+                                suggest: suggest,
+                            };
+                        }
+                        data[id].projects[project] = score;
+                    }
+                });
+            }
+
+            return data
+        },
+        submit() {
+
+            // 是否完成所有选项
+            if (!this.isCompleted()) return
+
+            var scores = this.getScore()
+
+            $.ajax({
+                method: "POST",
+                url: "./user",
+                data: {
+                    action: "submit",
+                    data: scores,
+                },
+                success: function () {
+                    alert('提交成功！');
+                    this.logout()
+                },
+                error: function (err) {
+                    if (err.responseJSON.msg) {
+                        return alert(err.responseJSON.msg)
+                    }
+                    alert('提交失败！')
+                }
+            })
+
+        },
         logout() {
-            store.del('user')
             location.href = './login.html'
         },
     }
