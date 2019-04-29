@@ -25,3 +25,31 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.el-card {
+  overflow-y: auto;
+  @include no-scrollbar;
+}
+
+* + .el-card {
+  margin-top: $app-padding;
+}
+.el-card__header {
+  padding: 9px 10px;
+}
+.el-card__body {
+  padding: 12px;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: normal;
+}
+
+.card-header {
+  height: 30px;
+  @include flex;
+  align-items: center;
+  justify-content: space-between;
+}
+</style>

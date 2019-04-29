@@ -1,6 +1,6 @@
 <template>
   <div v-if="load">
-    <!-- 选择 -->
+    <!-- select -->
     <el-select v-if="item.type === 'select'"
                v-model="val"
                :size="respFormControlSize"
@@ -12,7 +12,7 @@
                  :value="option.value">
       </el-option>
     </el-select>
-    <!-- 日期 -->
+    <!-- date -->
     <el-date-picker v-else-if="item.type === 'date'"
                     v-model="val"
                     type="date"
@@ -21,7 +21,7 @@
                     value-format="yyyy-MM-dd"
                     clearable>
     </el-date-picker>
-    <!-- 滑块 -->
+    <!-- sidebar -->
     <el-slider v-else-if="item.type === 'range'"
                v-model="val"
                :step="item.step"
@@ -30,26 +30,33 @@
                show-input
                input-size="mini">
     </el-slider>
-    <!-- 计数 -->
+    <!-- count -->
     <el-input-number v-else-if="item.type === 'inputNumber'"
                      v-model="val"
                      :step="item.step"
                      :min="item.min"
                      :max="item.max">
     </el-input-number>
-    <!-- 上传 -->
+    <!-- upload -->
     <template v-else-if="item.type === 'file'">
       <upload-control :item="item"
                       :model.sync="val" />
     </template>
-    <!-- 开关 -->
+    <!-- switch -->
     <el-switch v-else-if="item.type === 'switch'"
                v-model="val"
                active-color="#13ce66"
                inactive-color="#ff4949"
                :inactive-value="getInactive"
                :active-value="getActive" />
-    <!-- 默认 -->
+    <!-- code -->
+    <codemirror v-else-if="item.type === 'code'"
+                class="codemirror"
+                v-model="val"
+                :style="item.style"
+                :placeholder="getPlaceholder()"
+                :options="codemirrorOptions"></codemirror>
+    <!-- default -->
     <el-input v-else
               :type="item.type"
               :placeholder="getPlaceholder()"
@@ -74,11 +81,15 @@
 <script>
 import UploadControl from './UploadControl'
 import ResponsiveSize from '@/common/mixins/ResponsiveSize'
+import { codemirror } from 'vue-codemirror-lite'
+import 'codemirror/addon/display/placeholder.js'
+import 'codemirror/mode/htmlmixed/htmlmixed'
 export default {
   name: 'FormControl',
   mixins: [ResponsiveSize],
   components: {
-    UploadControl
+    UploadControl,
+    codemirror
   },
   props: {
     item: Object,
@@ -87,10 +98,17 @@ export default {
   data: () => ({
     load: false,
     val: '',
-    options: []
+    options: [],
+    codemirrorOptions: {
+      mode: 'htmlmixed',
+      tabSize: 2,
+      lineNumbers: false,
+      lineWrapping: false
+    }
   }),
   mounted() {
     this.val = this.model
+    this.codemirrorOptions.placeholder = this.getPlaceholder()
     this.load = true
   },
   methods: {
@@ -136,5 +154,27 @@ export default {
 }
 .icon {
   font-size: 1.1rem;
+}
+.is-error {
+  .codemirror {
+    border-color: #f56c6c;
+  }
+}
+.codemirror {
+  padding: 1px;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+  transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  line-height: 17px;
+}
+</style>
+<style lang="scss">
+.CodeMirror pre.CodeMirror-placeholder {
+  color: #c0c4cc;
+  font: 400 13.3333px Arial;
+}
+.CodeMirror {
+  padding: 5px 10px;
+  height: 100%;
 }
 </style>

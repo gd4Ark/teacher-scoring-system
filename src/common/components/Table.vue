@@ -1,5 +1,6 @@
 <template>
   <el-table :data="data"
+            v-loading="loading"
             height="90%"
             style="width: 100%;"
             @selection-change="handleSelectionChange"
@@ -22,7 +23,11 @@ export default {
   name: 'Table',
   props: {
     data: Array,
-    columns: Array
+    columns: Array,
+    loading: {
+      type: Boolean,
+      default: false
+    }
   },
   methods: {
     handleSelectionChange(val) {
@@ -34,3 +39,21 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.table {
+  width: 100%;
+  margin: 2% auto;
+  border-radius: 5px;
+}
+
+.el-table {
+  font-size: 0.95rem;
+}
+.el-table .warning-row {
+  background: oldlace;
+}
+
+.el-table__body-wrapper {
+  @include no-scrollbar;
+}
+</style>

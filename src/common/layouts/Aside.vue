@@ -92,3 +92,14 @@ span {
   @include no-user-select;
 }
 </style>
+<style lang="scss">
+.el-menu {
+  background: transparent;
+  border: none;
+  overflow: hidden;
+  .el-menu-item,
+  .el-submenu__title {
+    font-size: 0.9rem;
+  }
+}
+</style>

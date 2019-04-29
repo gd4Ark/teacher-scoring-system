@@ -1,3 +1,4 @@
+import loading from './loading'
 import {
     mapActions,
 } from "vuex"
@@ -8,20 +9,14 @@ import {
 import confirm from "@/common/utils/confirm"
 import ResponsiveSize from '@/common/mixins/ResponsiveSize'
 export default {
-    mixins: [ResponsiveSize],
+    mixins: [ResponsiveSize, loading],
     data: () => ({
         multipleSelection: [],
-        load: false,
     }),
     methods: {
         ...mapActions({
             delData: 'delete',
         }),
-        loaded() {
-            setTimeout(() => {
-                this.load = true
-            }, 40);
-        },
         getData() {
             this.$emit("get-data")
         },

@@ -1,8 +1,5 @@
 import commonState from "@/common/store/state"
 import commonMutations from "@/common/store/mutations"
-import {
-    cover
-} from "@/common/utils"
 
 const state = {
     ...commonState,
@@ -32,11 +29,6 @@ const getters = {
 }
 
 const mutations = {
-    update: (state, data) => {
-        cover(state, data, (key, val) => {
-            state[key] = val
-        })
-    },
     ...commonMutations,
 }
 

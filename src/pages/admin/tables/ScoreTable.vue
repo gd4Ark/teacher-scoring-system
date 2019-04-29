@@ -5,7 +5,8 @@
          slot="toolbar">
     </div>
 
-    <v-table :data="score.list"
+    <v-table :loading="!load"
+             :data="score.list"
              :columns="columns">
       <el-table-column slot="columns-after"
                        label="操作"
@@ -21,11 +22,11 @@
   </v-card>
 </template>
 <script>
-import vTable from "@/common/components/Table";
-import Pagination from "@/common/components/Pagination";
-import ModalEdit from "@/common/components/ModalEdit";
-import ManageTable from "@/common/mixins/ManageTable";
-import { mapActions, mapState } from "vuex";
+import vTable from '@/common/components/Table'
+import Pagination from '@/common/components/Pagination'
+import ModalEdit from '@/common/components/ModalEdit'
+import ManageTable from '@/common/mixins/ManageTable'
+import { mapState } from 'vuex'
 export default {
   mixins: [ManageTable],
   components: {
@@ -36,48 +37,49 @@ export default {
   props: {
     title: {
       type: String,
-      default: "分数表"
+      default: '分数表'
     }
   },
   data: () => ({
-    module: "score",
+    module: 'score',
     columns: [
       {
-        prop: "tearcher_name",
-        label: "教师姓名"
+        prop: 'tearcher_name',
+        label: '教师姓名'
       },
       {
-        prop: "subject_name",
-        label: "所教科目"
+        prop: 'subject_name',
+        label: '所教科目'
       },
       {
-        prop: "score",
-        label: "xxx分数"
+        prop: 'score',
+        label: 'xxx分数'
       },
       {
-        prop: "score",
-        label: "xxx分数"
+        prop: 'score',
+        label: 'xxx分数'
       },
       {
-        prop: "score",
-        label: "xxx分数"
+        prop: 'score',
+        label: 'xxx分数'
       },
       {
-        prop: "score",
-        label: "xxx分数"
+        prop: 'score',
+        label: 'xxx分数'
       },
       {
-        prop: "count",
-        label: "已评人数"
+        prop: 'count',
+        label: '已评人数'
       }
     ]
   }),
-  created() {
-    this.getData();
+  async created() {
+    this.getData()
+    this.loaded()
   },
   methods: {},
   computed: {
-    ...mapState(["score"])
+    ...mapState(['score'])
   }
-};
+}
 </script>

@@ -22,7 +22,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['device','isMobile']),
+    ...mapGetters(['device', 'isMobile']),
     layout() {
       return this.isMobile ? this.state.small_layout : this.state.layout
     },
@@ -32,7 +32,7 @@ export default {
     pagerCount() {
       return this.state.pager_count
     },
-    pageSizes(){
+    pageSizes() {
       return this.state.page_sizes
     },
     currentPage: {
@@ -56,3 +56,27 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.el-pagination {
+  margin-top: 1.5vh;
+  @include sub-center;
+  justify-content: space-around;
+}
+.el-pagination__jump {
+  margin-left: 3px;
+}
+.el-pagination--small {
+  .el-pagination__sizes {
+    .el-input--mini .el-input__inner {
+      font-size: 0.9rem;
+      height: 22px;
+      line-height: 20px;
+    }
+  }
+}
+
+.el-pagination button,
+.el-pagination span:not([class*='suffix']) {
+  font-size: 0.9rem;
+}
+</style>

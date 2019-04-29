@@ -14,10 +14,14 @@ import App from '@/common/App'
 import router from './router/index'
 import store from './store/index'
 
+const baseURL = config.is_prod ?
+  config.server_url : config.dev_server_url
+
 import axios from "@/common/utils/axios"
 Vue.use(axios, {
   router,
   store,
+  baseURL,
   needAuth: true,
 })
 

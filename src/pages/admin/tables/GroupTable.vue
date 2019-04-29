@@ -1,6 +1,5 @@
 <template >
-  <v-card v-if="load"
-          class="table-card"
+  <v-card class="table-card"
           :title="title">
     <div class="toolbar"
          slot="toolbar">
@@ -23,7 +22,8 @@
                  @click="handleDelete(multipleSelection)">删除</el-button>
     </div>
 
-    <v-table :data="state.data"
+    <v-table :loading="!load"
+             :data="state.data"
              :columns="columns"
              @selection-change="handleSelectionChange"
              @sort-change="handleSortChange">
@@ -97,7 +97,7 @@ export default {
         prop: 'name',
         label: '班级名称',
         sortable: 'custom',
-        minWidth:100,
+        minWidth: 100
       },
       {
         prop: 'student_count',
@@ -108,7 +108,7 @@ export default {
         prop: 'complete_count',
         label: '已评人数',
         sortable: 'custom',
-        minWidth:100
+        minWidth: 100
       }
     ]
   }),

@@ -1,7 +1,7 @@
-const CompressionPlugin = require("compression-webpack-plugin");
+const CompressionPlugin = require("compression-webpack-plugin")
 const pkg = require('./package.json')
-const isDev = process.env.NODE_ENV == 'development';
-const current = 'admin';
+const isPord = process.env.NODE_ENV == 'production'
+const current = 'admin'
 const pages = [
   // development
   // can only debug one
@@ -18,10 +18,10 @@ const pages = [
       filename: 'index.html',
     },
   }
-];
+]
 const config = {
-  publicPath: isDev ? '/' : './',
-  pages: pages[isDev ? 0 : 1],
+  publicPath: isPord ? './' : '/',
+  pages: pages[isPord ? 1 : 0],
   lintOnSave: false,
   css: {
     loaderOptions: {
@@ -31,7 +31,7 @@ const config = {
     }
   },
   configureWebpack: () => {
-    if (!isDev) {
+    if (isPord) {
       return {
         plugins: [
           new CompressionPlugin({
@@ -48,8 +48,8 @@ const config = {
       definitions[0]['process.env']['APP_NAME'] = JSON.stringify(pkg.name)
       definitions[0]['process.env']['APP_TITLE'] = JSON.stringify(pkg.title)
       definitions[0]['process.env']['APP_VERSION'] = JSON.stringify(pkg.version)
-      return definitions;
-    });
+      return definitions
+    })
   }
-};
-module.exports = config;
+}
+module.exports = config

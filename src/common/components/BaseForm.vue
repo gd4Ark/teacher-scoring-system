@@ -1,5 +1,5 @@
 <template>
-  <c-form v-if="sformData!==null"
+  <c-form v-loading="loading"
           :form-item="formItem"
           :form-data="sformData"
           :show-label="showLabel"
@@ -74,18 +74,24 @@ export default {
       this.$refs.form.submit()
     },
     handleSubmit() {
-      const data = retainKeys(this.sformData, this.getKeys())
+      const data = retainKeys(this.sformData, this.getKeys(this.formItem))
       this.$emit('submit', data)
     },
-    getKeys() {
+    getKeys(array) {
       let keys = []
-      this.formItem.forEach(el => {
-        if (el.items) {
-          return (keys = [...keys, ...el.items.map(el => el.key)])
+      array.forEach(item => {
+        if (item.items) {
+          keys = keys.concat(this.getKeys(item.items))
+          return
         }
-        return keys.push(el.key)
+        keys.push(item.key)
       })
       return keys
+    }
+  },
+  computed: {
+    loading() {
+      return this.sformData === null
     }
   }
 }

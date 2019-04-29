@@ -1,4 +1,7 @@
 import BaseForm from "@/common/components/BaseForm"
+import {
+    warning,
+} from "@/common/utils/message"
 export default {
     components: {
         BaseForm
@@ -47,7 +50,7 @@ export default {
         btnDisabled: false,
     }),
     methods: {
-        done(){
+        done() {
             this.btnDisabled = false
         },
         reset() {
@@ -60,7 +63,7 @@ export default {
                 return this.$emit("submit", data)
             }
             if (!this.beforeVerify(data)) {
-                return
+                return warning('请填写正确！')
             }
             this.btnDisabled = true
             data = this.beforeSubmit(data)

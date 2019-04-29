@@ -1,11 +1,10 @@
 <template>
-  <v-card v-if="load"
-          class="table-card"
+  <v-card class="table-card"
           :title="title">
     <div class="toolbar"
          slot="toolbar">
       <modal-add title="添加教师"
-      :btn-size="respBtnSize"
+                 :btn-size="respBtnSize"
                  :form-item="$v_data[module].add.item"
                  :get-form-data="$v_data[module].add.data"
                  :module="module"
@@ -17,7 +16,8 @@
                  @click="handleDelete(multipleSelection)">删除</el-button>
     </div>
 
-    <v-table :data="state.data"
+    <v-table :loading="!load"
+             :data="state.data"
              :columns="columns"
              @selection-change="handleSelectionChange"
              @sort-change="handleSortChange">

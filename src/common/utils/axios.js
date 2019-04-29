@@ -6,18 +6,16 @@ import {
 import {
     error
 } from "./message"
-import config from "@/common/config"
 
 export default {
     install(Vue, {
         router,
         store,
-        needAuth = false
+        baseURL,
+        needAuth = false,
     }) {
-        axios.defaults.baseURL =
-            process.env.NODE_ENV === "development" ?
-            config.dev_server_url :
-            config.server_url
+
+        axios.defaults.baseURL = baseURL
 
         // request interceptor
         axios.interceptors.request.use(
@@ -64,6 +62,10 @@ export default {
                 return data.data.data || data.data
             },
             err => {
+                if (!err.response) {
+                    error(err)
+                    return Promise.reject(err)
+                }
                 const status = err.response.status
                 const message = err.response.data.msg
                 if (process.env.NODE_ENV === "development") {

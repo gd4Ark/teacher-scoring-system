@@ -23,14 +23,15 @@ export default {
         ...mapActions(["update", "updateBatch"]),
         async submiting(data) {
             const submitMethod = this.isBatch ? "batchSubmit" : "baseSubmit"
-            const res = await this[submitMethod](data)
-            if (res) {
+            this[submitMethod](data).then((res) => {
                 this.done()
                 const message = this.successMessage(res) || "更新成功！"
                 success(message)
                 this.$emit("success")
                 this.afterSuccess()
-            }
+            }).catch(() => {
+                this.done()
+            })
         },
         async baseSubmit(data) {
             return await this.update({

@@ -91,3 +91,19 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.el-upload {
+  display: block;
+}
+
+.el-upload-dragger .el-icon-upload {
+  margin: 20px 0 16px;
+  font-size: 2.5rem;
+  line-height: 20px;
+}
+
+.el-upload-dragger {
+  @include wh(auto);
+  padding: 1vh;
+}
+</style>

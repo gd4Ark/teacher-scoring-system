@@ -17,15 +17,16 @@ export default {
         ...mapActions(["add", "uploadAdd"]),
         async submiting(data) {
             const submitMethod = this.isUpload ? "uploadSubmit" : "baseSubmit"
-            const res = await this[submitMethod](data)
-            if (res) {
+            this[submitMethod](data).then((res) => {
                 this.reset()
                 this.done()
                 const message = this.successMessage(res) || "添加成功！"
                 success(message)
                 this.$emit("success")
                 this.afterSuccess()
-            }
+            }).catch(() => {
+                this.done()
+            })
         },
         async baseSubmit(data) {
             return await this.add({

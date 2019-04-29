@@ -10,6 +10,35 @@
                  :form-item="formItem"
                  :form-data="formData" />
     </template>
+    <!-- is multiple -->
+    <template v-else-if="item.isMultiple">
+      <form-item v-for="(subItem,subIndex) in item.items"
+                 :key="subIndex"
+                 :item="subItem"
+                 :rules="rules"
+                 :form-item="formItem"
+                 :form-data="formData"
+                 :spliceKey="subItem.key" />
+    </template>
+    <!-- is tab -->
+    <template v-else-if="item.isTab">
+      <el-tabs v-model="item.activeName">
+        <el-tab-pane v-for="(subItem,subIndex) in item.items"
+                     :label="subItem.title"
+                     :key="subIndex"
+                     :name="subItem.key"
+                     :lazy="true">
+          <form-item :item="subItem"
+                     :form-item="formItem"
+                     :form-data="formData"
+                     :rules="rules"
+                     :spliceKey="subItem.key" />
+        </el-tab-pane>
+      </el-tabs>
+    </template>
+    <template v-else-if="item.isTitle">
+      <el-divider>{{ item.title }}</el-divider>
+    </template>
     <template v-else>
       <!-- 一行多个 -->
       <template v-if="item.items">
@@ -107,5 +136,13 @@ export default {
 <style lang="scss" scoped>
 .el-form-item.hidden {
   visibility: hidden;
+}
+</style>
+<style lang="scss">
+.el-form-item .el-tabs__header.is-top {
+  margin-left: 80px;
+}
+.el-divider__text {
+  color: #606266;
 }
 </style>

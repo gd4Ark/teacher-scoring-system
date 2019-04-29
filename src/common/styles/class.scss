@@ -59,23 +59,6 @@
     @include flex-column;
 }
 
-.table {
-    width: 100%;
-    margin: 2% auto;
-    border-radius: 5px;
-}
-
-.el-table {
-    font-size: 0.95rem;
-}
-.el-table .warning-row {
-    background: oldlace;
-}
-
-.el-table__body-wrapper {
-    @include no-scrollbar;
-}
-
 .el-button--mini {
     padding: 7px 10px;
 }
@@ -120,30 +103,9 @@
     width: 130px;
 }
 
-// .el-input__inner{
-//   background:transparent;
-//   border: none;
-//   border-bottom: 1px solid #dcdfe6;
-//   border-bottom-left-radius: 0;
-//   border-bottom-right-radius: 0;
-// }
-
 .el-select .el-input.is-focus .el-input__inner {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-}
-
-.el-pagination__jump {
-    margin-left: 3px;
-}
-
-.el-card {
-    overflow-y: auto;
-    @include no-scrollbar;
-}
-
-* + .el-card {
-    margin-top: $app-padding;
 }
 
 .table-card {
@@ -156,59 +118,8 @@
     }
 }
 
-.el-card__header {
-    padding: 9px 10px;
-}
-
-.el-card__body {
-    padding: 12px;
-}
-
-.card-title {
-    font-size: 1.2rem;
-    font-weight: normal;
-}
-
-.card-header {
-    height: 30px;
-    @include flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.el-pagination {
-    margin-top: 1.5vh;
-    @include sub-center;
-    justify-content: space-around;
-}
-
-.el-menu {
-    background: transparent;
-    border: none;
-    overflow: hidden;
-    .el-menu-item,
-    .el-submenu__title {
-        font-size: 0.9rem;
-    }
-}
-
 .el-dropdown {
     font-size: 1.1rem;
-}
-
-.el-upload {
-    display: block;
-}
-
-.el-upload-dragger .el-icon-upload {
-    margin: 20px 0 16px;
-    font-size: 2.5rem;
-    line-height: 20px;
-}
-
-.el-upload-dragger {
-    @include wh(auto);
-    padding: 1vh;
 }
 
 .el-textarea__inner {
@@ -231,23 +142,4 @@
     &.no {
         color: #f56c6c;
     }
-}
-
-// .app-aside{
-//   display: none;
-// }
-
-.el-pagination--small {
-    .el-pagination__sizes {
-        .el-input--mini .el-input__inner {
-            font-size: 0.9rem;
-            height: 22px;
-            line-height: 20px;
-        }
-    }
-}
-
-.el-pagination button,
-.el-pagination span:not([class*="suffix"]) {
-    font-size: 0.9rem;
 }

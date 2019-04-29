@@ -30,11 +30,6 @@ const getters = {
 }
 
 const mutations = {
-    update: (state, data) => {
-        cover(state, data, (key, val) => {
-            state[key] = val
-        })
-    },
     ...commonMutations,
 }
 
