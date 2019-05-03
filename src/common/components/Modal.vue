@@ -24,6 +24,7 @@
       </slot>
 
       <span slot="footer"
+            v-if="needFooter"
             class="dialog-footer">
         <slot name="footer">
           <el-button @click="hidden"
@@ -48,6 +49,10 @@ export default {
     dialogVisible: false
   }),
   props: {
+    needFooter: {
+      type: Boolean,
+      default: true
+    },
     title: {
       type: String,
       default: '弹窗'

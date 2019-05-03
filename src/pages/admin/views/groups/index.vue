@@ -8,7 +8,7 @@
 <script>
 const __module = 'groups'
 import Search from '@/common/components/Search'
-import sTable from '@/pages/admin/tables/GroupTable'
+import sTable from './components/GroupTable'
 import { mapActions } from 'vuex'
 export default {
   components: {

@@ -33,6 +33,8 @@
                       btn-size="mini"
                       @get-data="getData" />
           <el-button size="mini"
+                     @click="toTeaching(scope.row.id)">查看任课</el-button>
+          <el-button size="mini"
                      type="danger"
                      @click="handleDelete([scope.row.id])">删除</el-button>
         </template>
@@ -75,6 +77,12 @@ export default {
         prop: 'name',
         label: '教师姓名',
         sortable: 'custom'
+      },
+      {
+        prop: 'teachings_count',
+        label: '任课数量',
+        sortable: 'custom',
+        minWidth: 100
       }
     ]
   }),
@@ -85,7 +93,15 @@ export default {
   methods: {
     ...mapMutations(__module, {
       setOrder: 'update'
-    })
+    }),
+    toTeaching(id) {
+      this.$router.push({
+        name: 'teacherTeachings',
+        params: {
+          id
+        }
+      })
+    }
   },
   computed: {
     ...mapState({

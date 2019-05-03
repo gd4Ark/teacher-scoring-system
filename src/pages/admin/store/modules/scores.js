@@ -6,13 +6,13 @@ const state = {
 }
 
 const actions = {
-    async getData(ctx, id) {
-        const module = 'score'
-        const url = id ? module + `/${id}` : module
+    async getData(ctx) {
+        const module = 'scores'
+        const url = module
         return await ctx.dispatch('get', {
             module,
             url,
-            doCommit: !id,
+            doCommit: true,
         }, {
             root: true
         })

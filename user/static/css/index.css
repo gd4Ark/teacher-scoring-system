@@ -79,4 +79,5 @@ textarea {
     resize: none;
     border-radius: 0 !important;
     border: 0 !important;
+    height: 200px !important;
 }

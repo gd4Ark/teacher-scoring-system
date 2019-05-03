@@ -3,17 +3,18 @@ import commonMutations from "@/common/store/mutations"
 
 const state = {
     ...commonState,
-    group: null,
-    group_id: '',
+    parent: null,
+    group: {
+        id: null,
+    },
 }
 
 const actions = {
     async getData(ctx, id) {
-        const {
-            group_id
-        } = ctx.state
+        const parent = ctx.state.parent
+        const parent_id = ctx.state[parent].id
         const module = 'students'
-        const url = id ? module + `/${id}` : module + `?groupId=${group_id}`
+        const url = id ? module + `/${id}` : module + `?${parent}Id=${parent_id}`
         return await ctx.dispatch('get', {
             module,
             url,

@@ -17,7 +17,8 @@ class SubjectsController extends Controller
 
     public function index()
     {
-        $query = $this->queryFilter(Subject::query());
+        $query = Subject::query()->withCount('teachings');
+        $query = $this->queryFilter($query);
         if ($this->req->get('getOptions') == 1) {
             return $this->getOptions($query);
         } else {
@@ -28,6 +29,9 @@ class SubjectsController extends Controller
     public function show($id)
     {
         $item = Subject::query()->findOrFail($id);
+        if ($this->req->get('getTeachings') == 1){
+            return $this->json($item->getTeachings());
+        }
         return $this->json($item);
     }
 

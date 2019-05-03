@@ -36,9 +36,6 @@ export default {
   data: () => ({
     search_keyword: []
   }),
-  mounted() {
-    this.reset()
-  },
   methods: {
     ...mapActions(['resetSearchData', 'updateSearchKeyword']),
     reset() {

@@ -4,7 +4,7 @@
       <hamburger :is-active="sidebar.opened"
                  :device="device"
                  @toggle-click="toggleSidebar" />
-      <breadcrumb class="breadcrumb-container" />
+      <breadcrumb class="breadcrumb-container" first="scores" />
     </div>
     <div class="right-menu">
 

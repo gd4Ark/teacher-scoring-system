@@ -21,6 +21,21 @@ class Student extends Model
     ];
 
     /**
+     * @var array
+     */
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function group(){
+        return $this->belongsTo('App\Models\Group');
+    }
+
+    /**
      * @param array $array
      * @return array
      */
@@ -39,9 +54,5 @@ class Student extends Model
             $data[$item] =  $rules[$item];
         }
         return $data;
-    }
-
-    public function group(){
-        return $this->belongsTo('App\Models\Group');
     }
 }

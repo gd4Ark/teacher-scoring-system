@@ -5,8 +5,8 @@
             style="width: 100%;"
             @selection-change="handleSelectionChange"
             @sort-change="handleSortChange">
+    <el-table-column v-if="needSelection" type="selection"></el-table-column>
     <slot name="prepend" />
-    <el-table-column type="selection"></el-table-column>
     <el-table-column v-for="(column,index) in columns"
                      :key="index"
                      v-bind="column"
@@ -24,6 +24,10 @@ export default {
   props: {
     data: Array,
     columns: Array,
+    needSelection : {
+      type : Boolean,
+      default : true,
+    },
     loading: {
       type: Boolean,
       default: false

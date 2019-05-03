@@ -8,7 +8,7 @@
 <script>
 const __module = 'teachers'
 import Search from '@/common/components/Search'
-import sTable from '@/pages/admin/tables/TeacherTable'
+import sTable from './components/TeacherTable'
 import { mapActions } from 'vuex'
 export default {
   components: {

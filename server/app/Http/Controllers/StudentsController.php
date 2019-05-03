@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Models\Score;
 use App\Models\Student;
 use Illuminate\Http\Request;
 
@@ -12,24 +13,32 @@ class StudentsController extends Controller
     {
         parent::__construct($request);
         $this->middleware('auth:api',[
-            'except' => ['index','show','login']
+            'except' => ['index','show','login','submit']
         ]);
     }
 
     public function index()
     {
-        if (!$this->req->has('groupId')){
-            return $this->error('Necessary to have the `groupId` parameter');
+        $query =  Student::query();
+        $merge = null;
+
+        if ($this->req->has('groupId')){
+
+            $id = $this->req->get('groupId');
+            $merge = ['group' => Group::query()->findOrFail($id)];
+            $query =  $query->where('group_id',$id);
+
         }
-        $groupId = $this->req->input('groupId');
-        $query =  Student::query()->where('group_id',$groupId);
+
         $query = $this->queryFilter($query);
         if ($this->req->get('getOptions') == 1) {
             return $this->getOptions($query);
         } else {
-            return $this->json(array_merge([
-                'group' => Group::query()->where('id',$groupId)->first(),
-            ],$this->paginate($query)->toArray()));
+            return $this->json(array_merge(
+                $merge,
+                $this->paginate($query)->toArray()
+                )
+            );
         }
     }
 
@@ -129,12 +138,59 @@ class StudentsController extends Controller
         $group = Group::query()->findOrFail($this->req->get('groupId'));
         $student = Student::query()->findOrFail($this->req->get('studentId'));
         if ($student->group->id !== $group->id){
-            return $this->error('该学生不存在');
+            return $this->error('The student does not exist');
         }
         if ($group->allow == 0){
-            return $this->error('禁止登录');
+            return $this->error('This group is forbidden to scoring');
         }
         return $this->json($student);
+    }
+
+    public function submit(){
+        $scores = (array)$this->req->get('scores');
+        $uid = (int)$this->req->get('user_id');
+        $user = Student::query()->findOrFail($uid);
+        if($user->complete){
+            return $this->error('The student has submitted');
+        }
+        if (!$user->group->allow){
+            return $this->error('This group is forbidden to scoring');
+        }
+        try {
+            foreach ($scores as $score){
+
+                $base = [
+                    'student_id' => $uid,
+                    'group_id' => $user->group->id,
+                    'subject_id' => $score['subject_id'],
+                    'teacher_id' => $score['teacher_id']
+                ];
+
+                $total = 0;
+
+                foreach ($score['projects'] as $project){
+                    $total += (int)$project;
+                }
+
+                $score['projects']['total'] = $total;
+
+                $meta = [
+                    'score' => [
+                        'project' => $score['projects'],
+                        'suggest' => $score['suggest'],
+                    ]
+                ];
+
+                Score::query()->firstOrCreate($base,array_merge($base,[
+                    'meta' => $meta,
+                ]));
+            }
+            $user->complete = 1;
+            $user->save();
+        }catch (\Exception $e) {
+            return $this->error($e->getMessage());
+        }
+        return $this->json();
     }
 
 }

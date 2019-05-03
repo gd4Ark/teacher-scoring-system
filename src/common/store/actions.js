@@ -67,6 +67,8 @@ export default {
     async resetSearchData(ctx, module) {
         ctx.commit(`${module}/update`, {
             search_data: this._vm.$v_data[module].search.data(),
+        }, {
+            root: true,
         })
     },
     async updateSearchKeyword(ctx, {
@@ -75,6 +77,8 @@ export default {
     }) {
         ctx.commit(`${module}/update`, {
             search_keyword,
+        }, {
+            root: true,
         })
     }
 }

@@ -18,6 +18,10 @@ const routerConfig = {
             redirect: '/index',
         },
         {
+            path: '/index',
+            redirect: '/scores',
+        },
+        {
             path: '/',
             component: () => import("@/common/layouts/Home"),
             children: [

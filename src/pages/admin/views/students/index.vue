@@ -1,12 +1,14 @@
 <template>
   <not-sub-router :name="module">
+    <search :module="module"
+            @get-data="getData" />
     <s-table @get-data="getData" />
   </not-sub-router>
 </template>
 <script>
-const __module = 'teachings'
+const __module = 'students'
 import Search from '@/common/components/Search'
-import sTable from '@/pages/admin/tables/TeachingTable'
+import sTable from './components/StudentTable'
 import { mapActions, mapMutations } from 'vuex'
 export default {
   components: {
@@ -23,8 +25,12 @@ export default {
     })
   },
   async created() {
+    const parent = this.$route.meta.parent
     this.setData({
-      group_id: this.$route.params.group_id
+      parent,
+      [parent]: {
+        id: this.$route.params.id
+      }
     })
     this.getData()
   }

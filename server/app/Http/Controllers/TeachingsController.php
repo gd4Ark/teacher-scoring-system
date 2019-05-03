@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Models\Subject;
+use App\Models\Teacher;
 use App\Models\Teaching;
 use Illuminate\Http\Request;
 
@@ -18,18 +20,37 @@ class TeachingsController extends Controller
 
     public function index()
     {
-        if (!$this->req->has('groupId')) {
-            return $this->error('Necessary to have the `groupId` parameter');
+        $query = Teaching::query();
+        $merge = null;
+
+        if ($this->req->has('groupId')) {
+
+            $id = $this->req->get('groupId');
+            $merge = ['group' => Group::query()->findOrFail($id)];
+            $query =  $query->where('group_id',$id);
         }
-        $groupId = $this->req->input('groupId');
-        $query = Teaching::query()->where('group_id', $groupId);
+        else if ($this->req->has('subjectId')) {
+
+            $id = $this->req->get('subjectId');
+            $merge = ['subject' => Subject::query()->findOrFail($id)];
+            $query =  $query->where('subject_id',$id);
+        }
+        else if ($this->req->has('teacherId')) {
+
+            $id = $this->req->get('teacherId');
+            $merge = ['teacher' => Teacher::query()->findOrFail($id)];
+            $query =  $query->where('teacher_id',$id);
+        }
+
         $query = $this->queryFilter($query);
         if ($this->req->get('getOptions') == 1) {
             return $this->getOptions($query);
         } else {
-            return $this->json(array_merge([
-                'group' => Group::query()->where('id', $groupId)->first(),
-            ], $this->paginate($query)->toArray()));
+            return $this->json(array_merge(
+                    $merge,
+                    $this->paginate($query)->toArray()
+                )
+            );
         }
     }
 
@@ -53,11 +74,14 @@ class TeachingsController extends Controller
     {
         try {
             $input = $this->req->only(['group_id', 'subject_id', 'teacher_id']);
-            $item = Teaching::query()->firstOrCreate($input);
+            $item = Teaching::query()->firstOrCreate([
+                'group_id' => $input['group_id'],
+                'subject_id' => $input['subject_id'],
+            ],$input);
             if ($item->wasRecentlyCreated) {
                 return $this->json($item);
             }
-            return $this->error('existed');
+            return $this->error('Subject already exists');
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }

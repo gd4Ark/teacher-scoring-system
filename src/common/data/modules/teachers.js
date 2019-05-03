@@ -43,6 +43,18 @@ export default {
         data: () => ({
             name: '',
         })
+    },
+
+    show: {
+        teaching: [{
+                prop: 'subject_name',
+                label: '科目名称',
+            },
+            {
+                prop: 'group_name',
+                label: '班级名称',
+            },
+        ]
     }
 
 }

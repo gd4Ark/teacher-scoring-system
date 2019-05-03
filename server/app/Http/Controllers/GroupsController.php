@@ -19,10 +19,11 @@ class GroupsController extends Controller
     public function index()
     {
         $query = Group::query()->withCount([
-            'students as student_count',
+            'students',
             'students as complete_count' => function ($query) {
                 $query->where('complete', 1);
-            }
+            },
+            'teachings',
         ]);
         $query = $this->queryFilter($query);
         if ($this->req->get('getOptions') == 1) {

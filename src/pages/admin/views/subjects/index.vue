@@ -8,7 +8,7 @@
 <script>
 const __module = 'subjects'
 import Search from '@/common/components/Search'
-import sTable from '@/pages/admin/tables/SubjectTable'
+import sTable from './components/SubjectTable'
 import { mapActions } from 'vuex'
 export default {
   components: {

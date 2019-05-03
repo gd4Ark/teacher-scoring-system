@@ -20,6 +20,10 @@ jQuery(function ($) {
             $('.submit-btn').on('click', function () {
                 _this.submit()
             })
+
+            $('.radio').each(function(){
+                $(this).click()
+            })
         },
         select(self) {
             var id = $(self).attr(teaching_attr)
@@ -61,6 +65,14 @@ jQuery(function ($) {
                 return $(this).attr('data-teaching-id');
             }).get();
 
+            var teacher_ids = $('.teacher_info').map(function () {
+                return $(this).attr('data-teacher-id');
+            }).get();
+
+            var subject_ids = $('.teacher_info').map(function () {
+                return $(this).attr('data-subject-id');
+            }).get();
+
 
             for (var i = 0; i < teaching_ids.length; i++) {
                 var id = teaching_ids[i];
@@ -77,6 +89,8 @@ jQuery(function ($) {
                             data[id] = {
                                 projects: {},
                                 suggest: suggest,
+                                subject_id : subject_ids[i],
+                                teacher_id : teacher_ids[i],
                             };
                         }
                         data[id].projects[project] = score;
@@ -87,6 +101,8 @@ jQuery(function ($) {
             return data
         },
         submit() {
+            
+            var _this = this
 
             // 是否完成所有选项
             if (!this.isCompleted()) return
@@ -95,14 +111,14 @@ jQuery(function ($) {
 
             $.ajax({
                 method: "POST",
-                url: "./user",
+                url:  BASE_URL + 'students/submit',
                 data: {
-                    action: "submit",
-                    data: scores,
+                    scores : scores,
+                    user_id : $('#user_id').attr('content')
                 },
-                success: function () {
+                success: function (data) {
                     alert('提交成功！');
-                    this.logout()
+                    _this.logout()
                 },
                 error: function (err) {
                     if (err.responseJSON.msg) {
@@ -114,7 +130,7 @@ jQuery(function ($) {
 
         },
         logout() {
-            location.href = './login.html'
+            location.href = './login'
         },
     }
 

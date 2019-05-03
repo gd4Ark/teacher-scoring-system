@@ -26,6 +26,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->resource('subjects', 'SubjectsController');
     $router->resource('students', 'StudentsController');
     $router->post('students/login', 'StudentsController@login');
+    $router->post('students/submit', 'StudentsController@submit');
     $router->resource('teachings', 'TeachingsController');
+    $router->resource('scores', 'ScoresController',[
+        'only' => ['index']
+    ]);
+    $router->get('scores/detail/{subject_id:[\d]+}/{teacher:[\d]+}', 'ScoresController@detail');
 
 });

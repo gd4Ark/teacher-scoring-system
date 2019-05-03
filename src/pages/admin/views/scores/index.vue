@@ -1,15 +1,25 @@
 <template>
-  <not-sub-router name="index">
-    <!-- <search module="score" />
-    <score-table /> -->
+  <not-sub-router :name="module">
+    <search :module="module"
+            @get-data="getData" />
+    <s-table @get-data="getData" />
   </not-sub-router>
 </template>
 <script>
+const __module = 'scores'
+import Search from '@/common/components/Search'
+import sTable from './components/ScoreTable'
 import { mapActions } from 'vuex'
 export default {
-  components: {},
-  ...mapActions({
-    // getData: "getTearcher"
-  })
+  components: {
+    sTable,
+    Search
+  },
+  data: () => ({
+    module: __module
+  }),
+  methods: {
+    ...mapActions(__module, ['getData'])
+  }
 }
 </script>

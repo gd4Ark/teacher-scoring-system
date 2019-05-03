@@ -4,6 +4,7 @@
     <el-select v-if="item.type === 'select'"
                v-model="val"
                :size="respFormControlSize"
+               :filterable="item.filterable"
                :placeholder="getPlaceholder('选择')"
                :clearable="true">
       <el-option v-for="option in getOptions()"

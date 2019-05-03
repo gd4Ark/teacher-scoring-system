@@ -1,14 +1,24 @@
 export default {
 
     search: {
-        item: [{
-            label: "姓名",
-            key: "name",
-            type: "text",
-            operation: 'like',
-        }],
+        item: [ {
+            label: "教师姓名",
+            key: "teacher_id",
+            type: "select",
+            filterable: true,
+            option_module: 'teachers',
+            operation: '=',
+        }, {
+            label: "科目名称",
+            key: "subject_id",
+            type: "select",
+            filterable: true,
+            option_module: 'subjects',
+            operation: '=',
+        },],
         data: () => ({
-            name: '',
+            teacher_id: '',
+            subject_id: '',
         })
     }
 

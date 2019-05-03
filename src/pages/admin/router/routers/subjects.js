@@ -5,5 +5,13 @@ export default [{
     meta: {
         title: "科目管理",
     },
-    children: [],
+    children: [{
+        path: ':id/teachings',
+        component: () => import("@/pages/admin/views/teachings/subject"),
+        name: 'subjectTeachings',
+        meta: {
+            title: "查看任课",
+        },
+        children: [],
+    }],
 }]

@@ -21,14 +21,38 @@ class Teaching extends Model
         'meta' => 'array'
     ];
 
+    /**
+     * @var array
+     */
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function group(){
+        return $this->belongsTo('App\Models\Group');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function subject(){
         return $this->belongsTo('App\Models\Subject');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function teacher(){
         return $this->belongsTo('App\Models\Teacher');
     }
 
+    /**
+     * @return array
+     */
     public function data(){
         return [
             'id' => $this->id,

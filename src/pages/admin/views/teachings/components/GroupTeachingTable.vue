@@ -1,12 +1,13 @@
 <template>
-  <v-card class="table-card"
+  <v-card v-if="load"
+          class="table-card"
           :title="title">
     <div class="toolbar"
          slot="toolbar">
       <modal-add title="添加学生"
                  :btn-size="respBtnSize"
-                 :form-item="$v_data[module].add.item"
-                 :get-form-data="$v_data[module].add.data"
+                 :form-item="$v_data[module].form.item"
+                 :get-form-data="$v_data[module].form.data"
                  :module="module"
                  :before-submit="beforeSubmit"
                  :success-message="successMessage"
@@ -23,12 +24,14 @@
              @sort-change="handleSortChange">
       <template slot="append">
         <el-table-column label="教师姓名"
+                         prop="teacher_id"
                          align="center">
           <template slot-scope="scope">
             <span>{{ getTeacherName(scope.row.teacher_id) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="所教科目"
+                         prop="subject_id"
                          align="center">
           <template slot-scope="scope">
             <span>{{ getSubjectName(scope.row.subject_id) }}</span>
@@ -38,8 +41,8 @@
                          align="center"
                          min-width="140">
           <template slot-scope="scope">
-            <modal-edit :title="`编辑学生 ${scope.row.name } 中`"
-                        :form-item="$v_data[module].edit.item"
+            <modal-edit :title="`编辑任课中`"
+                        :form-item="$v_data[module].form.item"
                         :current="scope.row"
                         :module="module"
                         btn-size="mini"
@@ -92,7 +95,7 @@ export default {
       setOrder: 'update'
     }),
     beforeSubmit(data) {
-      data.group_id = this.state.group_id
+      data.group_id = this.state.group.id
       return data
     },
     getTeacherName(id) {
@@ -110,7 +113,8 @@ export default {
     }),
     ...mapState(['teachers', 'subjects']),
     title() {
-      return `${this.state.group.name} 课程表`
+      const parent = this.state.parent
+      return this.state[parent].name + '课程表'
     }
   }
 }

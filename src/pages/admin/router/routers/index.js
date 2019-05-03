@@ -1,9 +1,17 @@
 export default [{
-    path: '/index',
+    path: '/scores',
     component: () => import("@/pages/admin/views/scores"),
-    name: 'index',
+    name: 'scores',
     meta: {
         title: "分数概览",
     },
-    children: [],
+    children: [{
+        path: ':sid/:tid/detail',
+        component: () => import("@/pages/admin/views/scores/children/detail"),
+        name: 'scoresDetail',
+        meta: {
+            title: "分数明细",
+        },
+        children: [],
+    }],
 }]

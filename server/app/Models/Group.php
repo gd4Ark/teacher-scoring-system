@@ -21,11 +21,27 @@ class Group extends Model
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @var array 
+     */
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function students()
     {
-        return $this->hasOne('App\Models\Student','group_id','id');
+        return $this->hasMany('App\Models\Student');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function teachings()
+    {
+        return $this->hasMany('App\Models\Teaching');
     }
 
     /**
