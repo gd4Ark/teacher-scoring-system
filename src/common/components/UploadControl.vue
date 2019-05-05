@@ -97,13 +97,14 @@ export default {
 }
 
 .el-upload-dragger .el-icon-upload {
-  margin: 20px 0 16px;
+  margin: 0;
   font-size: 2.5rem;
-  line-height: 20px;
 }
 
 .el-upload-dragger {
-  @include wh(auto);
-  padding: 1vh;
+  @include flex-column;
+  justify-content: center;
+  @include wh(auto, 90px);
+  padding: 0;
 }
 </style>

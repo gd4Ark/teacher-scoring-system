@@ -1,10 +1,10 @@
 <template>
-  <div v-if="load">
+  <div v-if="loaded">
     <!-- select -->
     <el-select v-if="item.type === 'select'"
                v-model="val"
                :size="respFormControlSize"
-               :filterable="item.filterable"
+                :filterable="item.filterable"
                :placeholder="getPlaceholder('选择')"
                :clearable="true">
       <el-option v-for="option in getOptions()"
@@ -80,13 +80,13 @@
   </div>
 </template>
 <script>
-import UploadControl from './UploadControl'
-import ResponsiveSize from '@/common/mixins/ResponsiveSize'
-import { codemirror } from 'vue-codemirror-lite'
-import 'codemirror/addon/display/placeholder.js'
-import 'codemirror/mode/htmlmixed/htmlmixed'
+import UploadControl from "./UploadControl";
+import ResponsiveSize from "@/common/mixins/ResponsiveSize";
+import { codemirror } from "vue-codemirror-lite";
+import "codemirror/addon/display/placeholder.js";
+import "codemirror/mode/htmlmixed/htmlmixed";
 export default {
-  name: 'FormControl',
+  name: "FormControl",
   mixins: [ResponsiveSize],
   components: {
     UploadControl,
@@ -97,54 +97,54 @@ export default {
     model: [String, Number, Boolean, File]
   },
   data: () => ({
-    load: false,
-    val: '',
+    loaded: false,
+    val: "",
     options: [],
     codemirrorOptions: {
-      mode: 'htmlmixed',
+      mode: "htmlmixed",
       tabSize: 2,
-      lineNumbers: false,
+      lineNumbers: true,
       lineWrapping: false
     }
   }),
   mounted() {
-    this.val = this.model
-    this.codemirrorOptions.placeholder = this.getPlaceholder()
-    this.load = true
+    this.val = this.model;
+    this.codemirrorOptions.placeholder = this.getPlaceholder();
+    this.loaded = true;
   },
   methods: {
     submit() {
-      if (this.item.disabledEvent) return
-      this.$emit('submit')
+      if (this.item.disabledEvent) return;
+      this.$emit("submit");
     },
-    getPlaceholder(type = '输入') {
-      return this.item.placeholder || `请${type}` + this.item.label
+    getPlaceholder(type = "输入") {
+      return this.item.placeholder || `请${type}` + this.item.label;
     },
     getOptions() {
-      if (this.item.options) return this.item.options
-      const module = this.item.option_module
-      return this.$store.state[module].options
+      if (this.item.options) return this.item.options;
+      const module = this.item.option_module;
+      return this.$store.state[module].options;
     }
   },
   watch: {
     val(val) {
-      this.$emit('update:model', val)
+      this.$emit("update:model", val);
     },
     model(val) {
       if (this.val !== val) {
-        this.val = val
+        this.val = val;
       }
     }
   },
   computed: {
     getActive() {
-      return this.item.active !== void 0 ? this.item.active : true
+      return this.item.active !== void 0 ? this.item.active : true;
     },
     getInactive() {
-      return this.item.inactive !== void 0 ? this.item.inactive : false
+      return this.item.inactive !== void 0 ? this.item.inactive : false;
     }
   }
-}
+};
 </script>
 <style lang="scss" scoped>
 .el-form-item__content div:not(.el-input-group) {
@@ -175,7 +175,10 @@ export default {
   font: 400 13.3333px Arial;
 }
 .CodeMirror {
-  padding: 5px 10px;
+  padding: 0;
   height: 100%;
+}
+.CodeMirror pre{
+  font-size: 1rem;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <el-form v-if="load"
+  <el-form v-if="loaded"
            :model="formData"
            :show-message="false"
            :inline="inline"
@@ -43,11 +43,11 @@ export default {
   },
   data: () => ({
     rules: {},
-    load: false
+    loaded: false
   }),
   mounted() {
     this.initRules(this.formItem)
-    this.load = true
+    this.loaded = true
   },
   methods: {
     submit() {

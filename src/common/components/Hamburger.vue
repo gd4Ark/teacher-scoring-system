@@ -19,8 +19,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .hamburger {
-  font-size: 1.2rem;
-  padding: 8px;
+  font-size: $hamburger-font-size;
+  padding: $hamburger-padding;
   cursor: pointer;
   transition: transform 0.28s ease;
   &.desktop.hidden {

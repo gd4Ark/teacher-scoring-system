@@ -16,7 +16,8 @@
                  @click="handleDelete(multipleSelection)">删除</el-button>
     </div>
 
-    <v-table :loading="!load"
+    <v-table :loading="loading"
+             ref="table"
              :data="state.data"
              :columns="columns"
              @selection-change="handleSelectionChange"
@@ -43,7 +44,9 @@
 
     <pagination :state="state"
                 :module="module"
-                @get-data="getData" />
+                @before-change="beforeChange"
+                @after-change="afterChange"
+                :get-data="getData" />
   </v-card>
 </template>
 <script>
@@ -88,7 +91,8 @@ export default {
   }),
   async created() {
     await this.getData()
-    this.loaded()
+    this.loaded = true
+    this.makeLoaded()
   },
   methods: {
     ...mapMutations(__module, {

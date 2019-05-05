@@ -89,7 +89,7 @@ export default {
 }
 
 .drawer-bg {
-  @include mask(999);
+  @include mask(1000);
 }
 
 .sidebar {
@@ -98,7 +98,7 @@ export default {
   left: 0;
   bottom: 0;
   z-index: 1001;
-  background: #f7f7f7;
+  background: $sidebar-color;
   overflow: hidden;
   transition: width 0.28s, transform 0.28s;
 }

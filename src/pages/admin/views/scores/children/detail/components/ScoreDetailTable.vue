@@ -1,9 +1,16 @@
 <template >
-  <v-card v-if="load"
+  <v-card v-if="loaded"
           class="table-card"
           :title="title">
-
-    <v-table :loading="!load"
+    <div class="toolbar"
+         slot="toolbar">
+      <el-button :size="respBtnSize"
+                 type="primary"
+                 icon="el-icon-download"
+                 @click="exportExcel">导出</el-button>
+    </div>
+    <v-table :loading="loading"
+             ref="table"
              :data="state.data"
              :columns="columns"
              :need-selection="false"
@@ -40,7 +47,9 @@
 
     <pagination :state="state"
                 :module="module"
-                @get-data="getData" />
+                @before-change="beforeChange"
+                @after-change="afterChange"
+                :get-data="getData" />
   </v-card>
 </template>
 <script>
@@ -65,8 +74,8 @@ export default {
     module: __module,
     columns: [
       {
-        prop: '教学效果',
-        label: '教学效果',
+        prop: '教学能力',
+        label: '教学能力',
         sortable: 'custom'
       },
       {
@@ -75,8 +84,8 @@ export default {
         sortable: 'custom'
       },
       {
-        prop: '教学能力',
-        label: '教学能力',
+        prop: '教学效果',
+        label: '教学效果',
         sortable: 'custom'
       },
       {
@@ -89,13 +98,40 @@ export default {
   async created() {
     await this.getData()
     await this.getOptions('groups')
-    this.loaded()
+    this.loaded = true
+    this.makeLoaded()
   },
   methods: {
     ...mapActions(['getOptions']),
     ...mapMutations(__module, {
       setOrder: 'update'
     }),
+    exportExcel() {
+      import('@/common/vendor/Export2Excel').then(excel => {
+        const tHeader = [
+          '班级名称',
+          ...this.columns.map(el => el.label),
+          '建议'
+        ]
+        const filterVal = ['group_id', ...this.columns.map(el => el.prop)]
+        const data = this.formatJson(filterVal, this.state.data)
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: this.title
+        })
+      })
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v =>
+        filterVal.map(j => {
+          if (j === 'group_id') {
+            return this.getGroupName(v[j])
+          }
+          return v[j]
+        })
+      )
+    },
     getGroupName(id) {
       const item = this.groups.options.find(el => el.value === id)
       return item ? item.label : ''

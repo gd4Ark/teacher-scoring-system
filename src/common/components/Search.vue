@@ -1,5 +1,6 @@
 <template>
-  <v-card :title="title">
+  <v-card :title="title"
+          class="search">
     <div class="toolbar"
          slot="toolbar">
       <el-button :size="respBtnSize"
@@ -19,10 +20,12 @@
 import cForm from '@/common/components/Form'
 import { mapActions } from 'vuex'
 import { firstUpperCase } from '@/common/utils'
+import getData from '@/common/mixins/getData'
+import submitChange from '@/common/mixins/submitChange'
 import ResponsiveSize from '@/common/mixins/ResponsiveSize'
 export default {
   name: 'Search',
-  mixins: [ResponsiveSize],
+  mixins: [ResponsiveSize, getData, submitChange],
   components: {
     cForm
   },
@@ -71,7 +74,9 @@ export default {
         module: this.module,
         search_keyword: this.search_keyword
       })
-      this.$emit('get-data')
+      this.beforeChange()
+      await this.getData()
+      this.afterChange()
     }
   },
   computed: {

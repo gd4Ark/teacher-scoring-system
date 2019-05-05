@@ -1,15 +1,16 @@
 <template>
   <el-table :data="data"
             v-loading="loading"
-            height="90%"
-            style="width: 100%;"
+            height="93%"
             @selection-change="handleSelectionChange"
             @sort-change="handleSortChange">
-    <el-table-column v-if="needSelection" type="selection"></el-table-column>
+    <el-table-column type="selection"
+                     align="center"></el-table-column>
     <slot name="prepend" />
     <el-table-column v-for="(column,index) in columns"
                      :key="index"
                      v-bind="column"
+                     :render-header="column.isRender ? renderHeader : null"
                      align="center">
       <template slot-scope="scope">
         <p>{{ scope.row[column.prop] }}</p>
@@ -24,10 +25,6 @@ export default {
   props: {
     data: Array,
     columns: Array,
-    needSelection : {
-      type : Boolean,
-      default : true,
-    },
     loading: {
       type: Boolean,
       default: false
@@ -46,12 +43,19 @@ export default {
 <style lang="scss">
 .table {
   width: 100%;
-  margin: 2% auto;
-  border-radius: 5px;
 }
-
 .el-table {
-  font-size: 0.95rem;
+  position: relative;
+  font-size: $table-font-size;
+  width: $table-width;
+  // height: $table-height;
+  a {
+    color: $gighlight-color;
+  }
+}
+.el-table td,
+.el-table th {
+  padding: $table-row-padding;
 }
 .el-table .warning-row {
   background: oldlace;
@@ -59,5 +63,6 @@ export default {
 
 .el-table__body-wrapper {
   @include no-scrollbar;
+  scroll-behavior: smooth;
 }
 </style>

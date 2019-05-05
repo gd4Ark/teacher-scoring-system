@@ -12,13 +12,15 @@
     "axios": "^0.18.0",
     "core-js": "^3.0.0",
     "element-ui": "^2.8.2",
+    "file-saver": "^2.0.1",
     "path-to-regexp": "^3.0.0",
     "screenfull": "^4.2.0",
     "vue": "^2.5.17",
     "vue-codemirror-lite": "^1.0.4",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",
-    "vuex-localstorage": "^1.0.0"
+    "vuex-localstorage": "^1.0.0",
+    "xlsx": "^0.14.3"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.5",

@@ -4,7 +4,7 @@
       <hamburger :is-active="sidebar.opened"
                  :device="device"
                  @toggle-click="toggleSidebar" />
-      <breadcrumb class="breadcrumb-container" first="scores" />
+      <breadcrumb class="breadcrumb-container" />
     </div>
     <div class="right-menu">
 
@@ -89,12 +89,12 @@ export default {
 <style lang="scss" scoped>
 .app-header {
   @include padding-x;
-  @include wh(100%, 62px);
+  @include wh(100%, $app-header-height);
   @include flex;
   align-items: center;
   justify-content: space-between;
-  background: $gighlight-color;
-  color: white;
+  background: $app-header-bgcolor;
+  color: $app-header-color;
   .left-menu {
     @include sub-center;
     .breadcrumb-container {
@@ -108,7 +108,7 @@ export default {
       @include no-user-select;
       @include sub-center;
       @include padding;
-      color: white;
+      color: $app-header-color;
       cursor: pointer;
     }
   }

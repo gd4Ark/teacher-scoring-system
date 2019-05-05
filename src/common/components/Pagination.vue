@@ -1,6 +1,6 @@
 <template>
   <el-pagination background
-                 :small="isMobile"
+                 :small="true"
                  :layout="layout"
                  :total="total"
                  :pager-count="pagerCount"
@@ -9,17 +9,15 @@
                  :page-sizes="pageSizes" />
 </template>
 <script>
+import getData from "@/common/mixins/getData"
+import submitChange from "@/common/mixins/submitChange"
 import { mapGetters } from 'vuex'
 export default {
   name: 'Pagination',
+  mixins : [getData,submitChange],
   props: {
     state: Object,
-    module: String
-  },
-  methods: {
-    getData() {
-      this.$emit('get-data')
-    }
+    module: String,
   },
   computed: {
     ...mapGetters(['device', 'isMobile']),
@@ -39,18 +37,22 @@ export default {
       get() {
         return this.state.current_page
       },
-      set(value) {
+      async set(value) {
         this.$store.commit(`${this.module}/currentPage`, value)
-        this.getData()
+        this.beforeChange()
+        await this.getData()
+        this.afterChange()
       }
     },
     perPage: {
       get() {
         return this.state.per_page
       },
-      set(value) {
+      async set(value) {
         this.$store.commit(`${this.module}/sizeChange`, value)
-        this.getData()
+        this.beforeChange()
+        await this.getData()
+        this.afterChange()
       }
     }
   }
@@ -58,9 +60,10 @@ export default {
 </script>
 <style lang="scss">
 .el-pagination {
-  margin-top: 1.5vh;
+  @include padding-x;
+  margin: 0.8vh 0;
   @include sub-center;
-  justify-content: space-around;
+  justify-content: flex-end;
 }
 .el-pagination__jump {
   margin-left: 3px;
@@ -74,7 +77,6 @@ export default {
     }
   }
 }
-
 .el-pagination button,
 .el-pagination span:not([class*='suffix']) {
   font-size: 0.9rem;

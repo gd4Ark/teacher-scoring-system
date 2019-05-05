@@ -1,11 +1,14 @@
 export default {
     data: () => ({
-        load: false,
+        loading: false,
     }),
     methods: {
-        loaded(timer = 40) {
+        makeLoading() {
+            this.loading = true
+        },
+        makeLoaded(timer = 10) {
             setTimeout(() => {
-                this.load = true
+                this.loading = false
             }, timer);
         },
     }

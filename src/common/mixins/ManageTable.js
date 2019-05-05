@@ -1,4 +1,5 @@
 import loading from './loading'
+import getData from './getData'
 import {
     mapActions,
 } from "vuex"
@@ -9,16 +10,23 @@ import {
 import confirm from "@/common/utils/confirm"
 import ResponsiveSize from '@/common/mixins/ResponsiveSize'
 export default {
-    mixins: [ResponsiveSize, loading],
+    mixins: [ResponsiveSize, loading, getData],
     data: () => ({
         multipleSelection: [],
+        loaded : false,
     }),
     methods: {
         ...mapActions({
             delData: 'delete',
         }),
-        getData() {
-            this.$emit("get-data")
+        beforeChange() {
+            this.makeLoading()
+        },
+        afterChange() {
+            this.$nextTick(() => {
+                this.$refs.table.$el.querySelector('.el-table__body-wrapper').scrollTop = 0
+                this.makeLoaded()
+            })
         },
         handleDelete(ids) {
             if (ids.length === 0) {
@@ -39,20 +47,29 @@ export default {
                 module: this.module,
                 ids
             })
-            this.getData()
+            await this.getData()
             success("删除成功!")
         },
         handleSelectionChange(val) {
             this.multipleSelection = val.map(el => el.id)
         },
-        handleSortChange(val) {
+        async handleSortChange(val) {
             const desc = val.order === "descending" ? 1 : 0
             const prop = val.prop || ""
             this.setOrder({
                 order_by: prop,
                 desc
             })
-            this.getData()
+            this.beforeChange()
+            await this.getData()
+            this.afterChange()
+        },
+        renderHeader: (h, {
+            column
+        }) => {
+            return h("i", {
+                class: "table-header-icon " + column.label
+            });
         }
     }
 }

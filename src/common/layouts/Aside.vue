@@ -20,6 +20,7 @@
           </template>
           <el-menu-item v-for="subItem of item.subs"
                         :index="subItem.index"
+                        class="sub-item-item"
                         :key="subItem.index">
             <i v-if="subItem.icon"
                :class="subItem.icon"></i>
@@ -69,7 +70,7 @@ export default {
 
 <style lang="scss" scoped>
 .app-aside {
-  @include wh(220px, 100%);
+  @include wh($sidebar-width, 100%);
   @include flex-column;
   & > .el-menu {
     flex: 1;
@@ -79,13 +80,12 @@ export default {
   }
 }
 .title-container {
-  @include wh(100%, 62px);
+  @include wh(100%, $app-header-height);
   @include sub-center;
-  background: white;
-  background: $gighlight-color;
-  color: white;
+  background: $app-header-bgcolor;
+  color: $app-header-color;
   .title {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 }
 span {
@@ -97,9 +97,39 @@ span {
   background: transparent;
   border: none;
   overflow: hidden;
+  .el-submenu__title {
+    color: $app-menu-item-color;
+  }
+  .el-menu-item {
+    background: $sidebar-color;
+    color: $app-menu-item-color;
+    &.is-active {
+      color: $app-menu-item-active-color;
+    }
+  }
+  .sub-item-item {
+    background: $app-sub-menu-item-bgcolor;
+  }
   .el-menu-item,
   .el-submenu__title {
     font-size: 0.9rem;
+  }
+  .el-menu-item,
+  .el-submenu__title,
+  .el-submenu .el-menu-item {
+    height: $app-menu-item-height;
+    line-height: $app-menu-item-height;
+    transition: background 0.5s ease;
+  }
+  .el-menu-item:hover,
+  .el-submenu__title:hover,
+  .el-menu-item:focus,
+  .el-submenu__title:focus {
+    background: $app-menu-item-hover-bgcolor;
+  }
+  .el-menu-item [class^='el-icon-'],
+  .el-submenu [class^='el-icon-'] {
+    font-size: 1.2rem;
   }
 }
 </style>

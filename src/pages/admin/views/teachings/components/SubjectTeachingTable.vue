@@ -1,9 +1,10 @@
 <template>
-  <v-card v-if="load"
+  <v-card v-if="loaded"
           class="table-card"
           :title="title">
 
-    <v-table :loading="!load"
+    <v-table :loading="loading"
+             ref="table"
              :data="state.data"
              :columns="columns"
              :need-selection="false"
@@ -30,7 +31,9 @@
 
     <pagination :state="state"
                 :module="module"
-                @get-data="getData" />
+                @before-change="beforeChange"
+                @after-change="afterChange"
+                :get-data="getData" />
   </v-card>
 </template>
 <script>
@@ -59,7 +62,8 @@ export default {
     await this.getData()
     await this.getOptions('groups')
     await this.getOptions('teachers')
-    this.loaded()
+    this.loaded = true
+    this.makeLoaded()
   },
   methods: {
     ...mapActions(['getOptions']),

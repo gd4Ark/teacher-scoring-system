@@ -1,8 +1,15 @@
 <template >
   <v-card class="table-card"
           :title="title">
-
-    <v-table :loading="!load"
+    <div class="toolbar"
+         slot="toolbar">
+      <el-button :size="respBtnSize"
+                 type="primary"
+                 icon="el-icon-download"
+                 @click="exportExcel">导出</el-button>
+    </div>
+    <v-table :loading="loading"
+             ref="table"
              :data="state.data"
              :columns="columns"
              :need-selection="false"
@@ -25,6 +32,7 @@
       </template>
       <template slot="append">
         <el-table-column label="操作"
+                         className="operate-col"
                          align="center">
           <template slot-scope="scope">
             <el-button size="mini"
@@ -36,7 +44,9 @@
 
     <pagination :state="state"
                 :module="module"
-                @get-data="getData" />
+                @before-change="beforeChange"
+                @after-change="afterChange"
+                :get-data="getData" />
   </v-card>
 </template>
 <script>
@@ -72,8 +82,8 @@ export default {
         sortable: 'custom'
       },
       {
-        prop: '教学效果',
-        label: '教学效果',
+        prop: '教学能力',
+        label: '教学能力',
         sortable: 'custom'
       },
       {
@@ -82,8 +92,8 @@ export default {
         sortable: 'custom'
       },
       {
-        prop: '教学能力',
-        label: '教学能力',
+        prop: '教学效果',
+        label: '教学效果',
         sortable: 'custom'
       },
       {
@@ -97,13 +107,46 @@ export default {
     await this.getData()
     await this.getOptions('teachers')
     await this.getOptions('subjects')
-    this.loaded()
+    this.loaded = true
+    this.makeLoaded()
   },
   methods: {
     ...mapActions(['getOptions']),
     ...mapMutations(__module, {
       setOrder: 'update'
     }),
+    exportExcel() {
+      import('@/common/vendor/Export2Excel').then(excel => {
+        const tHeader = [
+          '教师名字',
+          '所教科目',
+          ...this.columns.map(el => el.label)
+        ]
+        const filterVal = [
+          'subject_id',
+          'teacher_id',
+          ...this.columns.map(el => el.prop)
+        ]
+        const data = this.formatJson(filterVal, this.state.data)
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: this.title
+        })
+      })
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v =>
+        filterVal.map(j => {
+          if (j === 'subject_id') {
+            return this.getSubjectName(v[j])
+          } else if (j === 'teacher_id') {
+            return this.getTeacherName(v[j])
+          }
+          return v[j]
+        })
+      )
+    },
     toScoresDetail(sid, tid) {
       this.$router.push({
         name: 'scoresDetail',

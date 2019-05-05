@@ -35,10 +35,10 @@ export default {
   margin-top: $app-padding;
 }
 .el-card__header {
-  padding: 9px 10px;
+  padding: $card-header-padding;
 }
 .el-card__body {
-  padding: 12px;
+  padding: $card-body-padding;
 }
 
 .card-title {
@@ -47,7 +47,7 @@ export default {
 }
 
 .card-header {
-  height: 30px;
+  height: $card-header-height;
   @include flex;
   align-items: center;
   justify-content: space-between;

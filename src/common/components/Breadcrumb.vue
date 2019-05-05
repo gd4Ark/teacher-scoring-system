@@ -17,12 +17,6 @@
 import pathToRegexp from 'path-to-regexp'
 export default {
   name: 'Breadcrumb',
-  props :{
-    first : {
-      type : String,
-      required : true,
-    }
-  },
   data: () => ({
     levelList: null
   }),
@@ -40,7 +34,7 @@ export default {
       const first = matched[0]
       if (
         first &&
-        first.name.trim().toLocaleLowerCase() !== this.first.toLocaleLowerCase()
+        first.name.trim().toLocaleLowerCase() !== 'index'.toLocaleLowerCase()
       ) {
         matched = [{ path: '/index', meta: { title: '首页' } }].concat(matched)
       }
@@ -70,7 +64,7 @@ export default {
 .app-breadcrumb.el-breadcrumb {
   display: inline-block;
   font-size: .85rem;
-  line-height: 50px;
+  line-height: $app-header-height;
   margin-left: 8px;
   .no-redirect {
     color: #eee;
