@@ -7,10 +7,10 @@ export default {
          */
         successMessage(res) {
             const {
-                create_count,
-                new_count
+                new_count,
+                validator_count,
             } = res;
-            return `本次添加${create_count}条，新增${new_count}条`;
+            return `成功添加${new_count}条，失败${validator_count}条`;
         }
     }
 }

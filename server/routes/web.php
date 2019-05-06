@@ -32,5 +32,5 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         'only' => ['index']
     ]);
     $router->get('scores/detail/{subject_id:[\d]+}/{teacher:[\d]+}', 'ScoresController@detail');
-
+    $router->resource('archives', 'ArchivesController');
 });

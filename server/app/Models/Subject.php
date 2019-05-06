@@ -49,30 +49,6 @@ class Subject extends Model
     }
 
     /**
-     * @param array $array
-     * @return array
-     */
-    public function rules($array = ['name']){
-        $data = [];
-        $rules = [
-            'name' => 'sometimes|required|string|min:1|max:32|unique:subjects,name,' . $this->id,
-        ];
-        foreach($array as $item){
-            $data[$item] =  $rules[$item];
-        }
-        return $data;
-    }
-
-    /**
-     * @return array
-     */
-    public function ruleMessage(){
-        return [
-            'name.unique' => 'Name already exists',
-        ];
-    }
-
-    /**
      * @return array
      */
     public function option(){

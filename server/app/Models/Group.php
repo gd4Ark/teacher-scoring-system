@@ -45,31 +45,6 @@ class Group extends Model
     }
 
     /**
-     * @param array $array
-     * @return array
-     */
-    public function rules($array = ['name','allow']){
-        $data = [];
-        $rules = [
-            'name' => 'sometimes|required|string|min:1|max:32|unique:groups,name,' . $this->id,
-            'allow' => 'boolean'
-        ];
-        foreach($array as $item){
-            $data[$item] =  $rules[$item];
-        }
-        return $data;
-    }
-
-    /**
-     * @return array
-     */
-    public function ruleMessage(){
-        return [
-
-        ];
-    }
-
-    /**
      * @return array
      */
     public function option(){

@@ -2,7 +2,7 @@
   <div class="app-aside">
     <div class="title-container">
       <h1 class="title">
-        <router-link to="/index">{{ $config.app_title }}</router-link>
+        <router-link to="/index">{{ $config.app_title }}-后台管理</router-link>
       </h1>
     </div>
     <el-menu :default-active="activeIndex"
@@ -85,7 +85,7 @@ export default {
   background: $app-header-bgcolor;
   color: $app-header-color;
   .title {
-    font-size: 1.4rem;
+    font-size: 1.25rem;
   }
 }
 span {

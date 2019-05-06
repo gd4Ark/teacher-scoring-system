@@ -112,12 +112,13 @@ class Controller extends BaseController
     /**
      * @param array $rule
      * @param array $message
+     * @param array $data
      * @return \Illuminate\Http\JsonResponse|null
      */
-    public function ruleValidator($rule=[], $message=[])
+    public function ruleValidator($rule=[], $message=[],$data = [])
     {
-        $validator = Validator::make($this->req->all(), $rule, $message);
-
+        $data = empty($data) ? $this->req->all() : $data;
+        $validator = Validator::make($data, $rule, $message);
         if($validator->fails()){
             foreach($validator->errors()->getMessages() as $message){
                 return $this->error($message[0]);

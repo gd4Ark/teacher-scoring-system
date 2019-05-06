@@ -92,7 +92,6 @@ class TeachingsController extends Controller
         $item = Teaching::query()->findOrFail($id);
         try {
             $input = $this->req->all();
-            // Todo: Validate
             $item->update($input);
             return $this->json($item);
         } catch (\Exception $e) {
@@ -108,28 +107,6 @@ class TeachingsController extends Controller
             return $this->json();
         } catch (\Exception $e) {
             return $this->error('Delete failed');
-        }
-    }
-
-    public function updateBatch()
-    {
-        if ($this->req->input('all') == 1) {
-            $data = $this->req->except('all');
-            try {
-                Teaching::query()->update($data);
-                return $this->json();
-            } catch (\Exception $e) {
-                return $this->error($e->getMessage());
-            }
-        }
-
-        $ids = (array)$this->req->get('ids');
-        $data = $this->req->except('ids');
-        try {
-            Teaching::query()->whereIn('id', $ids)->update($data);
-            return $this->json();
-        } catch (\Exception $e) {
-            return $this->error($e->getMessage());
         }
     }
 

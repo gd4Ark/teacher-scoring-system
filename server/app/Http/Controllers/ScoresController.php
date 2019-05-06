@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Archive;
 use App\Models\Score;
 use App\Models\Subject;
 use App\Models\Teacher;
@@ -15,7 +16,7 @@ class ScoresController extends Controller
     {
         parent::__construct($request);
         $this->middleware('auth:api',[
-            'except' => ['index','detail']
+            'except' => ['index','detail','archive']
         ]);
     }
 

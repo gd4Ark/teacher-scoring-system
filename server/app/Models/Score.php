@@ -38,29 +38,5 @@ class Score extends Model
         return $this->belongsTo('App\Models\Student');
     }
 
-    /**
-     * @param array $array
-     * @return array
-     */
-    public function rules($array = []){
-        $data = [];
-        $rules = [
-
-        ];
-        foreach($array as $item){
-            $data[$item] =  $rules[$item];
-        }
-        return $data;
-    }
-
-    /**
-     * @return array
-     */
-    public function ruleMessage(){
-        return [
-
-        ];
-    }
-
 
 }

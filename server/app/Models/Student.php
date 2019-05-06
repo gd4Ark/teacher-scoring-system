@@ -34,25 +34,4 @@ class Student extends Model
     public function group(){
         return $this->belongsTo('App\Models\Group');
     }
-
-    /**
-     * @param array $array
-     * @return array
-     */
-    public function rules($array = ['name','complete']){
-        $data = [];
-        $rules = [
-            'name' => [
-                'sometimes',
-                'required',
-                'min:1',
-                'max:16',
-            ],
-            'complete' =>  'boolean',
-        ];
-        foreach($array as $item){
-            $data[$item] =  $rules[$item];
-        }
-        return $data;
-    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Teacher;
+use App\Rules\TeacherRule;
 use Illuminate\Http\Request;
 
 class TeachersController extends Controller
@@ -38,19 +39,23 @@ class TeachersController extends Controller
     public function create()
     {
         try {
-            $nameList = $this->req->input('nameList',[]);
-            $create_count = count($nameList);
+            $groupList = $this->req->input('nameList',[]);
             $new_count = 0;
-            foreach ($nameList as $name){
-                // Todo: Validate
-                $item = Teacher::query()->firstOrCreate($name);
+            $validator_count = 0;
+            foreach ($groupList as $group){
+                $validator = $this->ruleValidator(TeacherRule::rules(),TeacherRule::message(),$group);
+                if ($validator){
+                    $validator_count++;
+                    continue;
+                }
+                $item = Teacher::query()->firstOrCreate($group);
                 if ($item->wasRecentlyCreated){
                     $new_count++;
                 }
             }
             return $this->json([
-                'create_count' => $create_count,
                 'new_count' => $new_count,
+                'validator_count' => $validator_count,
             ]);
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
@@ -60,13 +65,12 @@ class TeachersController extends Controller
     public function update($id)
     {
         $item = Teacher::query()->findOrFail($id);
-        $validator = $this->ruleValidator($item->rules(),$item->ruleMessage());
+        $validator = $this->ruleValidator(TeacherRule::rules($item),TeacherRule::message());
         if ($validator){
             return $validator;
         }
         try {
             $input = $this->req->all();
-            // Todo: Validate
             $item->update($input);
             return $this->json($item);
         } catch (\Exception $e) {

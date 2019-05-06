@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Group;
 use App\Models\Score;
 use App\Models\Student;
+use App\Rules\StudentRule;
 use Illuminate\Http\Request;
 
 class StudentsController extends Controller
@@ -51,19 +52,23 @@ class StudentsController extends Controller
     public function create()
     {
         try {
-            $nameList = $this->req->input('nameList',[]);
-            $create_count = count($nameList);
+            $studentList = $this->req->input('nameList',[]);
             $new_count = 0;
-            foreach ($nameList as $name){
-                // Todo: Validate
-                $item = Student::query()->firstOrCreate($name);
+            $validator_count = 0;
+            foreach ($studentList as $student){
+                $validator = $this->ruleValidator(StudentRule::rules(),StudentRule::message(),$student);
+                if ($validator){
+                    $validator_count++;
+                    continue;
+                }
+                $item = Group::query()->firstOrCreate($student);
                 if ($item->wasRecentlyCreated){
                     $new_count++;
                 }
             }
             return $this->json([
-                'create_count' => $create_count,
                 'new_count' => $new_count,
+                'validator_count' => $validator_count,
             ]);
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
@@ -72,14 +77,13 @@ class StudentsController extends Controller
 
     public function update($id)
     {
-        $item = Student::query()->findOrFail($id);
-        $validator = $this->ruleValidator($item->rules(),$item->ruleMessage());
+        $item = Group::query()->findOrFail($id);
+        $validator = $this->ruleValidator(StudentRule::rules($item),StudentRule::message());
         if ($validator){
             return $validator;
         }
         try {
             $input = $this->req->all();
-            // Todo: Validate
             $item->update($input);
             return $this->json($item);
         } catch (\Exception $e) {
@@ -98,28 +102,6 @@ class StudentsController extends Controller
         }
     }
 
-    public function updateBatch()
-    {
-        if ($this->req->input('all') == 1){
-            $data = $this->req->except('all');
-            try {
-                Student::query()->update($data);
-                return $this->json();
-            } catch (\Exception $e) {
-                return $this->error($e->getMessage());
-            }
-        }
-
-        $ids = (array)$this->req->get('ids');
-        $data = $this->req->except('ids');
-        try {
-            Student::query()->whereIn('id', $ids)->update($data);
-            return $this->json();
-        } catch (\Exception $e) {
-            return $this->error($e->getMessage());
-        }
-    }
-
     public function deleteBatch()
     {
         $ids = (array)$this->req->get('ids');
@@ -132,9 +114,6 @@ class StudentsController extends Controller
     }
 
     public function login(){
-        if (!$this->req->has('groupId') || !$this->req->has('studentId')){
-            return $this->error('Necessary to have the `groupId` and `studentId` parameter');
-        }
         $group = Group::query()->findOrFail($this->req->get('groupId'));
         $student = Student::query()->findOrFail($this->req->get('studentId'));
         if ($student->group->id !== $group->id){
