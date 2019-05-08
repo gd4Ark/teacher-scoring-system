@@ -17,6 +17,10 @@ const pages = [
       entry: 'src/pages/admin/main.js',
       filename: 'index.html',
     },
+    query: {
+      entry: 'src/pages/query/main.js',
+      filename: 'query.html',
+    },
   }
 ]
 const config = {

@@ -1,10 +1,11 @@
 <template>
   <el-table :data="data"
             v-loading="loading"
-            height="93%"
+            :height="height"
             @selection-change="handleSelectionChange"
             @sort-change="handleSortChange">
-    <el-table-column type="selection"
+    <el-table-column v-if="needSelection"
+                     type="selection"
                      align="center"></el-table-column>
     <slot name="prepend" />
     <el-table-column v-for="(column,index) in columns"
@@ -25,9 +26,17 @@ export default {
   props: {
     data: Array,
     columns: Array,
+    height: {
+      type: String,
+      default: '93%'
+    },
     loading: {
       type: Boolean,
       default: false
+    },
+    needSelection: {
+      type: Boolean,
+      default: true
     }
   },
   methods: {

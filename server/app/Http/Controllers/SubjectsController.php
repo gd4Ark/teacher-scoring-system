@@ -85,7 +85,7 @@ class SubjectsController extends Controller
             $item->delete();
             return $this->json();
         } catch (\Exception $e) {
-            return $this->error('Delete failed');
+            return $this->error('删除失败');
         }
     }
 
@@ -96,7 +96,7 @@ class SubjectsController extends Controller
             Subject::query()->whereIn('id', $ids)->delete();
             return $this->json();
         } catch (\Exception $e) {
-            return $this->error('Delete failed');
+            return $this->error('删除失败');
         }
     }
 

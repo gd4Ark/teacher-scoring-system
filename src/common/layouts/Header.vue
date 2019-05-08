@@ -12,7 +12,8 @@
         <screenfull class="right-menu-item hover-effect" />
       </template>
 
-      <el-dropdown class="avatar-container right-menu-item"
+      <el-dropdown v-if="showAvatar"
+                   class="avatar-container right-menu-item"
                    trigger="click">
         <p class="avatar-wrapper">
           {{ username }}
@@ -32,6 +33,7 @@
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
+
     </div>
   </div>
 </template>
@@ -81,7 +83,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['username', 'device', 'sidebar'])
+    ...mapGetters(['username', 'device', 'sidebar', 'showAvatar'])
   }
 }
 </script>

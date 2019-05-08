@@ -3,7 +3,7 @@
     <div :class="['login-container',device]">
       <div class="login-text"
            v-if="!isMobile">
-        <h1 class="title">{{ $config.app_title }}</h1>
+        <h1 class="title">{{ $config.app_title }} - 后台管理</h1>
         <p class="message">
           <span>不忘初心，方得始终</span>
           <span>那些成功的人，往往是有着坚定目标，并持续努力的人</span>
@@ -49,7 +49,7 @@ export default {
   computed: {
     ...mapGetters(['device', 'isMobile']),
     btnSize() {
-      return this.isMobile ? 'small' : 'medium'
+      return this.isMobile ? 'small' : 'small'
     },
     loginTitle() {
       return this.isMobile

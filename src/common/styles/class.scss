@@ -142,3 +142,7 @@
         color: #f56c6c;
     }
 }
+
+.el-row + .el-row {
+    margin-top: 10px;
+}

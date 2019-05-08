@@ -7,6 +7,16 @@
                  type="primary"
                  icon="el-icon-download"
                  @click="exportExcel">导出</el-button>
+      <modal-add title="归档"
+                 :btn-size="respBtnSize"
+                 btn-text="归档"
+                 btn-type="danger"
+                 btn-icon="el-icon-ali-archives"
+                 :form-item="$v_data[module].archive.item"
+                 :get-form-data="$v_data[module].archive.data"
+                 :custom-submit="archive"
+                 @success="archiveed"
+                 @get-data="getData" />
     </div>
     <v-table :loading="loading"
              ref="table"
@@ -24,7 +34,8 @@
         </el-table-column>
         <el-table-column label="所教科目"
                          prop="subject_id"
-                         align="center">
+                         align="center"
+                         width="130">
           <template slot-scope="scope">
             <span>{{ getSubjectName(scope.row.subject_id) }}</span>
           </template>
@@ -53,18 +64,15 @@
 const __module = 'scores'
 import vTable from '@/common/components/Table'
 import Pagination from '@/common/components/Pagination'
-import ModalEdit from '@/common/components/ModalEdit'
 import ModalAdd from '@/common/components/ModalAdd'
 import ManageTable from '@/common/mixins/ManageTable'
-import splitNameList from '@/common/mixins/splitNameList'
-import successMessage from '@/common/mixins/successMessage'
+import { success } from '@/common/utils/message'
 import { mapActions, mapState, mapMutations } from 'vuex'
 export default {
-  mixins: [ManageTable, splitNameList, successMessage],
+  mixins: [ManageTable],
   components: {
     vTable,
     Pagination,
-    ModalEdit,
     ModalAdd
   },
   props: {
@@ -79,22 +87,26 @@ export default {
       {
         prop: 'student_count',
         label: '评分人数',
-        sortable: 'custom'
+        sortable: 'custom',
+        minWidth: 100
       },
       {
         prop: '教学能力',
         label: '教学能力',
-        sortable: 'custom'
+        sortable: 'custom',
+        minWidth: 100
       },
       {
         prop: '教学水平',
         label: '教学水平',
-        sortable: 'custom'
+        sortable: 'custom',
+        minWidth: 100
       },
       {
         prop: '教学效果',
         label: '教学效果',
-        sortable: 'custom'
+        sortable: 'custom',
+        minWidth: 100
       },
       {
         prop: 'avg',
@@ -115,6 +127,13 @@ export default {
     ...mapMutations(__module, {
       setOrder: 'update'
     }),
+    async archive(data) {
+      await this.$axios.post(`/archives`, data)
+      return true
+    },
+    async archiveed() {
+      await success('归档成功！')
+    },
     exportExcel() {
       import('@/common/vendor/Export2Excel').then(excel => {
         const tHeader = [

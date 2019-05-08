@@ -14,12 +14,17 @@ class StudentsController extends Controller
     {
         parent::__construct($request);
         $this->middleware('auth:api',[
-            'except' => ['index','show','login','submit']
+            'except' => ['index','show','login','submit','completeInfo']
         ]);
     }
 
     public function index()
     {
+
+        if ($this->req->get('getComplete') == 1) {
+            return $this->completeInfo();
+        }
+
         $query =  Student::query();
         $merge = null;
 
@@ -41,6 +46,19 @@ class StudentsController extends Controller
                 )
             );
         }
+    }
+
+    private function completeInfo(){
+        return $this->json([
+            [
+                'state' => '未完成',
+                'count' => Student::query()->whereComplete(0)->count(),
+            ],
+            [
+                'state' => '已完成',
+                'count' => Student::query()->whereComplete(1)->count(),
+            ],
+        ]);
     }
 
     public function show($id)
@@ -98,7 +116,7 @@ class StudentsController extends Controller
             $item->delete();
             return $this->json();
         } catch (\Exception $e) {
-            return $this->error('Delete failed');
+            return $this->error('删除失败');
         }
     }
 
@@ -109,7 +127,7 @@ class StudentsController extends Controller
             Student::query()->whereIn('id', $ids)->delete();
             return $this->json();
         } catch (\Exception $e) {
-            return $this->error('Delete failed');
+            return $this->error('删除失败');
         }
     }
 
@@ -117,10 +135,10 @@ class StudentsController extends Controller
         $group = Group::query()->findOrFail($this->req->get('groupId'));
         $student = Student::query()->findOrFail($this->req->get('studentId'));
         if ($student->group->id !== $group->id){
-            return $this->error('The student does not exist');
+            return $this->error('该学生不存在');
         }
         if ($group->allow == 0){
-            return $this->error('This group is forbidden to scoring');
+            return $this->error('该班级禁止评分');
         }
         return $this->json($student);
     }
@@ -130,10 +148,10 @@ class StudentsController extends Controller
         $uid = (int)$this->req->get('user_id');
         $user = Student::query()->findOrFail($uid);
         if($user->complete){
-            return $this->error('The student has submitted');
+            return $this->error('不可重复提交');
         }
         if (!$user->group->allow){
-            return $this->error('This group is forbidden to scoring');
+            return $this->error('该班级禁止评分');
         }
         try {
             foreach ($scores as $score){

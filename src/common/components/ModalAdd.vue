@@ -4,6 +4,7 @@
          :btn-text="btnText"
          :btn-size="btnSize"
          :btn-type="btnType"
+         :btn-icon="btnIcon"
          :btn-style="btnStyle"
          :btn-disabled="btnDisabled"
          @submit="baseFormSubmit"

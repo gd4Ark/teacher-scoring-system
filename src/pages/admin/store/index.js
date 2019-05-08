@@ -20,7 +20,7 @@ export default new vuex.Store({
     actions,
     getters,
     plugins: [createPersist({
-        namespace: process.env.APP_NAME,
+        namespace: process.env.APP_NAME + '-admin',
         initialState: {},
         // one week
         expires: 7 * 24 * 60 * 60 * 1e3

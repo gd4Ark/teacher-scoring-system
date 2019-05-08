@@ -13,12 +13,15 @@ class GroupsController extends Controller
     {
         parent::__construct($request);
         $this->middleware('auth:api',[
-            'except' => ['index','show']
+            'except' => ['index','show','completeInfo']
         ]);
     }
 
     public function index()
     {
+        if ($this->req->get('getComplete') == 1) {
+            return $this->completeInfo();
+        }
         $query = Group::query()->withCount([
             'students',
             'students as complete_count' => function ($query) {
@@ -32,6 +35,28 @@ class GroupsController extends Controller
         } else {
             return $this->paginateToJson($query);
         }
+    }
+
+    private function completeInfo(){
+        $res = Group::query()->select('id')->withCount([
+            'students',
+            'students as complete_count' => function ($query) {
+                $query->where('complete', 1);
+            }])->get();
+        return $this->json([
+            [
+                'state' => '未完成',
+                'count' => $res->filter(function ($item){
+                    return $item->students_count !== $item->complete_count;
+                })->count()
+            ],
+            [
+                'state' => '已完成',
+                'count' => $res->filter(function ($item){
+                    return $item->students_count === $item->complete_count;
+                })->count()
+            ],
+        ]);
     }
 
     public function show($id)
@@ -89,7 +114,7 @@ class GroupsController extends Controller
             $item->delete();
             return $this->json();
         } catch (\Exception $e) {
-            return $this->error('Delete failed');
+            return $this->error('删除失败');
         }
     }
 
@@ -112,7 +137,7 @@ class GroupsController extends Controller
             Group::query()->whereIn('id', $ids)->delete();
             return $this->json();
         } catch (\Exception $e) {
-            return $this->error('Delete failed');
+            return $this->error('删除失败');
         }
     }
 

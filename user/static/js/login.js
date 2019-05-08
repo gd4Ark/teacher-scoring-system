@@ -8,7 +8,6 @@ jQuery(function ($) {
         initEvent() {
             var _this = this
             $('#groups').on('change', function () {
-                // console.log()
                 location.href = './login?gid=' + BASE64.urlsafe_encode($(this).val());
             })
 

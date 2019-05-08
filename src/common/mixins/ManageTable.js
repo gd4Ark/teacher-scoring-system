@@ -1,5 +1,6 @@
 import loading from './loading'
 import getData from './getData'
+import ResponsiveSize from './ResponsiveSize'
 import {
     mapActions,
 } from "vuex"
@@ -8,12 +9,11 @@ import {
     success
 } from "@/common/utils/message"
 import confirm from "@/common/utils/confirm"
-import ResponsiveSize from '@/common/mixins/ResponsiveSize'
 export default {
     mixins: [ResponsiveSize, loading, getData],
     data: () => ({
         multipleSelection: [],
-        loaded : false,
+        loaded: false,
     }),
     methods: {
         ...mapActions({

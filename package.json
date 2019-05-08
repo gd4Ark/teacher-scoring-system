@@ -11,10 +11,12 @@
   "dependencies": {
     "axios": "^0.18.0",
     "core-js": "^3.0.0",
+    "echarts": "^4.2.1",
     "element-ui": "^2.8.2",
     "file-saver": "^2.0.1",
     "path-to-regexp": "^3.0.0",
     "screenfull": "^4.2.0",
+    "v-charts": "^1.19.0",
     "vue": "^2.5.17",
     "vue-codemirror-lite": "^1.0.4",
     "vue-router": "^3.0.1",

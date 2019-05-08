@@ -21,7 +21,7 @@ class AuthController extends Controller
                     return $this->respondWithToken($token);
                 }
             }
-            return $this->error('Incorrect Username or Password');
+            return $this->error('无效用户名或密码');
 
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
@@ -34,7 +34,7 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout();
-        return $this->msg('Successfully logged out');
+        return $this->msg('成功登出');
     }
 
     /**
@@ -56,7 +56,7 @@ class AuthController extends Controller
             }
             $user['password'] = password_hash($request->get('password'), PASSWORD_DEFAULT);
             $user->save();
-            return $this->msg('Reset Successfully');
+            return $this->msg('重置成功');
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }

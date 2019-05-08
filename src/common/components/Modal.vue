@@ -7,6 +7,7 @@
         <el-button class="btn"
                    :size="btnSize"
                    :type="btnType"
+                   :icon="btnIcon"
                    :style="btnStyle">
           {{btnText}}
         </el-button>
@@ -65,6 +66,10 @@ export default {
       default: 'small'
     },
     btnType: {
+      type: String,
+      default: ''
+    },
+    btnIcon: {
       type: String,
       default: ''
     },

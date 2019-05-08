@@ -20,10 +20,6 @@ jQuery(function ($) {
             $('.submit-btn').on('click', function () {
                 _this.submit()
             })
-
-            $('.radio').each(function(){
-                $(this).click()
-            })
         },
         select(self) {
             var id = $(self).attr(teaching_attr)

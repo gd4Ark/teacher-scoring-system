@@ -10,6 +10,10 @@ export default {
                 return {}
             }
         },
+        btnIcon: {
+            type: String,
+            default: ''
+        },
     },
     methods: {
         baseFormSubmit() {

@@ -2,12 +2,11 @@
   <div class="app-aside">
     <div class="title-container">
       <h1 class="title">
-        <router-link to="/index">{{ $config.app_title }}-后台管理</router-link>
+        <router-link to="/index">{{ title }}</router-link>
       </h1>
     </div>
     <el-menu :default-active="activeIndex"
              class="el-menu-vertical"
-             unique-opened
              router>
       <template v-for="item of navList">
         <el-submenu v-if="item.subs"
@@ -40,6 +39,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   data: () => ({
     activeIndex: ''
@@ -61,6 +61,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['title']),
     navList() {
       return this.$router.options.navList
     }

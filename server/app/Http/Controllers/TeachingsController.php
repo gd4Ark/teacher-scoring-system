@@ -81,7 +81,7 @@ class TeachingsController extends Controller
             if ($item->wasRecentlyCreated) {
                 return $this->json($item);
             }
-            return $this->error('Subject already exists');
+            return $this->error('不可添加相同科目');
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }
@@ -106,7 +106,7 @@ class TeachingsController extends Controller
             $item->delete();
             return $this->json();
         } catch (\Exception $e) {
-            return $this->error('Delete failed');
+            return $this->error('删除失败');
         }
     }
 
@@ -117,7 +117,7 @@ class TeachingsController extends Controller
             Teaching::query()->whereIn('id', $ids)->delete();
             return $this->json();
         } catch (\Exception $e) {
-            return $this->error('Delete failed');
+            return $this->error('删除失败');
         }
     }
 

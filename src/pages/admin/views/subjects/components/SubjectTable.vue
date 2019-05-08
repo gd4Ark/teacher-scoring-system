@@ -25,7 +25,7 @@
       <el-table-column slot="append"
                        label="操作"
                        align="center"
-                       min-width="140">
+                       min-width="200">
         <template slot-scope="scope">
           <modal-edit :title="`编辑科目 ${scope.row.name } 中`"
                       :form-item="$v_data[module].edit.item"
@@ -79,13 +79,14 @@ export default {
       {
         prop: 'name',
         label: '科目名称',
-        sortable: 'custom'
+        sortable: 'custom',
+        minWidth: 100
       },
       {
         prop: 'teachings_count',
         label: '学习班级数量',
         sortable: 'custom',
-        minWidth: 100
+        minWidth: 120
       }
     ]
   }),

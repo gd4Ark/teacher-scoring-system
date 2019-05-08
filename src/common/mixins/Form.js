@@ -9,6 +9,10 @@ export default {
     props: {
         formItem: Array,
         getFormData: Function,
+        customSubmit: {
+            type: Function,
+            default: data => data
+        },
         beforeSubmit: {
             type: Function,
             default: data => data
@@ -59,11 +63,16 @@ export default {
             })
         },
         async submit(data) {
-            if (!this.module) {
-                return this.$emit("submit", data)
-            }
             if (!this.beforeVerify(data)) {
                 return warning('请填写正确！')
+            }
+            if (!this.module) {
+                await this.customSubmit(data)
+                this.reset()
+                this.done()
+                this.$emit("success")
+                this.afterSuccess()
+                return
             }
             this.btnDisabled = true
             data = this.beforeSubmit(data)

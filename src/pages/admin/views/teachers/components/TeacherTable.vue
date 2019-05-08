@@ -25,7 +25,7 @@
       <el-table-column slot="append"
                        label="操作"
                        align="center"
-                       min-width="140">
+                       min-width="200">
         <template slot-scope="scope">
           <modal-edit :title="`编辑教师 ${scope.row.name } 中`"
                       :form-item="$v_data[module].edit.item"
@@ -79,7 +79,8 @@ export default {
       {
         prop: 'name',
         label: '教师姓名',
-        sortable: 'custom'
+        sortable: 'custom',
+        minWidth : 100,
       },
       {
         prop: 'teachings_count',

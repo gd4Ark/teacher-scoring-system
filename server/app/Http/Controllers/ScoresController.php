@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Archive;
 use App\Models\Score;
 use App\Models\Subject;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ScoresController extends Controller
 {
@@ -16,12 +14,16 @@ class ScoresController extends Controller
     {
         parent::__construct($request);
         $this->middleware('auth:api',[
-            'except' => ['index','detail','archive']
+            'except' => ['index','detail']
         ]);
     }
 
     public function index()
     {
+        if ($this->req->get('getComplete') == 1) {
+            return $this->completeInfo();
+        }
+
         $query = Score::query()
             ->select('subject_id','teacher_id')
             ->selectRaw('COUNT(student_id) as student_count')
@@ -34,6 +36,14 @@ class ScoresController extends Controller
         $query = $this->queryFilter($query);
 
         return $this->paginateToJson($query);
+    }
+
+    private function completeInfo(){
+        return Score::query()->distinct('student_id')
+            ->selectRaw('count(student_id) as count')
+            ->selectRaw('Date(created_at) as date')
+            ->groupBy('date')
+            ->get();
     }
 
     public function detail($sid,$tid)

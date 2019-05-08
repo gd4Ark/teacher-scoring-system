@@ -19,7 +19,7 @@ const routerConfig = {
         },
         {
             path: '/index',
-            redirect: '/scores',
+            redirect: '/overview',
         },
         {
             path: '/',
@@ -47,7 +47,7 @@ const routerConfig = {
             path: '/login',
             component: () => import("../views/login"),
             meta: {
-                title: '登录',
+                title: '后台登录',
             }
         },
         {
@@ -67,22 +67,17 @@ router.beforeEach(async (to, from, next) => {
     if (to.meta.title) {
         document.title = to.meta.title;
     }
-    next();
-    return;
-    // if (to.path === '/login') {
-    //     next();
-    //     return;
-    // }
-    // const store = router.app.$options.store;
-    // const login = store.state.login;
-    // if (login && login.token) {
-    //     await store.dispatch('checkLogin')
-    //     next();
-    // } else {
-    //     next({
-    //         path: '/login',
-    //     });
-    // }
+    if (to.path === '/login') {
+        return next();
+    }
+    const store = router.app.$options.store;
+    const user = store.state.user;
+    if (!user || !user.access_token) {
+        next({
+            path: '/login',
+        });
+    }
+    return next()
 });
 
 export default router;

@@ -126,6 +126,7 @@ class DatabaseSeeder extends Seeder
                 array_push($students, [
                     'group_id' => $group->id,
                     'name' => $student_name . $i,
+                    'complete' => array_random([0,1]),
                 ]);
             }
             Student::query()->insert($students);

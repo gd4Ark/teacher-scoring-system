@@ -1,8 +1,11 @@
+import config from "@/common/config"
 const state = {
     device: 'desktop',
     sidebar: {
         opened: true,
-    }
+    },
+    showAvatar : true,
+    title : config.app_title + '- 后台管理'
 }
 
 const actions = {
