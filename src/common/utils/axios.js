@@ -20,34 +20,6 @@ export default {
         // request interceptor
         axios.interceptors.request.use(
             config => {
-                // Add Token
-                if (needAuth) {
-                    const user = store.state.user
-                    if (user && user.access_token) {
-                        const token = user.access_token
-                        const stringifyStatus = ["get", "delete"].includes(
-                            config.method
-                        )
-                        let data = config[stringifyStatus ? "params" : "data"]
-                        switch (true) {
-                            // FormData
-                            case data instanceof FormData:
-                                data.append("token", token)
-                                break
-                                // Params
-                            case stringifyStatus:
-                                data.token = token
-                                break
-                                // Data
-                            default:
-                                data = qs.parse(data)
-                                data.token = token
-                                data = qs.stringify(data)
-                                break
-                        }
-                        config[stringifyStatus ? "params" : "data"] = data
-                    }
-                }
                 return config
             },
             error => {
@@ -82,6 +54,13 @@ export default {
             }
         )
 
+
+        const getHeader = ()=>{
+            return needAuth ? {
+                "Authorization": `Bearer ${store.getters.token}`
+            } : {}
+        }
+
         // request methods
 
         /**
@@ -93,6 +72,9 @@ export default {
             return axios({
                 method: "get",
                 url,
+                headers: {
+                    ...getHeader(),
+                },
                 params: data
             })
         }
@@ -107,6 +89,9 @@ export default {
             return axios({
                 method: "post",
                 url,
+                headers: {
+                    ...getHeader(),
+                },
                 data
             })
         }
@@ -121,6 +106,9 @@ export default {
             return axios({
                 method: "put",
                 url,
+                headers: {
+                    ...getHeader(),
+                },
                 data
             })
         }
@@ -134,6 +122,9 @@ export default {
             return axios({
                 method: "delete",
                 url,
+                headers: {
+                    ...getHeader(),
+                },
                 params: data
             })
         }
@@ -149,7 +140,8 @@ export default {
                 url,
                 data,
                 headers: {
-                    "Content-Type": "multipart/form-data"
+                    "Content-Type": "multipart/form-data",
+                    ...getHeader(),
                 }
             })
         }
