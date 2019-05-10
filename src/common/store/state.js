@@ -11,5 +11,5 @@ export default {
     search_data: {},
     order_by: '',
     desc: 1,
-    options: [],
+    options: []
 }

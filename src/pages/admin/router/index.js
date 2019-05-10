@@ -1,85 +1,82 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router';
+import VueRouter from 'vue-router'
 
-import {
-    fileListToArray
-} from "@/common/utils/readFile";
+import { fileListToArray } from '@/common/utils/readFile'
 
-import navList from "./navList";
+import navList from './navList'
 
 const modulesFiles = require.context('./routers', false, /\.js$/)
-const routers = fileListToArray(modulesFiles);
+const routers = fileListToArray(modulesFiles)
 
 const routerConfig = {
-    // mode: process.env.NODE_ENV == 'development' ? 'history' : 'hash',
-    base : '/admin',
-    mode : 'history',
+    mode: process.env.NODE_ENV === 'development' ? 'history' : 'hash',
+    // base: '/admin',
+    // mode: 'history',
     navList,
-    routes: [{
+    routes: [
+        {
             path: '/',
-            redirect: '/index',
+            redirect: '/index'
         },
         {
             path: '/index',
-            redirect: '/overview',
+            redirect: '/overview'
         },
         {
             path: '/',
-            component: () => import("@/common/layouts/Home"),
+            component: () => import('@/common/layouts/Home'),
             children: [
                 ...routers,
                 {
                     path: '/password',
-                    component: () => import("../views/password"),
+                    component: () => import('../views/password'),
                     name: 'password',
                     meta: {
-                        title: "修改密码",
-                    },
+                        title: '修改密码'
+                    }
                 },
                 {
                     path: '/404',
-                    component: () => import("@/common/layouts/404"),
+                    component: () => import('@/common/layouts/404'),
                     meta: {
-                        title: '404',
+                        title: '404'
                     }
-                },
+                }
             ]
         },
         {
             path: '/login',
-            component: () => import("../views/login"),
+            component: () => import('../views/login'),
             meta: {
-                title: '后台登录',
+                title: '后台登录'
             }
         },
         {
             path: '*',
-            redirect: '404',
+            redirect: '404'
         }
     ]
 }
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
-const router = new VueRouter(
-    routerConfig,
-);
+const router = new VueRouter(routerConfig)
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async(to, from, next) => {
     if (to.meta.title) {
-        document.title = to.meta.title;
+        document.title = to.meta.title
     }
     if (to.path === '/login') {
-        return next();
+        return next()
     }
-    const store = router.app.$options.store;
-    const user = store.state.user;
+    const store = router.app.$options.store
+    const user = store.state.user
     if (!user || !user.access_token) {
         next({
-            path: '/login',
-        });
+            path: '/login'
+        })
     }
     return next()
-});
+})
 
-export default router;
+export default router

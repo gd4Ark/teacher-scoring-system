@@ -1,64 +1,70 @@
 {
-  "name": "teacher-scoring-system",
-  "title": "教师评分系统",
-  "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
-  },
-  "dependencies": {
-    "axios": "^0.18.0",
-    "core-js": "^3.0.0",
-    "echarts": "^4.2.1",
-    "element-ui": "^2.8.2",
-    "file-saver": "^2.0.1",
-    "path-to-regexp": "^3.0.0",
-    "screenfull": "^4.2.0",
-    "v-charts": "^1.19.0",
-    "vue": "^2.5.17",
-    "vue-codemirror-lite": "^1.0.4",
-    "vue-router": "^3.0.1",
-    "vuex": "^3.0.1",
-    "vuex-localstorage": "^1.0.0",
-    "xlsx": "^0.14.3"
-  },
-  "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.0.5",
-    "@vue/cli-plugin-eslint": "^3.0.5",
-    "@vue/cli-service": "^3.0.5",
-    "compression-webpack-plugin": "^2.0.0",
-    "eslint": "^5.16.0",
-    "node-sass": "^4.9.4",
-    "sass-loader": "^7.1.0",
-    "sass-resources-loader": "^2.0.0",
-    "vue-router": "^3.0.1",
-    "vue-template-compiler": "^2.5.17",
-    "webpack-dev-server": "^3.1.14"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
+    "name": "teacher-scoring-system",
+    "title": "教师评分系统",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "serve": "vue-cli-service serve",
+        "build": "vue-cli-service build",
+        "lint": "eslint --ext .js,.vue src",
+        "lint-fix": "eslint --ext .js,.vue src --fix"
     },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "rules": {},
-    "parserOptions": {
-      "parser": "babel-eslint"
-    }
-  },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
-    }
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ]
+    "prettier": {
+        "singleQuote": true,
+        "semi": false
+    },
+    "dependencies": {
+        "axios": "^0.18.0",
+        "core-js": "^3.0.0",
+        "echarts": "^4.2.1",
+        "element-ui": "^2.8.2",
+        "file-saver": "^2.0.1",
+        "path-to-regexp": "^3.0.0",
+        "screenfull": "^4.2.0",
+        "v-charts": "^1.19.0",
+        "vue": "^2.5.17",
+        "vue-codemirror-lite": "^1.0.4",
+        "vue-router": "^3.0.1",
+        "vuex": "^3.0.1",
+        "vuex-localstorage": "^1.0.0",
+        "xlsx": "^0.14.3"
+    },
+    "devDependencies": {
+        "@vue/cli-plugin-babel": "^3.0.5",
+        "@vue/cli-plugin-eslint": "^3.0.5",
+        "@vue/cli-service": "^3.0.5",
+        "compression-webpack-plugin": "^2.0.0",
+        "eslint": "^5.16.0",
+        "eslint-plugin-vue": "^5.2.2",
+        "node-sass": "^4.9.4",
+        "sass-loader": "^7.1.0",
+        "sass-resources-loader": "^2.0.0",
+        "vue-router": "^3.0.1",
+        "vue-template-compiler": "^2.5.17",
+        "webpack-dev-server": "^3.1.14"
+    },
+    "eslintConfig": {
+        "root": true,
+        "env": {
+            "node": true
+        },
+        "extends": [
+            "plugin:vue/essential",
+            "eslint:recommended"
+        ],
+        "rules": {},
+        "parserOptions": {
+            "parser": "babel-eslint"
+        }
+    },
+    "postcss": {
+        "plugins": {
+            "autoprefixer": {}
+        }
+    },
+    "browserslist": [
+        "> 1%",
+        "last 2 versions",
+        "not ie <= 8"
+    ]
 }

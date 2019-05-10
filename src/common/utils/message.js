@@ -1,6 +1,4 @@
-import {
-    Message
-} from 'element-ui'
+import { Message } from 'element-ui'
 
 const duration = 1500
 
@@ -20,32 +18,44 @@ const msg = (type, message) => {
 }
 
 /**
- * 
- * @param {*} message 
+ *
+ *
+ * @export
+ * @param {*} message
+ * @returns
  */
 export function success(message) {
     return msg('success', message)
 }
 
 /**
- * 
- * @param {*} message 
+ *
+ *
+ * @export
+ * @param {*} message
+ * @returns {Promise}
  */
 export function warning(message) {
     return msg('warning', message)
 }
 
 /**
- * 
- * @param {*} message 
+ *
+ *
+ * @export
+ * @param {*} message
+ * @returns {Promise}
  */
 export function error(message) {
     return msg('error', message)
 }
 
 /**
- * 
- * @param {*} message 
+ *
+ *
+ * @export
+ * @param {*} message
+ * @returns {Promise}
  */
 export function info(message) {
     return msg('info', message)

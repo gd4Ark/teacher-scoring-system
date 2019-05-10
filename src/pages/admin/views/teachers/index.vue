@@ -1,12 +1,12 @@
 <template>
-  <not-sub-router :name="module">
-    <search :module="module"
-            @before-change="beforeChange"
-            @after-change="afterChange"
-            :get-data="getData" />
-    <s-table ref="table"
-             :get-data="getData" />
-  </not-sub-router>
+    <not-sub-router :name="module">
+        <search :module="module"
+                :get-data="getData"
+                @before-change="beforeChange"
+                @after-change="afterChange" />
+        <s-table ref="table"
+                 :get-data="getData" />
+    </not-sub-router>
 </template>
 <script>
 const __module = 'teachers'
@@ -15,16 +15,16 @@ import sTable from './components/TeacherTable'
 import { mapActions } from 'vuex'
 import syncChange from '@/common/mixins/syncChange'
 export default {
-  mixins: [syncChange],
-  components: {
-    Search,
-    sTable
-  },
-  data: () => ({
-    module: __module
-  }),
-  methods: {
-    ...mapActions(__module, ['getData'])
-  }
+    components: {
+        Search,
+        sTable
+    },
+    mixins: [syncChange],
+    data: () => ({
+        module: __module
+    }),
+    methods: {
+        ...mapActions(__module, ['getData'])
+    }
 }
 </script>

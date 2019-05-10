@@ -1,4 +1,4 @@
-import actions from "@/common/store/actions"
+import actions from '@/common/store/actions'
 export default {
-    ...actions,
+    ...actions
 }

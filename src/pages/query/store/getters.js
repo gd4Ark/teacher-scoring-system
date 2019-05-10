@@ -1,4 +1,4 @@
-import getters from "@/common/store/getters"
+import getters from '@/common/store/getters'
 export default {
     ...getters,
     token: state => state.user.access_token,
@@ -7,5 +7,5 @@ export default {
     isMobile: state => state.app.device === 'mobile',
     sidebar: state => state.app.sidebar,
     showAvatar: state => state.app.showAvatar,
-    title : state => state.app.title
+    title: state => state.app.title
 }

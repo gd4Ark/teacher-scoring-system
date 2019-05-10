@@ -1,32 +1,30 @@
-import Form from "@/common/mixins/Form"
-import {
-    success
-} from "@/common/utils/message"
-import {
-    mapActions
-} from "vuex"
+import Form from '@/common/mixins/Form'
+import { success } from '@/common/utils/message'
+import { mapActions } from 'vuex'
 export default {
     mixins: [Form],
     props: {
         btnText: {
             type: String,
-            default: "添加"
+            default: '添加'
         }
     },
     methods: {
-        ...mapActions(["add", "uploadAdd"]),
+        ...mapActions(['add', 'uploadAdd']),
         async submiting(data) {
-            const submitMethod = this.isUpload ? "uploadSubmit" : "baseSubmit"
-            this[submitMethod](data).then((res) => {
-                this.reset()
-                this.done()
-                const message = this.successMessage(res) || "添加成功！"
-                success(message)
-                this.$emit("success")
-                this.afterSuccess()
-            }).catch(() => {
-                this.done()
-            })
+            const submitMethod = this.isUpload ? 'uploadSubmit' : 'baseSubmit'
+            this[submitMethod](data)
+                .then(res => {
+                    this.reset()
+                    this.done()
+                    const message = this.successMessage(res) || '添加成功！'
+                    success(message)
+                    this.$emit('success')
+                    this.afterSuccess()
+                })
+                .catch(() => {
+                    this.done()
+                })
         },
         async baseSubmit(data) {
             return await this.add({
@@ -43,6 +41,6 @@ export default {
                 module: this.module,
                 data: formData
             })
-        },
+        }
     }
 }

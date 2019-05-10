@@ -1,30 +1,16 @@
-import commonState from "@/common/store/state"
-import commonMutations from "@/common/store/mutations"
+import commonState from '@/common/store/state'
+import commonMutations from '@/common/store/mutations'
 
 const state = {
-    ...commonState,
+    ...commonState
 }
 
-const actions = {
-    async getData(ctx, id) {
-        const module = 'groups'
-        const url = id ? module + `/${id}` : module
-        return await ctx.dispatch('get', {
-            module,
-            url,
-            doCommit: !id,
-        }, {
-            root: true
-        })
-    },
-}
+const actions = {}
 
-const getters = {
-
-}
+const getters = {}
 
 const mutations = {
-    ...commonMutations,
+    ...commonMutations
 }
 
 export default {
@@ -32,5 +18,5 @@ export default {
     state,
     actions,
     getters,
-    mutations,
+    mutations
 }

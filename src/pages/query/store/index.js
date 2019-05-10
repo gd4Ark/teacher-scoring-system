@@ -3,7 +3,7 @@ import vuex from 'vuex'
 
 import {
     fileListToObject
-} from "@/common/utils/readFile"
+} from '@/common/utils/readFile'
 
 import createPersist from 'vuex-localstorage'
 

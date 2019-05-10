@@ -1,33 +1,23 @@
-import {
-    cover
-} from "@/common/utils"
+import { cover } from '@/common/utils'
 
 const state = {
     username: 'admin',
-    access_token: "",
+    access_token: ''
 }
 
 const actions = {
-    async login({
-        commit
-    }, {
-        data
-    }) {
+    async login({ commit }, { data }) {
         commit('update', await this._vm.$axios.post(`/login`, data))
     },
     async logout() {
         return await this._vm.$axios.post(`/logout`)
     },
-    async resetPassword(ctx, {
-        data
-    }) {
+    async resetPassword(ctx, { data }) {
         return await this._vm.$axios.post(`/reset`, data)
-    },
+    }
 }
 
-const getters = {
-
-}
+const getters = {}
 
 const mutations = {
     update: (state, data) => {
@@ -42,5 +32,5 @@ export default {
     state,
     actions,
     getters,
-    mutations,
+    mutations
 }

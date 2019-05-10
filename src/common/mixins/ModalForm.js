@@ -1,4 +1,4 @@
-import Modal from "@/common/components/Modal"
+import Modal from '@/common/components/Modal'
 export default {
     components: {
         Modal
@@ -13,14 +13,14 @@ export default {
         btnIcon: {
             type: String,
             default: ''
-        },
+        }
     },
     methods: {
         baseFormSubmit() {
             this.$refs.baseForm.submit()
         },
         afterSuccess() {
-            this.$emit("get-data")
+            this.$emit('get-data')
             this.$refs.modal.hidden()
         }
     }

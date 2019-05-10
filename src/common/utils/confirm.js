@@ -1,22 +1,27 @@
-import {
-    MessageBox
-} from 'element-ui'
+import { MessageBox } from 'element-ui'
 
 /**
- * 
- * @param {*} param0 
+ *
+ *
+ * @export
+ * @param {*} {
+ *     title = '提示',
+ *     content = '确定吗？',
+ *     type = 'warning'
+ * }
+ * @returns
  */
-export default function ({
-    title = "提示",
-    content = "确定吗？",
-    type = "warning",
+export default function({
+    title = '提示',
+    content = '确定吗？',
+    type = 'warning'
 }) {
     return new Promise((resolve, reject) => {
         return MessageBox.confirm(content, title, {
-                confirmButtonText: "确定",
-                cancelButtonText: "取消",
-                type,
-            })
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type
+        })
             .then(() => {
                 resolve()
             })

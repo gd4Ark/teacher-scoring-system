@@ -1,6 +1,6 @@
 export default {
     data: () => ({
-        loading: false,
+        loading: false
     }),
     methods: {
         makeLoading() {
@@ -9,7 +9,7 @@ export default {
         makeLoaded(timer = 10) {
             setTimeout(() => {
                 this.loading = false
-            }, timer);
-        },
+            }, timer)
+        }
     }
 }

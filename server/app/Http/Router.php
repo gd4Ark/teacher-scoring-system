@@ -30,5 +30,4 @@ class Router extends BaseRouter
         $this->match(['PUT', 'PATCH'], $uri . '/{id:[\d]+}', $controller . '@update');
         $this->addRoute('DELETE', $uri . '/{id:[\d]+}', $controller . '@delete');
     }
-
 }

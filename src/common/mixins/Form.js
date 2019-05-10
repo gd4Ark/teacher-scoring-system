@@ -1,7 +1,5 @@
-import BaseForm from "@/common/components/BaseForm"
-import {
-    warning,
-} from "@/common/utils/message"
+import BaseForm from '@/common/components/BaseForm'
+import { warning } from '@/common/utils/message'
 export default {
     components: {
         BaseForm
@@ -27,7 +25,7 @@ export default {
         },
         module: {
             type: String,
-            default: ""
+            default: ''
         },
         useBtn: {
             type: Boolean,
@@ -35,15 +33,15 @@ export default {
         },
         btnText: {
             type: String,
-            default: "提交"
+            default: '提交'
         },
         btnType: {
             type: String,
-            default: ""
+            default: ''
         },
         btnSize: {
             type: String,
-            default: "small"
+            default: 'small'
         },
         isUpload: {
             type: Boolean,
@@ -51,7 +49,7 @@ export default {
         }
     },
     data: () => ({
-        btnDisabled: false,
+        btnDisabled: false
     }),
     methods: {
         done() {
@@ -70,7 +68,7 @@ export default {
                 await this.customSubmit(data)
                 this.reset()
                 this.done()
-                this.$emit("success")
+                this.$emit('success')
                 this.afterSuccess()
                 return
             }

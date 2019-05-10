@@ -1,6 +1,4 @@
-import {
-    cover
-} from "@/common/utils"
+import { cover } from '@/common/utils'
 export default {
     update: (state, data) => {
         cover(state, data, (key, val) => {

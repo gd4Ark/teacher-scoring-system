@@ -1,17 +1,18 @@
-jQuery(function ($) {
+jQuery(function($) {
     var ajax = $.ajax
 
     var login = {
-        init: function () {
+        init: function() {
             this.initEvent()
         },
         initEvent() {
             var _this = this
-            $('#groups').on('change', function () {
-                location.href = './login?gid=' + BASE64.urlsafe_encode($(this).val());
+            $('#groups').on('change', function() {
+                location.href =
+                    './login?gid=' + BASE64.urlsafe_encode($(this).val())
             })
 
-            $('#login-btn').click(function () {
+            $('#login-btn').click(function() {
                 var gid = $('#groups').val()
                 var stuid = $('#students').val()
                 if (!gid || !stuid) {
@@ -20,15 +21,15 @@ jQuery(function ($) {
                 _this.submit(gid, stuid)
             })
         },
-        submit: function (gid, stuid) {
+        submit: function(gid, stuid) {
             ajax({
                 method: 'post',
                 url: BASE_URL + 'students/login',
                 data: {
                     groupId: gid,
-                    studentId: stuid,
+                    studentId: stuid
                 },
-                success: function (result) {
+                success: function(result) {
                     var data = result.data
                     if (data.id) {
                         gid = BASE64.urlsafe_encode(gid)
@@ -36,7 +37,7 @@ jQuery(function ($) {
                         location.href = './?gid=' + gid + '&stuid=' + stuid
                     }
                 },
-                error: function (err) {
+                error: function(err) {
                     if (err.responseJSON.msg) {
                         return alert(err.responseJSON.msg)
                     }
@@ -47,5 +48,4 @@ jQuery(function ($) {
     }
 
     login.init()
-
 })

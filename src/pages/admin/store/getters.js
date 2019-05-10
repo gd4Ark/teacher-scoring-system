@@ -1,4 +1,4 @@
-import getters from "@/common/store/getters"
+import getters from '@/common/store/getters'
 export default {
     ...getters,
     token: state => state.user.access_token,

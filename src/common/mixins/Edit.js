@@ -1,17 +1,13 @@
-import Form from "@/common/mixins/Form"
-import {
-    success
-} from "@/common/utils/message"
-import {
-    mapActions
-} from "vuex"
+import Form from '@/common/mixins/Form'
+import { success } from '@/common/utils/message'
+import { mapActions } from 'vuex'
 export default {
     mixins: [Form],
     props: {
         current: Object,
         btnText: {
             type: String,
-            default: "更新"
+            default: '更新'
         },
         ids: Array,
         isBatch: {
@@ -20,18 +16,20 @@ export default {
         }
     },
     methods: {
-        ...mapActions(["update", "updateBatch"]),
+        ...mapActions(['update', 'updateBatch']),
         async submiting(data) {
-            const submitMethod = this.isBatch ? "batchSubmit" : "baseSubmit"
-            this[submitMethod](data).then((res) => {
-                this.done()
-                const message = this.successMessage(res) || "更新成功！"
-                success(message)
-                this.$emit("success")
-                this.afterSuccess()
-            }).catch(() => {
-                this.done()
-            })
+            const submitMethod = this.isBatch ? 'batchSubmit' : 'baseSubmit'
+            this[submitMethod](data)
+                .then(res => {
+                    this.done()
+                    const message = this.successMessage(res) || '更新成功！'
+                    success(message)
+                    this.$emit('success')
+                    this.afterSuccess()
+                })
+                .catch(() => {
+                    this.done()
+                })
         },
         async baseSubmit(data) {
             return await this.update({

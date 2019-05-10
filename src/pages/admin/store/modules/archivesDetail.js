@@ -1,8 +1,8 @@
 const state = {
     data: [],
     archive: {
-        id: null,
-    },
+        id: null
+    }
 }
 
 const actions = {
@@ -15,9 +15,7 @@ const actions = {
     }
 }
 
-const getters = {
-
-}
+const getters = {}
 
 const mutations = {
     update(ctx, data) {
@@ -33,5 +31,5 @@ export default {
     state,
     actions,
     getters,
-    mutations,
+    mutations
 }

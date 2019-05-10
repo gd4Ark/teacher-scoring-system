@@ -1,12 +1,8 @@
-const {
-    body
-} = document
+const { body } = document
 const WIDTH = 992 // refer to Bootstrap's responsive design
 
 export default {
-    watch: {
-
-    },
+    watch: {},
     beforeMount() {
         window.addEventListener('resize', this.$_resizeHandler)
         this.$_resizeHandler()
@@ -24,7 +20,10 @@ export default {
         $_resizeHandler() {
             if (!document.hidden) {
                 const isMobile = this.$_isMobile()
-                this.$store.dispatch('app/toggleDevice', isMobile ? 'mobile' : 'desktop')
+                this.$store.dispatch(
+                    'app/toggleDevice',
+                    isMobile ? 'mobile' : 'desktop'
+                )
                 this.$store.dispatch('app/toggleSidebar', !isMobile)
             }
         }

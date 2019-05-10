@@ -1,14 +1,14 @@
-import commonState from "@/common/store/state"
-import commonMutations from "@/common/store/mutations"
+import commonState from '@/common/store/state'
+import commonMutations from '@/common/store/mutations'
 
 const state = {
     ...commonState,
     teacher: {
-        id: null,
+        id: null
     },
     subject: {
-        id: null,
-    },
+        id: null
+    }
 }
 
 const actions = {
@@ -17,22 +17,24 @@ const actions = {
         const tid = ctx.state.teacher.id
         const module = 'scoresDetail'
         const url = 'scores/detail/' + `${sid}/${tid}`
-        return await ctx.dispatch('get', {
-            module,
-            url,
-            doCommit: true,
-        }, {
-            root: true
-        })
+        return await ctx.dispatch(
+            'get',
+            {
+                module,
+                url,
+                doCommit: true
+            },
+            {
+                root: true
+            }
+        )
     }
 }
 
-const getters = {
-
-}
+const getters = {}
 
 const mutations = {
-    ...commonMutations,
+    ...commonMutations
 }
 
 export default {
@@ -40,5 +42,5 @@ export default {
     state,
     actions,
     getters,
-    mutations,
+    mutations
 }

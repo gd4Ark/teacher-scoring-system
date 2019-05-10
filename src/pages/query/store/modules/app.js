@@ -1,11 +1,11 @@
-import config from "@/common/config"
+import config from '@/common/config'
 const state = {
     device: 'desktop',
     sidebar: {
-        opened: true,
+        opened: true
     },
-    showAvatar : false,
-    title : config.app_title + '- 教师查询'
+    showAvatar: false,
+    title: config.app_title + '- 教师查询'
 }
 
 const actions = {
@@ -16,10 +16,10 @@ const actions = {
     },
     toggleSidebar({
         commit,
-        state,
+        state
     }, opened = null) {
         commit('toggleSidebar', {
-            opened: opened === null ? !state.sidebar.opened : opened,
+            opened: opened === null ? !state.sidebar.opened : opened
         })
     }
 }
@@ -44,5 +44,5 @@ export default {
     state,
     actions,
     getters,
-    mutations,
+    mutations
 }

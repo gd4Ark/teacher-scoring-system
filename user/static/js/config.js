@@ -1,1 +1,1 @@
-var BASE_URL = 'http://'+ location.hostname +':82/'
+var BASE_URL = 'http://' + location.hostname + ':82/'

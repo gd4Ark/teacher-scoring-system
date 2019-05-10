@@ -1,20 +1,10 @@
-﻿import axios from "axios"
-import qs from "qs"
-import {
-    log
-} from "./index"
-import {
-    error
-} from "./message"
+﻿import axios from 'axios'
+import qs from 'qs'
+import { log } from './index'
+import { error } from './message'
 
 export default {
-    install(Vue, {
-        router,
-        store,
-        baseURL,
-        needAuth = false,
-    }) {
-
+    install(Vue, { router, store, baseURL, needAuth = false }) {
         axios.defaults.baseURL = baseURL
 
         // request interceptor
@@ -23,7 +13,7 @@ export default {
                 return config
             },
             error => {
-                error("timed out!")
+                error('timed out!')
                 return Promise.reject(error)
             }
         )
@@ -40,25 +30,26 @@ export default {
                 }
                 const status = err.response.status
                 const message = err.response.data.msg
-                if (process.env.NODE_ENV === "development") {
-                    log("error: " + message)
+                if (process.env.NODE_ENV === 'development') {
+                    log('error: ' + message)
                 }
                 if (status === 401) {
                     error(message).then(() => {
-                        router.push("/login")
+                        router.push('/login')
                     })
                 } else {
-                    error(message || "an error occurred!")
+                    error(message || 'an error occurred!')
                 }
                 return Promise.reject(err)
             }
         )
 
-
-        const getHeader = ()=>{
-            return needAuth ? {
-                "Authorization": `Bearer ${store.getters.token}`
-            } : {}
+        const getHeader = () => {
+            return needAuth
+                ? {
+                    Authorization: `Bearer ${store.getters.token}`
+                }
+                : {}
         }
 
         // request methods
@@ -70,10 +61,10 @@ export default {
          */
         const get = (url, data = {}) => {
             return axios({
-                method: "get",
+                method: 'get',
                 url,
                 headers: {
-                    ...getHeader(),
+                    ...getHeader()
                 },
                 params: data
             })
@@ -87,10 +78,10 @@ export default {
         const post = (url, data = {}) => {
             data = qs.stringify(data)
             return axios({
-                method: "post",
+                method: 'post',
                 url,
                 headers: {
-                    ...getHeader(),
+                    ...getHeader()
                 },
                 data
             })
@@ -104,10 +95,10 @@ export default {
         const put = (url, data = {}) => {
             data = qs.stringify(data)
             return axios({
-                method: "put",
+                method: 'put',
                 url,
                 headers: {
-                    ...getHeader(),
+                    ...getHeader()
                 },
                 data
             })
@@ -120,10 +111,10 @@ export default {
          */
         const del = (url, data = {}) => {
             return axios({
-                method: "delete",
+                method: 'delete',
                 url,
                 headers: {
-                    ...getHeader(),
+                    ...getHeader()
                 },
                 params: data
             })
@@ -136,12 +127,12 @@ export default {
          */
         const upload = (url, data = {}) => {
             return axios({
-                method: "post",
+                method: 'post',
                 url,
                 data,
                 headers: {
-                    "Content-Type": "multipart/form-data",
-                    ...getHeader(),
+                    'Content-Type': 'multipart/form-data',
+                    ...getHeader()
                 }
             })
         }

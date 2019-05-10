@@ -1,9 +1,7 @@
 import Vue from 'vue'
 import vuex from 'vuex'
 
-import {
-    fileListToObject
-} from "@/common/utils/readFile"
+import { fileListToObject } from '@/common/utils/readFile'
 
 import createPersist from 'vuex-localstorage'
 
@@ -19,10 +17,12 @@ export default new vuex.Store({
     modules,
     actions,
     getters,
-    plugins: [createPersist({
-        namespace: process.env.APP_NAME + '-admin',
-        initialState: {},
-        // one week
-        expires: 7 * 24 * 60 * 60 * 1e3
-    })]
+    plugins: [
+        createPersist({
+            namespace: process.env.APP_NAME + '-admin',
+            initialState: {},
+            // one week
+            expires: 7 * 24 * 60 * 60 * 1e3
+        })
+    ]
 })
