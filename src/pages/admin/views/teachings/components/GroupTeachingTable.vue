@@ -74,7 +74,6 @@ import Pagination from '@/common/components/Pagination'
 import ModalEdit from '@/common/components/ModalEdit'
 import ModalAdd from '@/common/components/ModalAdd'
 import ManageTable from '@/common/mixins/ManageTable'
-import splitNameList from '@/common/mixins/splitNameList'
 import successMessage from '@/common/mixins/successMessage'
 import { mapActions, mapState, mapMutations } from 'vuex'
 export default {
@@ -84,7 +83,7 @@ export default {
         ModalEdit,
         ModalAdd
     },
-    mixins: [ManageTable, splitNameList, successMessage],
+    mixins: [ManageTable, successMessage],
     data: () => ({
         module: __module,
         columns: []

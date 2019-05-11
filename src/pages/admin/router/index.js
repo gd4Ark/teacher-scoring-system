@@ -9,9 +9,9 @@ const modulesFiles = require.context('./routers', false, /\.js$/)
 const routers = fileListToArray(modulesFiles)
 
 const routerConfig = {
-    mode: process.env.NODE_ENV === 'development' ? 'history' : 'hash',
-    // base: '/admin',
-    // mode: 'history',
+    // mode: process.env.NODE_ENV === 'development' ? 'history' : 'hash',
+    base: '/admin',
+    mode: 'history',
     navList,
     routes: [
         {

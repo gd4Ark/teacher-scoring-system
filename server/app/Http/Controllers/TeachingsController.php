@@ -18,32 +18,32 @@ class TeachingsController extends Controller
         ]);
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $query = Teaching::query();
         $merge = null;
 
-        if ($this->req->has('groupId')) {
+        if ($request->has('groupId')) {
 
-            $id = $this->req->get('groupId');
+            $id = $request->get('groupId');
             $merge = ['group' => Group::query()->findOrFail($id)];
             $query =  $query->where('group_id',$id);
         }
-        else if ($this->req->has('subjectId')) {
+        else if ($request->has('subjectId')) {
 
-            $id = $this->req->get('subjectId');
+            $id = $request->get('subjectId');
             $merge = ['subject' => Subject::query()->findOrFail($id)];
             $query =  $query->where('subject_id',$id);
         }
-        else if ($this->req->has('teacherId')) {
+        else if ($request->has('teacherId')) {
 
-            $id = $this->req->get('teacherId');
+            $id = $request->get('teacherId');
             $merge = ['teacher' => Teacher::query()->findOrFail($id)];
             $query =  $query->where('teacher_id',$id);
         }
 
         $query = $this->queryFilter($query);
-        if ($this->req->get('getOptions') == 1) {
+        if ($request->get('getOptions') == 1) {
             return $this->getOptions($query);
         } else {
             return $this->json(array_merge(
@@ -70,10 +70,10 @@ class TeachingsController extends Controller
         return $this->json($item);
     }
 
-    public function create()
+    public function create(Request $request)
     {
         try {
-            $input = $this->req->only(['group_id', 'subject_id', 'teacher_id']);
+            $input = $request->only(['group_id', 'subject_id', 'teacher_id']);
             $item = Teaching::query()->firstOrCreate([
                 'group_id' => $input['group_id'],
                 'subject_id' => $input['subject_id'],
@@ -83,19 +83,19 @@ class TeachingsController extends Controller
             }
             return $this->error('不可添加相同科目');
         } catch (\Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error(env('APP_DEBUG') ? $e->getMessage() : '创建失败');
         }
     }
 
-    public function update($id)
+    public function update(Request $request,$id)
     {
         $item = Teaching::query()->findOrFail($id);
         try {
-            $input = $this->req->all();
+            $input = $request->all();
             $item->update($input);
             return $this->json($item);
         } catch (\Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error(env('APP_DEBUG') ? $e->getMessage() : '更新失败');
         }
     }
 
@@ -110,9 +110,9 @@ class TeachingsController extends Controller
         }
     }
 
-    public function deleteBatch()
+    public function deleteBatch(Request $request)
     {
-        $ids = (array)$this->req->get('ids');
+        $ids = (array)$request->get('ids');
         try {
             Teaching::query()->whereIn('id', $ids)->delete();
             return $this->json();

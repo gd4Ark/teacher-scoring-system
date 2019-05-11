@@ -27,6 +27,13 @@ class Subject extends Model
     ];
 
     /**
+     * @param $name
+     */
+    public function setNameAttribute($name){
+        $this->attributes['name'] = trim($name);
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\hasMany
      */
     public function teachings()

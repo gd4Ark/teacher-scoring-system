@@ -20,11 +20,11 @@ class ArchivesController extends Controller
         ]);
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $query = Archive::query();
         $query = $this->queryFilter($query);
-        if ($this->req->get('getOptions') == 1) {
+        if ($request->get('getOptions') == 1) {
             return $this->getOptions($query);
         } else {
             $query = $query->select(['id','name','created_at']);
@@ -48,14 +48,12 @@ class ArchivesController extends Controller
 
             $this->archive();
 
-            Subject::query()->delete();
-            Teacher::query()->delete();
-            Group::query()->delete();
+            $this->afterArchive();
 
             return $this->json();
 
         } catch (\Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error(env('APP_DEBUG') ? $e->getMessage() : '创建失败');
         }
     }
 
@@ -79,6 +77,12 @@ class ArchivesController extends Controller
                 'archive' => $archive
             ]
         ]);
+    }
+
+    private function afterArchive(){
+        Subject::query()->delete();
+        Teacher::query()->delete();
+        Group::query()->delete();
     }
 
 }

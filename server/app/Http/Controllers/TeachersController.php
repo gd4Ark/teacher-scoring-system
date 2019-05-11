@@ -16,39 +16,43 @@ class TeachersController extends Controller
         ]);
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $query = Teacher::query()->withCount(['teachings']);
         $query = $this->queryFilter($query);
-        if ($this->req->get('getOptions') == 1) {
+        if ($request->get('getOptions') == 1) {
             return $this->getOptions($query);
         } else {
             return $this->paginateToJson($query);
         }
     }
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $item = Teacher::query()->findOrFail($id);
-        if ($this->req->get('getTeachings') == 1){
+        if ($request->get('getTeachings') == 1){
             return $this->json($item->getTeachings());
         }
         return $this->json($item);
     }
 
-    public function create()
+    public function create(Request $request)
     {
         try {
-            $groupList = $this->req->input('nameList',[]);
+            $names = $request->get('names');
+            $names = explode("\n",$names);
             $new_count = 0;
             $validator_count = 0;
-            foreach ($groupList as $group){
-                $validator = $this->ruleValidator(TeacherRule::rules(),TeacherRule::message(),$group);
+            foreach ($names as $name){
+                $teacher = [
+                    'name' => $name,
+                ];
+                $validator = $this->ruleValidator(TeacherRule::rules(),TeacherRule::message(),$teacher);
                 if ($validator){
                     $validator_count++;
                     continue;
                 }
-                $item = Teacher::query()->firstOrCreate($group);
+                $item = Teacher::query()->firstOrCreate($teacher);
                 if ($item->wasRecentlyCreated){
                     $new_count++;
                 }
@@ -58,11 +62,11 @@ class TeachersController extends Controller
                 'validator_count' => $validator_count,
             ]);
         } catch (\Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error(env('APP_DEBUG') ? $e->getMessage() : '创建失败');
         }
     }
 
-    public function update($id)
+    public function update(Request $request,$id)
     {
         $item = Teacher::query()->findOrFail($id);
         $validator = $this->ruleValidator(TeacherRule::rules($item),TeacherRule::message());
@@ -70,11 +74,11 @@ class TeachersController extends Controller
             return $validator;
         }
         try {
-            $input = $this->req->all();
+            $input = $request->all();
             $item->update($input);
             return $this->json($item);
         } catch (\Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error(env('APP_DEBUG') ? $e->getMessage() : '更新失败');
         }
     }
 
@@ -89,9 +93,9 @@ class TeachersController extends Controller
         }
     }
 
-    public function deleteBatch()
+    public function deleteBatch(Request $request)
     {
-        $ids = (array)$this->req->get('ids');
+        $ids = (array)$request->get('ids');
         try {
             Teacher::query()->whereIn('id', $ids)->delete();
             return $this->json();

@@ -18,31 +18,31 @@ class StudentsController extends Controller
         ]);
     }
 
-    public function index()
+    public function index(Request $request)
     {
 
-        if ($this->req->get('getComplete') == 1) {
+        if ($request->get('getComplete') == 1) {
             return $this->completeInfo();
         }
 
         $query =  Student::query();
         $merge = null;
 
-        if ($this->req->has('groupId')){
+        if ($request->has('groupId')){
 
-            $id = $this->req->get('groupId');
+            $id = $request->get('groupId');
             $merge = ['group' => Group::query()->findOrFail($id)];
             $query =  $query->where('group_id',$id);
 
         }
 
         $query = $this->queryFilter($query);
-        if ($this->req->get('getOptions') == 1) {
+        if ($request->get('getOptions') == 1) {
             return $this->getOptions($query);
         } else {
             return $this->json(array_merge(
-                $merge,
-                $this->paginate($query)->toArray()
+                    $merge,
+                    $this->paginate($query)->toArray()
                 )
             );
         }
@@ -67,19 +67,25 @@ class StudentsController extends Controller
         return $this->json($item);
     }
 
-    public function create()
+    public function create(Request $request)
     {
         try {
-            $studentList = $this->req->input('nameList',[]);
+            $group_id = $request->get('group_id');
+            $names = $request->get('names');
+            $names = explode("\n",$names);
             $new_count = 0;
             $validator_count = 0;
-            foreach ($studentList as $student){
+            foreach ($names as $name){
+                $student = [
+                    'name' => $name,
+                    'group_id' => $group_id,
+                ];
                 $validator = $this->ruleValidator(StudentRule::rules(),StudentRule::message(),$student);
                 if ($validator){
                     $validator_count++;
                     continue;
                 }
-                $item = Group::query()->firstOrCreate($student);
+                $item = Student::query()->create($student);
                 if ($item->wasRecentlyCreated){
                     $new_count++;
                 }
@@ -89,23 +95,23 @@ class StudentsController extends Controller
                 'validator_count' => $validator_count,
             ]);
         } catch (\Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error(env('APP_DEBUG') ? $e->getMessage() : '创建失败');
         }
     }
 
-    public function update($id)
+    public function update(Request $request, $id)
     {
-        $item = Group::query()->findOrFail($id);
+        $item = Student::query()->findOrFail($id);
         $validator = $this->ruleValidator(StudentRule::rules($item),StudentRule::message());
         if ($validator){
             return $validator;
         }
         try {
-            $input = $this->req->all();
+            $input = $request->all();
             $item->update($input);
             return $this->json($item);
         } catch (\Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error(env('APP_DEBUG') ? $e->getMessage() : '更新失败');
         }
     }
 
@@ -120,9 +126,9 @@ class StudentsController extends Controller
         }
     }
 
-    public function deleteBatch()
+    public function deleteBatch(Request $request)
     {
-        $ids = (array)$this->req->get('ids');
+        $ids = (array)$request->get('ids');
         try {
             Student::query()->whereIn('id', $ids)->delete();
             return $this->json();
@@ -131,9 +137,9 @@ class StudentsController extends Controller
         }
     }
 
-    public function login(){
-        $group = Group::query()->findOrFail($this->req->get('groupId'));
-        $student = Student::query()->findOrFail($this->req->get('studentId'));
+    public function login(Request $request){
+        $group = Group::query()->findOrFail($request->get('groupId'));
+        $student = Student::query()->findOrFail($request->get('studentId'));
         if ($student->group->id !== $group->id){
             return $this->error('该学生不存在');
         }
@@ -143,9 +149,9 @@ class StudentsController extends Controller
         return $this->json($student);
     }
 
-    public function submit(){
-        $scores = (array)$this->req->get('scores');
-        $uid = (int)$this->req->get('user_id');
+    public function submit(Request $request){
+        $scores = (array)$request->get('scores');
+        $uid = (int)$request->get('user_id');
         $user = Student::query()->findOrFail($uid);
         if($user->complete){
             return $this->error('不可重复提交');
@@ -185,7 +191,7 @@ class StudentsController extends Controller
             $user->complete = 1;
             $user->save();
         }catch (\Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error(env('APP_DEBUG') ? $e->getMessage() : '提交失败');
         }
         return $this->json();
     }

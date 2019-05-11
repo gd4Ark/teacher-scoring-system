@@ -3,7 +3,7 @@ export default {
         item: [
             {
                 label: '学生姓名',
-                key: 'name_list',
+                key: 'names',
                 type: 'textarea',
                 row: 20,
                 placeholder: `请输入学生姓名，一行一个。`,
@@ -17,7 +17,7 @@ export default {
             }
         ],
         data: () => ({
-            name_list: ''
+            names: ''
         })
     },
 

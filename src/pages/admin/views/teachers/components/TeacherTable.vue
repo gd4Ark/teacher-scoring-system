@@ -7,7 +7,7 @@
                        :form-item="$v_data[module].add.item"
                        :get-form-data="$v_data[module].add.data"
                        :module="module"
-                       :before-submit="splitNameList"
+                       :before-submit="beforeAddSubmit"
                        :success-message="successMessage"
                        title="添加教师"
                        @get-data="getData" />
@@ -33,6 +33,7 @@
                                 :form-item="$v_data[module].edit.item"
                                 :current="scope.row"
                                 :module="module"
+                                :before-submit="beforeEditSubmit"
                                 btn-size="mini"
                                 @get-data="getData" />
                     <el-button size="mini"
@@ -62,7 +63,7 @@ import Pagination from '@/common/components/Pagination'
 import ModalEdit from '@/common/components/ModalEdit'
 import ModalAdd from '@/common/components/ModalAdd'
 import ManageTable from '@/common/mixins/ManageTable'
-import splitNameList from '@/common/mixins/splitNameList'
+import filterName from '@/common/mixins/filterName'
 import successMessage from '@/common/mixins/successMessage'
 import { mapState, mapMutations } from 'vuex'
 export default {
@@ -72,7 +73,7 @@ export default {
         ModalEdit,
         ModalAdd
     },
-    mixins: [ManageTable, splitNameList, successMessage],
+    mixins: [ManageTable, successMessage, filterName],
     props: {
         title: {
             type: String,

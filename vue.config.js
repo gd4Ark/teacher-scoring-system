@@ -1,7 +1,7 @@
 const CompressionPlugin = require('compression-webpack-plugin')
 const pkg = require('./package.json')
 const isPord = process.env.NODE_ENV === 'production'
-const current = 'admin'
+const current = 'query'
 const pages = [
     // development
     // can only debug one
@@ -15,11 +15,11 @@ const pages = [
     {
         index: {
             entry: 'src/pages/admin/main.js',
-            filename: 'index.html'
+            filename: 'admin/index.html'
         },
         query: {
             entry: 'src/pages/query/main.js',
-            filename: 'query.html'
+            filename: 'query/index.html'
         }
     }
 ]

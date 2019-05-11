@@ -61,7 +61,6 @@ const __module = 'scoresDetail'
 import vTable from '@/common/components/Table'
 import Pagination from '@/common/components/Pagination'
 import ManageTable from '@/common/mixins/ManageTable'
-import splitNameList from '@/common/mixins/splitNameList'
 import successMessage from '@/common/mixins/successMessage'
 import { mapActions, mapState, mapMutations } from 'vuex'
 export default {
@@ -69,7 +68,7 @@ export default {
         vTable,
         Pagination
     },
-    mixins: [ManageTable, splitNameList, successMessage],
+    mixins: [ManageTable, successMessage],
     data: () => ({
         module: __module,
         columns: [

@@ -127,4 +127,9 @@ class Controller extends BaseController
         return null;
     }
 
+    public function split($value,$delimiter = "\n"){
+        $res =  explode($delimiter,$value);
+        return array_map('trim',$res);
+    }
+
 }

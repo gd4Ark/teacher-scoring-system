@@ -14,26 +14,4 @@ class Model extends EloquentModel
     {
         return $query->orderBy('created_at', 'desc');
     }
-
-    /**
-     * @param array $array
-     * @return array
-     */
-    public function rules($array = []){
-        $data = [];
-        $rules = [];
-        foreach($array as $item){
-            $data[$item] =  $rules[$item];
-        }
-        return $data;
-    }
-
-    /**
-     * @return array
-     */
-    public function ruleMessage(){
-        return [
-
-        ];
-    }
 }

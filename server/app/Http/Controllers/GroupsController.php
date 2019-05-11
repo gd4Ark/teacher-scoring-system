@@ -17,32 +17,40 @@ class GroupsController extends Controller
         ]);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        if ($this->req->get('getComplete') == 1) {
+        if ($request->get('getComplete') == 1) {
             return $this->completeInfo();
         }
-        $query = Group::query()->withCount([
-            'students',
-            'students as complete_count' => function ($query) {
-                $query->where('complete', 1);
-            },
-            'teachings',
-        ]);
+        $query = $this->getRelationCount(Group::query());
         $query = $this->queryFilter($query);
-        if ($this->req->get('getOptions') == 1) {
+        if ($request->get('getOptions') == 1) {
             return $this->getOptions($query);
         } else {
             return $this->paginateToJson($query);
         }
     }
 
-    private function completeInfo(){
-        $res = Group::query()->select('id')->withCount([
+    /**
+     * @param $query \Illuminate\Database\Eloquent\Builder
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    private function getRelationCount($query){
+        return $query->withCount([
             'students',
             'students as complete_count' => function ($query) {
                 $query->where('complete', 1);
-            }])->get();
+            },
+            'teachings',
+        ]);
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    private function completeInfo(){
+        $query = Group::query()->select('id');
+        $res = $this->getRelationCount($query)->get();
         return $this->json([
             [
                 'state' => '未完成',
@@ -65,13 +73,17 @@ class GroupsController extends Controller
         return $this->json($item);
     }
 
-    public function create()
+    public function create(Request $request)
     {
         try {
-            $groupList = $this->req->input('nameList',[]);
+            $names = $request->get('names');
+            $names = $this->split($names);
             $new_count = 0;
             $validator_count = 0;
-            foreach ($groupList as $group){
+            foreach ($names as $name){
+                $group = [
+                    'name' => $name,
+                ];
                 $validator = $this->ruleValidator(GroupRule::rules(),GroupRule::message(),$group);
                 if ($validator){
                     $validator_count++;
@@ -87,11 +99,11 @@ class GroupsController extends Controller
                 'validator_count' => $validator_count,
             ]);
         } catch (\Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error(env('APP_DEBUG') ? $e->getMessage() : '创建失败');
         }
     }
 
-    public function update($id)
+    public function update(Request $request,$id)
     {
         $item = Group::query()->findOrFail($id);
         $validator = $this->ruleValidator(GroupRule::rules($item),GroupRule::message());
@@ -99,11 +111,11 @@ class GroupsController extends Controller
             return $validator;
         }
         try {
-            $input = $this->req->all();
+            $input = $request->all();
             $item->update($input);
             return $this->json($item);
         } catch (\Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error(env('APP_DEBUG') ? $e->getMessage() : '更新失败');
         }
     }
 
@@ -118,21 +130,21 @@ class GroupsController extends Controller
         }
     }
 
-    public function updateBatch()
+    public function updateBatch(Request $request)
     {
-        $ids = (array)$this->req->get('ids');
-        $data = $this->req->except('ids');
+        $ids = (array)$request->get('ids');
+        $data = $request->except('ids');
         try {
             Group::query()->whereIn('id', $ids)->update($data);
             return $this->json();
         } catch (\Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error(env('APP_DEBUG') ? $e->getMessage() : '更新失败');
         }
     }
 
-    public function deleteBatch()
+    public function deleteBatch(Request $request)
     {
-        $ids = (array)$this->req->get('ids');
+        $ids = (array)$request->get('ids');
         try {
             Group::query()->whereIn('id', $ids)->delete();
             return $this->json();
@@ -141,10 +153,10 @@ class GroupsController extends Controller
         }
     }
 
-    public function updateAllow(){
+    public function updateAllow(Request $request){
         $query = Group::query();
-        if ($this->req->get('all') != 1) {
-            $query = $query->findOrFail($this->req->get('id'));
+        if ($request->get('all') != 1) {
+            $query = $query->findOrFail($request->get('id'));
         }
         $validator = $this->ruleValidator(GroupRule::rules(),GroupRule::message());
         if ($validator){
@@ -152,11 +164,11 @@ class GroupsController extends Controller
         }
         try{
             $query->update([
-                'allow' => $this->req->get('allow')
+                'allow' => $request->get('allow')
             ]);
         }
         catch (\Exception $e){
-            return $this->error($e->getMessage());
+            return $this->error(env('APP_DEBUG') ? $e->getMessage() : '更新失败');
         }
     }
 

@@ -1,7 +1,7 @@
 {
     "name": "teacher-scoring-system",
     "title": "教师评分系统",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "private": true,
     "scripts": {
         "serve": "vue-cli-service serve",

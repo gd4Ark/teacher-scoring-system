@@ -18,9 +18,9 @@ class ScoresController extends Controller
         ]);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        if ($this->req->get('getComplete') == 1) {
+        if ($request->get('getComplete') == 1) {
             return $this->completeInfo();
         }
 

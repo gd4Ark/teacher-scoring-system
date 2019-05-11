@@ -5,7 +5,23 @@ const state = {
     ...commonState
 }
 
-const actions = {}
+const actions = {
+    async getData(ctx) {
+        const module = 'scores'
+        const url = module
+        return await ctx.dispatch(
+            'get',
+            {
+                module,
+                url,
+                doCommit: true
+            },
+            {
+                root: true
+            }
+        )
+    }
+}
 
 const getters = {}
 

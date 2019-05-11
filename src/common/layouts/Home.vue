@@ -61,10 +61,10 @@ export default {
     &.desktop {
         &.openSidebar {
             .sidebar {
-                width: 220px;
+                width: $sidebar-width;
             }
             .container {
-                margin-left: 220px;
+                margin-left: $sidebar-width;
             }
         }
         &.hideSidebar {
@@ -82,7 +82,7 @@ export default {
         }
         &.hideSidebar {
             .sidebar {
-                transform: translate3d(-220px, 0, 0);
+                transform: translate3d(-$sidebar-width, 0, 0);
             }
         }
     }

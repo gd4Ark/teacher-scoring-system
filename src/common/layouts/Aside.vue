@@ -86,7 +86,7 @@ export default {
     background: $app-header-bgcolor;
     color: $app-header-color;
     .title {
-        font-size: 1.25rem;
+        font-size: $title-font-size;
     }
 }
 span {

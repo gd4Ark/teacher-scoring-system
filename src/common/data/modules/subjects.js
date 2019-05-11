@@ -3,7 +3,7 @@ export default {
         item: [
             {
                 label: '科目名称',
-                key: 'name_list',
+                key: 'names',
                 type: 'textarea',
                 row: 20,
                 placeholder: `请输入科目名称，一行一个。\np.s：如已存在或重复将自动忽略。`,
@@ -17,7 +17,7 @@ export default {
             }
         ],
         data: () => ({
-            name_list: ''
+            names: ''
         })
     },
 

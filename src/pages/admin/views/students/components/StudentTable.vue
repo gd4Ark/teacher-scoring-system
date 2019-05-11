@@ -40,6 +40,7 @@
                                     :form-item="$v_data[module].edit.item"
                                     :current="scope.row"
                                     :module="module"
+                                    :before-submit="beforeEditSubmit"
                                     btn-size="mini"
                                     @get-data="getData" />
                         <el-button size="mini"
@@ -66,7 +67,7 @@ import Pagination from '@/common/components/Pagination'
 import ModalEdit from '@/common/components/ModalEdit'
 import ModalAdd from '@/common/components/ModalAdd'
 import ManageTable from '@/common/mixins/ManageTable'
-import splitNameList from '@/common/mixins/splitNameList'
+import filterName from '@/common/mixins/filterName'
 import successMessage from '@/common/mixins/successMessage'
 import getStatusClassName from '@/common/mixins/getStatusClassName'
 import { mapState, mapMutations } from 'vuex'
@@ -77,7 +78,7 @@ export default {
         ModalEdit,
         ModalAdd
     },
-    mixins: [ManageTable, splitNameList, successMessage, getStatusClassName],
+    mixins: [ManageTable, successMessage, filterName, getStatusClassName],
     data: () => ({
         module: __module,
         columns: [
@@ -108,11 +109,9 @@ export default {
             setOrder: 'update'
         }),
         beforeSubmit(data) {
-            const res = this.splitNameList(data)
-            res.nameList.forEach(el => {
-                el.group_id = this.$route.params.id
-            })
-            return res
+            data = this.beforeAddSubmit(data)
+            data.group_id = this.$route.params.id
+            return data
         }
     }
 }

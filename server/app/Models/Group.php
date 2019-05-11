@@ -29,6 +29,13 @@ class Group extends Model
     ];
 
     /**
+     * @param $name
+     */
+    public function setNameAttribute($name){
+        $this->attributes['name'] = trim($name);
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function students()
@@ -42,15 +49,5 @@ class Group extends Model
     public function teachings()
     {
         return $this->hasMany('App\Models\Teaching');
-    }
-
-    /**
-     * @return array
-     */
-    public function option(){
-        return [
-            'label' => $this->name,
-            'value' => $this->id,
-        ];
     }
 }
