@@ -1,4 +1,6 @@
 const CompressionPlugin = require('compression-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+    .BundleAnalyzerPlugin
 const pkg = require('./package.json')
 const isPord = process.env.NODE_ENV === 'production'
 const current = 'admin'
@@ -23,29 +25,43 @@ const pages = [
         }
     }
 ]
-const config = {
+module.exports = {
     publicPath: isPord ? '../' : '/',
     pages: pages[isPord ? 1 : 0],
-    lintOnSave: true,
+    lintOnSave: !isPord,
     productionSourceMap: false,
     css: {
+        extract: true,
+        sourceMap: false,
         loaderOptions: {
             sass: {
                 data: `@import "@/common/styles/app.scss";`
             }
         }
     },
-    configureWebpack: () => {
+    devServer: {
+        host: '0.0.0.0',
+        port: 8080,
+        https: false,
+        open: true,
+        hotOnly: true
+    },
+    configureWebpack: config => {
+        const pluginsPro = [
+            new CompressionPlugin({
+                test: /\.js$|\.html$|.\css/,
+                threshold: 10240,
+                deleteOriginalAssets: false
+            })
+        ]
+        if (process.env.npm_config_report) {
+            pluginsPro.push(new BundleAnalyzerPlugin())
+        }
+        const pluginsDev = []
         if (isPord) {
-            return {
-                plugins: [
-                    new CompressionPlugin({
-                        test: /\.js$|\.html$|.\css/,
-                        threshold: 10240,
-                        deleteOriginalAssets: false
-                    })
-                ]
-            }
+            config.plugins = [...config.plugins, ...pluginsPro]
+        } else {
+            config.plugins = [...config.plugins, ...pluginsDev]
         }
     },
     chainWebpack: config => {
@@ -61,4 +77,3 @@ const config = {
         })
     }
 }
-module.exports = config
