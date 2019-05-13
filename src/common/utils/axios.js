@@ -21,7 +21,7 @@ export default {
         // response interceptor
         axios.interceptors.response.use(
             data => {
-                return data.data.data || data.data
+                return data.data.data !== undefined ? data.data.data : data.data
             },
             err => {
                 if (!err.response) {

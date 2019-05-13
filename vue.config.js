@@ -27,6 +27,7 @@ const config = {
     publicPath: isPord ? '../' : '/',
     pages: pages[isPord ? 1 : 0],
     lintOnSave: true,
+    productionSourceMap: false,
     css: {
         loaderOptions: {
             sass: {

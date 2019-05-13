@@ -33,18 +33,6 @@
                     </template>
                 </el-table-column>
             </template>
-            <template slot="append">
-                <el-table-column label="操作"
-                                 class-name="operate-col"
-                                 align="center">
-                    <template slot-scope="scope">
-                        <el-button size="mini"
-                                   @click="toScoresDetail(scope.row.subject_id,scope.row.teacher_id)">
-                            查看明细
-                        </el-button>
-                    </template>
-                </el-table-column>
-            </template>
         </v-table>
 
         <pagination :state="state"
@@ -75,12 +63,6 @@ export default {
     data: () => ({
         module: __module,
         columns: [
-            {
-                prop: 'student_count',
-                label: '评分人数',
-                sortable: 'custom',
-                minWidth: 100
-            },
             {
                 prop: '教学能力',
                 label: '教学能力',
