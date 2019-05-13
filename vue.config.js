@@ -1,7 +1,7 @@
 const CompressionPlugin = require('compression-webpack-plugin')
 const pkg = require('./package.json')
 const isPord = process.env.NODE_ENV === 'production'
-const current = 'query'
+const current = 'admin'
 const pages = [
     // development
     // can only debug one

@@ -22,7 +22,9 @@ class TeachersController extends Controller
         $query = $this->queryFilter($query);
         if ($request->get('getOptions') == 1) {
             return $this->getOptions($query);
-        } else {
+        } elseif ($request->get('getCount') == 1){
+            return $this->json($query->count());
+        }  else {
             return $this->paginateToJson($query);
         }
     }

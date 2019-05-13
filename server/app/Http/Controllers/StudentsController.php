@@ -39,6 +39,8 @@ class StudentsController extends Controller
         $query = $this->queryFilter($query);
         if ($request->get('getOptions') == 1) {
             return $this->getOptions($query);
+        } elseif ($request->get('getCount') == 1){
+            return $this->json($query->count());
         } else {
             return $this->json(array_merge(
                     $merge,

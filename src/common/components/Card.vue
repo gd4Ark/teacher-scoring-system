@@ -1,6 +1,6 @@
 <template>
     <el-card shadow="never">
-        <div v-if="useHeader"
+        <div v-if="needHeader"
              slot="header"
              class="card-header">
             <h2 class="card-title">{{ title }}</h2>
@@ -13,7 +13,7 @@
 export default {
     name: 'Card',
     props: {
-        useHeader: {
+        needHeader: {
             type: Boolean,
             default: true
         },
@@ -37,7 +37,8 @@ export default {
     padding: $card-header-padding;
 }
 .el-card__body {
-    padding: $card-body-padding;
+    // padding: $card-body-padding;
+    padding: 0;
 }
 
 .card-title {
