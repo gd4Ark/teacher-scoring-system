@@ -5,7 +5,7 @@ jQuery(function($) {
         init: function() {
             this.initEvent()
         },
-        initEvent() {
+        initEvent: function() {
             var _this = this
             $('#groups').on('change', function() {
                 location.href =
