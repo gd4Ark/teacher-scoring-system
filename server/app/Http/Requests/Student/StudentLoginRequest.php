@@ -21,13 +21,12 @@ class StudentLoginRequest extends Request
     public function rules()
     {
         return [
-            'scores' => 'required|array',
             'user_id' => ['required','exists:students,id',function($attribute,$value,$fail){
                 $student = Student::query()->findOrFail($value);
-                if (!$student->groups->allow){
+                if (!$student->group->allow){
                     $fail('该班级禁止评分！');
                 }else if ($student->complete){
-                    $fail('禁止重复提交！');
+                    $fail('您已提交！');
                 }
             }],
         ];

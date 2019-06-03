@@ -128,8 +128,8 @@ var scoring = {
                 _this.logout()
             },
             error: function(err) {
-                if (err.responseJSON.msg) {
-                    return alert(err.responseJSON.msg)
+                if (err.responseJSON.message) {
+                    return alert(err.responseJSON.message)
                 }
                 alert('提交失败！')
             }

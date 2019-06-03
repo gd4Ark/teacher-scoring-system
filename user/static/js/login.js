@@ -37,8 +37,8 @@ jQuery(function($) {
                     }
                 },
                 error: function(err) {
-                    if (err.responseJSON.msg) {
-                        return alert(err.responseJSON.msg)
+                    if (err.responseJSON.message) {
+                        return alert(err.responseJSON.message)
                     }
                     alert('登陆失败！')
                 }
