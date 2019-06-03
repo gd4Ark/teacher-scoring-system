@@ -4,7 +4,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI)
 
-import '@/common/assets/iconfont/iconfont.css'
+import '@/static/iconfont/iconfont.css'
 
 import config from '@/common/config'
 Vue.prototype.$config = config

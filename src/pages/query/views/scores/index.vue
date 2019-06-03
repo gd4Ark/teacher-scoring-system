@@ -1,15 +1,11 @@
 <template>
   <not-sub-router :name="module">
-    <search
-      :module="module"
-      :get-data="getData"
-      @before-change="beforeChange"
-      @after-change="afterChange"
-    />
-    <s-table
-      ref="table"
-      :get-data="getData"
-    />
+    <search :module="module"
+            :get-data="getData"
+            @before-change="beforeChange"
+            @after-change="afterChange" />
+    <s-table ref="table"
+             :get-data="getData" />
   </not-sub-router>
 </template>
 <script>

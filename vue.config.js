@@ -26,7 +26,7 @@ const pages = [
     }
 ]
 module.exports = {
-    publicPath: isPord ? '../' : '/',
+    publicPath: isPord ? '/' : '/',
     pages: pages[isPord ? 1 : 0],
     lintOnSave: !isPord,
     productionSourceMap: false,
