@@ -10,6 +10,7 @@ export default {
         // request interceptor
         axios.interceptors.request.use(
             config => {
+                // console.log(config)
                 return config
             },
             error => {
@@ -29,7 +30,7 @@ export default {
                     return Promise.reject(err)
                 }
                 const status = err.response.status
-                const message = err.response.data.msg
+                const message = err.response.data.message
                 if (process.env.NODE_ENV === 'development') {
                     log('error: ' + message)
                 }

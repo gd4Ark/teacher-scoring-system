@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,16 +15,16 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         try {
-            if ($user = User::query()->where('username', $request->get('username'))->first()) {
+            if ($user = Admin::query()->where('username', $request->get('username'))->first()) {
                 if (password_verify($request->get('password'), $user['password'])) {
                     $token = Auth::login($user);
                     return $this->respondWithToken($token);
                 }
             }
-            return $this->error('无效用户名或密码');
+            return $this->failed('无效用户名或密码');
 
         } catch (\Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->failed($e->getMessage());
         }
     }
 
@@ -34,7 +34,7 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout();
-        return $this->msg('成功登出');
+        return $this->message('成功登出');
     }
 
     /**
@@ -45,7 +45,7 @@ class AuthController extends Controller
     {
         try {
             /**
-             * @var $user User
+             * @var $user Admin
              */
             $user = Auth::user();
             if (!password_verify($request->get('password_current'), $user['password'])) {
@@ -56,9 +56,9 @@ class AuthController extends Controller
             }
             $user['password'] = password_hash($request->get('password'), PASSWORD_DEFAULT);
             $user->save();
-            return $this->msg('重置成功');
+            return $this->message('重置成功');
         } catch (\Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->failed($e->getMessage());
         }
     }
 
@@ -81,7 +81,7 @@ class AuthController extends Controller
      */
     protected function respondWithToken($token)
     {
-        return $this->json([
+        return $this->success([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => Auth::factory()->getTTL() * 60

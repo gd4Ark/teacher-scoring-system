@@ -1,19 +1,13 @@
 export default {
     requestData() {
         return origin => {
-            const {
-                current_page,
-                per_page,
-                search_keyword,
-                order_by,
-                desc
-            } = origin
+            const { current_page, per_page, search, order_by, desc } = origin
             const data = {
                 page: current_page,
                 per_page
             }
-            if (search_keyword.length) {
-                data.where = search_keyword
+            if (search.length) {
+                data.where = search
             }
             if (order_by) {
                 data.order_by = order_by

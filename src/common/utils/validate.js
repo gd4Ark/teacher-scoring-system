@@ -60,6 +60,24 @@ export function validEmail(email) {
 }
 
 /**
+ * @param {string} phone
+ * @returns {Boolean}
+ */
+export function validPhone(phone) {
+    const reg = /^1[0-9]{10}$/
+    return reg.test(phone)
+}
+
+/**
+ * @param {string} age
+ * @returns {Boolean}
+ */
+export function validAge(age) {
+    const reg = /^((1[0-5])|[1-9])?\d$/
+    return reg.test(age)
+}
+
+/**
  * @param {string} str
  * @returns {Boolean}
  */

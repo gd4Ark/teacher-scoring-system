@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Student\StudentCreateRequest;
+use App\Http\Requests\Student\StudentLoginRequest;
+use App\Http\Requests\Student\StudentSubmitRequest;
+use App\Http\Requests\Student\StudentUpdateRequest;
 use App\Models\Group;
 use App\Models\Score;
 use App\Models\Student;
-use App\Rules\StudentRule;
 use Illuminate\Http\Request;
 
 class StudentsController extends Controller
@@ -40,9 +43,9 @@ class StudentsController extends Controller
         if ($request->get('getOptions') == 1) {
             return $this->getOptions($query);
         } elseif ($request->get('getCount') == 1){
-            return $this->json($query->count());
+            return $this->success($query->count());
         } else {
-            return $this->json(array_merge(
+            return $this->success(array_merge(
                     $merge,
                     $this->paginate($query)->toArray()
                 )
@@ -51,7 +54,7 @@ class StudentsController extends Controller
     }
 
     private function completeInfo(){
-        return $this->json([
+        return $this->success([
             [
                 'state' => '未完成',
                 'count' => Student::query()->whereComplete(0)->count(),
@@ -66,54 +69,44 @@ class StudentsController extends Controller
     public function show($id)
     {
         $item = Student::query()->findOrFail($id);
-        return $this->json($item);
+        return $this->success($item);
     }
 
-    public function create(Request $request)
+    public function create(StudentCreateRequest $request)
     {
+        $group_id = $request->get('group_id');
+        $names = $request->get('names');
+        $names = split($names);
+        $new_count = 0;
         try {
-            $group_id = $request->get('group_id');
-            $names = $request->get('names');
-            $names = explode("\n",$names);
-            $new_count = 0;
-            $validator_count = 0;
             foreach ($names as $name){
                 $student = [
                     'name' => $name,
                     'group_id' => $group_id,
                 ];
-                $validator = $this->ruleValidator(StudentRule::rules(),StudentRule::message(),$student);
-                if ($validator){
-                    $validator_count++;
-                    continue;
-                }
                 $item = Student::query()->create($student);
                 if ($item->wasRecentlyCreated){
                     $new_count++;
                 }
             }
-            return $this->json([
+            return $this->success([
                 'new_count' => $new_count,
-                'validator_count' => $validator_count,
+                'fail_count' => count($names) - $new_count,
             ]);
         } catch (\Exception $e) {
-            return $this->error(env('APP_DEBUG') ? $e->getMessage() : '创建失败');
+            return $this->failed(env('APP_DEBUG') ? $e->getMessage() : '创建失败');
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(StudentUpdateRequest $request, $id)
     {
         $item = Student::query()->findOrFail($id);
-        $validator = $this->ruleValidator(StudentRule::rules($item),StudentRule::message());
-        if ($validator){
-            return $validator;
-        }
         try {
             $input = $request->all();
             $item->update($input);
-            return $this->json($item);
+            return $this->success($item);
         } catch (\Exception $e) {
-            return $this->error(env('APP_DEBUG') ? $e->getMessage() : '更新失败');
+            return $this->failed(env('APP_DEBUG') ? $e->getMessage() : '更新失败');
         }
     }
 
@@ -122,9 +115,9 @@ class StudentsController extends Controller
         $item = Student::query()->findOrFail($id);
         try {
             $item->delete();
-            return $this->json();
+            return $this->success();
         } catch (\Exception $e) {
-            return $this->error('删除失败');
+            return $this->failed('删除失败');
         }
     }
 
@@ -133,34 +126,21 @@ class StudentsController extends Controller
         $ids = (array)$request->get('ids');
         try {
             Student::query()->whereIn('id', $ids)->delete();
-            return $this->json();
+            return $this->success();
         } catch (\Exception $e) {
-            return $this->error('删除失败');
+            return $this->failed('删除失败');
         }
     }
 
-    public function login(Request $request){
-        $group = Group::query()->findOrFail($request->get('groupId'));
-        $student = Student::query()->findOrFail($request->get('studentId'));
-        if ($student->group->id !== $group->id){
-            return $this->error('该学生不存在');
-        }
-        if ($group->allow == 0){
-            return $this->error('该班级禁止评分');
-        }
-        return $this->json($student);
+    public function login(StudentLoginRequest $request){
+        $student = Student::query()->findOrFail($request->get('user_id'));
+        return $this->success($student);
     }
 
-    public function submit(Request $request){
+    public function submit(StudentSubmitRequest $request){
         $scores = (array)$request->get('scores');
-        $uid = (int)$request->get('user_id');
+        $uid = $request->get('user_id');
         $user = Student::query()->findOrFail($uid);
-        if($user->complete){
-            return $this->error('不可重复提交');
-        }
-        if (!$user->group->allow){
-            return $this->error('该班级禁止评分');
-        }
         try {
             foreach ($scores as $score){
 
@@ -190,12 +170,13 @@ class StudentsController extends Controller
                     'meta' => $meta,
                 ]));
             }
+
             $user->complete = 1;
             $user->save();
+            return $this->success();
         }catch (\Exception $e) {
-            return $this->error(env('APP_DEBUG') ? $e->getMessage() : '提交失败');
+            return $this->failed(env('APP_DEBUG') ? $e->getMessage() : '提交失败');
         }
-        return $this->json();
     }
 
 }

@@ -11,7 +11,7 @@
 
 .el-dialog {
     @include flex-column;
-    max-width: $dialog-width;
+    max-width: $dialog-max-width;
     max-height: $dialog-max-height;
     margin: 0 !important;
 }
@@ -28,6 +28,10 @@
 
 .el-dialog__wrapper {
     overflow: hidden;
+}
+
+.el-dialog__title {
+    @include no-user-select;
 }
 
 .toolbar {
@@ -105,6 +109,10 @@
 .el-select .el-input.is-focus .el-input__inner {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
+}
+
+.el-textarea__inner {
+    margin-top: 6px;
 }
 
 .table-card {

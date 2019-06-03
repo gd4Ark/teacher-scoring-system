@@ -1,7 +1,7 @@
 <template>
-    <div id="app">
-        <router-view />
-    </div>
+  <div id="app">
+    <router-view />
+  </div>
 </template>
 <script>
 import ResizeHandler from '@/common/mixins/ResizeHandler.js'
@@ -28,5 +28,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@/common/styles/reset.scss';
+@import '@/common/styles/_reset.scss';
 </style>

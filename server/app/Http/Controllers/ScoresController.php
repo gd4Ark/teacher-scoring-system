@@ -66,7 +66,7 @@ class ScoresController extends Controller
             'teacher' => Teacher::query()->findOrFail($tid),
         ];
 
-        return $this->json(array_merge(
+        return $this->success(array_merge(
                 $merge,
                 $this->paginate($query)->toArray()
             )

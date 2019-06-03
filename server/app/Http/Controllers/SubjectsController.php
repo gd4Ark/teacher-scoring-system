@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Subject\SubjectCreateRequest;
+use App\Http\Requests\Subject\SubjectUpdateRequest;
 use App\Models\Subject;
-use App\Rules\SubjectRule;
 use Illuminate\Http\Request;
 
 class SubjectsController extends Controller
@@ -18,69 +19,72 @@ class SubjectsController extends Controller
 
     public function index(Request $request)
     {
-        $query = Subject::query()->withCount('teachings');
-        $query = $this->queryFilter($query);
-        if ($request->get('getOptions') == 1) {
+        $query = Subject::query();
+
+        if ($request->has('getOptions')){
             return $this->getOptions($query);
-        } elseif ($request->get('getCount') == 1){
-            return $this->json($query->count());
-        } else {
-            return $this->paginateToJson($query);
         }
+        if ($request->has('getCount')){
+            return $this->success($query->count());
+        }
+
+        $query = $this->getRelationCount($query);
+        $query = $this->queryFilter($query);
+        return $this->paginateToJson($query);
+    }
+
+    /**
+     * @param $query \Illuminate\Database\Eloquent\Builder
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    private function getRelationCount($query){
+        return $query->withCount([
+            'teachings',
+        ]);
     }
 
     public function show(Request $request, $id)
     {
         $item = Subject::query()->findOrFail($id);
         if ($request->get('getTeachings') == 1){
-            return $this->json($item->getTeachings());
+            return $this->success($item->getTeachings());
         }
-        return $this->json($item);
+        return $this->success($item);
     }
 
-    public function create(Request $request)
+    public function create(SubjectCreateRequest $request)
     {
+        $names = $request->get('names');
+        $names = split($names);
+        $new_count = 0;
         try {
-            $names = $request->get('names');
-            $names = explode("\n",$names);
-            $new_count = 0;
-            $validator_count = 0;
             foreach ($names as $name){
                 $subject = [
                     'name' => $name,
                 ];
-                $validator = $this->ruleValidator(SubjectRule::rules(),SubjectRule::message(),$subject);
-                if ($validator){
-                    $validator_count++;
-                    continue;
-                }
                 $item = Subject::query()->firstOrCreate($subject);
                 if ($item->wasRecentlyCreated){
                     $new_count++;
                 }
             }
-            return $this->json([
+            return $this->success([
                 'new_count' => $new_count,
-                'validator_count' => $validator_count,
+                'fail_count' => count($names) - $new_count,
             ]);
         } catch (\Exception $e) {
-            return $this->error(env('APP_DEBUG') ? $e->getMessage() : '创建失败');
+            return $this->failed(env('APP_DEBUG') ? $e->getMessage() : '创建失败');
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(SubjectUpdateRequest $request, $id)
     {
         $item = Subject::query()->findOrFail($id);
-        $validator = $this->ruleValidator(SubjectRule::rules($item),SubjectRule::message());
-        if ($validator){
-            return $validator;
-        }
+        $input = $request->all();
         try {
-            $input = $request->all();
             $item->update($input);
-            return $this->json($item);
+            return $this->success($item);
         } catch (\Exception $e) {
-            return $this->error(env('APP_DEBUG') ? $e->getMessage() : '更新失败');
+            return $this->failed(env('APP_DEBUG') ? $e->getMessage() : '更新失败');
         }
     }
 
@@ -89,9 +93,9 @@ class SubjectsController extends Controller
         $item = Subject::query()->findOrFail($id);
         try {
             $item->delete();
-            return $this->json();
+            return $this->success();
         } catch (\Exception $e) {
-            return $this->error('删除失败');
+            return $this->failed('删除失败');
         }
     }
 
@@ -100,9 +104,9 @@ class SubjectsController extends Controller
         $ids = (array)$request->get('ids');
         try {
             Subject::query()->whereIn('id', $ids)->delete();
-            return $this->json();
+            return $this->success();
         } catch (\Exception $e) {
-            return $this->error('删除失败');
+            return $this->failed('删除失败');
         }
     }
 

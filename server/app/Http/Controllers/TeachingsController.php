@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Teaching\TeachingCreateRequest;
+use App\Http\Requests\Teaching\TeachingUpdateRequest;
 use App\Models\Group;
 use App\Models\Subject;
 use App\Models\Teacher;
@@ -46,7 +48,7 @@ class TeachingsController extends Controller
         if ($request->get('getOptions') == 1) {
             return $this->getOptions($query);
         } else {
-            return $this->json(array_merge(
+            return $this->success(array_merge(
                     $merge,
                     $this->paginate($query)->toArray()
                 )
@@ -61,41 +63,35 @@ class TeachingsController extends Controller
         foreach ($data as $item){
             $ret[] = $item->data();
         }
-        return $this->json($ret);
+        return $this->success($ret);
     }
 
     public function show($id)
     {
         $item = Teaching::query()->findOrFail($id);
-        return $this->json($item);
+        return $this->success($item);
     }
 
-    public function create(Request $request)
+    public function create(TeachingCreateRequest $request)
     {
+        $input = $request->all();
         try {
-            $input = $request->only(['group_id', 'subject_id', 'teacher_id']);
-            $item = Teaching::query()->firstOrCreate([
-                'group_id' => $input['group_id'],
-                'subject_id' => $input['subject_id'],
-            ],$input);
-            if ($item->wasRecentlyCreated) {
-                return $this->json($item);
-            }
-            return $this->error('不可添加相同科目');
+            $item = Teaching::query()->create($input);
+            return $this->success($item);
         } catch (\Exception $e) {
-            return $this->error(env('APP_DEBUG') ? $e->getMessage() : '创建失败');
+            return $this->failed(env('APP_DEBUG') ? $e->getMessage() : '创建失败');
         }
     }
 
-    public function update(Request $request,$id)
+    public function update(TeachingUpdateRequest $request,$id)
     {
         $item = Teaching::query()->findOrFail($id);
+        $input = $request->all();
         try {
-            $input = $request->all();
             $item->update($input);
-            return $this->json($item);
+            return $this->success($item);
         } catch (\Exception $e) {
-            return $this->error(env('APP_DEBUG') ? $e->getMessage() : '更新失败');
+            return $this->failed(env('APP_DEBUG') ? $e->getMessage() : '更新失败');
         }
     }
 
@@ -104,9 +100,9 @@ class TeachingsController extends Controller
         $item = Teaching::query()->findOrFail($id);
         try {
             $item->delete();
-            return $this->json();
+            return $this->success();
         } catch (\Exception $e) {
-            return $this->error('删除失败');
+            return $this->failed('删除失败');
         }
     }
 
@@ -115,9 +111,9 @@ class TeachingsController extends Controller
         $ids = (array)$request->get('ids');
         try {
             Teaching::query()->whereIn('id', $ids)->delete();
-            return $this->json();
+            return $this->success();
         } catch (\Exception $e) {
-            return $this->error('删除失败');
+            return $this->failed('删除失败');
         }
     }
 

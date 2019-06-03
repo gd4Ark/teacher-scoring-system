@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Group\GroupCreateRequest;
+use App\Http\Requests\Group\GroupUpdateAllowRequest;
+use App\Http\Requests\Group\GroupUpdateRequest;
 use App\Models\Group;
-use App\Rules\GroupRule;
 use Illuminate\Http\Request;
 
 class GroupsController extends Controller
@@ -19,18 +21,21 @@ class GroupsController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->get('getComplete') == 1) {
+        $query = Group::query();
+
+        if ($request->has('getComplete')) {
             return $this->completeInfo();
         }
-        $query = $this->getRelationCount(Group::query());
-        $query = $this->queryFilter($query);
-        if ($request->get('getOptions') == 1) {
+        if ($request->has('getOptions')){
             return $this->getOptions($query);
-        } elseif ($request->get('getCount') == 1){
-            return $this->json($query->count());
-        } else {
-            return $this->paginateToJson($query);
         }
+        if ($request->has('getCount')){
+            return $this->success($query->count());
+        }
+
+        $query = $this->getRelationCount($query);
+        $query = $this->queryFilter($query);
+        return $this->paginateToJson($query);
     }
 
     /**
@@ -53,7 +58,7 @@ class GroupsController extends Controller
     private function completeInfo(){
         $query = Group::query()->select('id');
         $res = $this->getRelationCount($query)->get();
-        return $this->json([
+        return $this->success([
             [
                 'state' => '未完成',
                 'count' => $res->filter(function ($item){
@@ -72,52 +77,43 @@ class GroupsController extends Controller
     public function show($id)
     {
         $item = Group::query()->findOrFail($id);
-        return $this->json($item);
+        return $this->success($item);
     }
 
-    public function create(Request $request)
+    public function create(GroupCreateRequest $request)
     {
+        $names = $request->get('names');
+        $names = split($names);
+        $new_count = 0;
         try {
-            $names = $request->get('names');
-            $names = $this->split($names);
-            $new_count = 0;
-            $validator_count = 0;
             foreach ($names as $name){
                 $group = [
                     'name' => $name,
                 ];
-                $validator = $this->ruleValidator(GroupRule::rules(),GroupRule::message(),$group);
-                if ($validator){
-                    $validator_count++;
-                    continue;
-                }
+
                 $item = Group::query()->firstOrCreate($group);
                 if ($item->wasRecentlyCreated){
                     $new_count++;
                 }
             }
-            return $this->json([
+            return $this->success([
                 'new_count' => $new_count,
-                'validator_count' => $validator_count,
+                'fail_count' => count($names) - $new_count,
             ]);
         } catch (\Exception $e) {
-            return $this->error(env('APP_DEBUG') ? $e->getMessage() : '创建失败');
+            return $this->failed(env('APP_DEBUG') ? $e->getMessage() : '创建失败');
         }
     }
 
-    public function update(Request $request,$id)
+    public function update(GroupUpdateRequest $request,$id)
     {
         $item = Group::query()->findOrFail($id);
-        $validator = $this->ruleValidator(GroupRule::rules($item),GroupRule::message());
-        if ($validator){
-            return $validator;
-        }
         try {
             $input = $request->all();
             $item->update($input);
-            return $this->json($item);
+            return $this->success($item);
         } catch (\Exception $e) {
-            return $this->error(env('APP_DEBUG') ? $e->getMessage() : '更新失败');
+            return $this->failed(env('APP_DEBUG') ? $e->getMessage() : '更新失败');
         }
     }
 
@@ -126,9 +122,9 @@ class GroupsController extends Controller
         $item = Group::query()->findOrFail($id);
         try {
             $item->delete();
-            return $this->json();
+            return $this->success();
         } catch (\Exception $e) {
-            return $this->error('删除失败');
+            return $this->failed('删除失败');
         }
     }
 
@@ -138,9 +134,9 @@ class GroupsController extends Controller
         $data = $request->except('ids');
         try {
             Group::query()->whereIn('id', $ids)->update($data);
-            return $this->json();
+            return $this->success();
         } catch (\Exception $e) {
-            return $this->error(env('APP_DEBUG') ? $e->getMessage() : '更新失败');
+            return $this->failed(env('APP_DEBUG') ? $e->getMessage() : '更新失败');
         }
     }
 
@@ -149,20 +145,16 @@ class GroupsController extends Controller
         $ids = (array)$request->get('ids');
         try {
             Group::query()->whereIn('id', $ids)->delete();
-            return $this->json();
+            return $this->success();
         } catch (\Exception $e) {
-            return $this->error('删除失败');
+            return $this->failed('删除失败');
         }
     }
 
-    public function updateAllow(Request $request){
+    public function updateAllow(GroupUpdateAllowRequest $request){
         $query = Group::query();
-        if ($request->get('all') != 1) {
+        if (!$request->get('all')) {
             $query = $query->findOrFail($request->get('id'));
-        }
-        $validator = $this->ruleValidator(GroupRule::rules(),GroupRule::message());
-        if ($validator){
-            return $validator;
         }
         try{
             $query->update([
@@ -170,7 +162,7 @@ class GroupsController extends Controller
             ]);
         }
         catch (\Exception $e){
-            return $this->error(env('APP_DEBUG') ? $e->getMessage() : '更新失败');
+            return $this->failed(env('APP_DEBUG') ? $e->getMessage() : '更新失败');
         }
     }
 

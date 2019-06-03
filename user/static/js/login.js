@@ -26,8 +26,7 @@ jQuery(function($) {
                 method: 'post',
                 url: BASE_URL + 'students/login',
                 data: {
-                    groupId: gid,
-                    studentId: stuid
+                    user_id: stuid
                 },
                 success: function(result) {
                     var data = result.data

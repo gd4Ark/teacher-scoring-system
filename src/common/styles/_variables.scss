@@ -44,9 +44,11 @@ $form-item-margin: 0;
 $message-box-width: 300px;
 $message-box-zIndex: 3000;
 
-$dialog-width: 600px;
+$dialog-max-width: 600px;
 $dialog-max-height: 700px;
-$dialog-body-padding: 10px 20px 0;
+$mobile-dialog-max-width: 85vw;
+$mobile-dialog-max-height: 500px;
+$dialog-body-padding: 10px 20px;
 $dialog-body-footer: 0 20px 20px;
 
 $loading-mask-zIndex: 999;

@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ApiResponse;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class Controller extends BaseController
 {
+
+    use ApiResponse;
 
     protected $req;
 
@@ -17,49 +19,13 @@ class Controller extends BaseController
     }
 
     /**
-     * @param array $data
-     * @param bool $status
-     * @param string $msg
-     * @param int $statusCode
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function json($data = [], $status = true, $msg = '', $statusCode = 200)
-    {
-        return response()->json([
-            'status' => $status,
-            'msg' => $msg,
-            'data' => $data
-        ])->setStatusCode($statusCode);
-    }
-
-
-    /**
-     * @param $msg
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function msg($msg)
-    {
-        return $this->json([], true, $msg);
-    }
-
-    /**
-     * @param $msg
-     * @param int $statusCode
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function error($msg, $statusCode = 500)
-    {
-        return $this->json([], true, $msg, $statusCode);
-    }
-
-    /**
      * @param $query \Illuminate\Database\Eloquent\Builder
      * @return \Illuminate\Http\JsonResponse
      */
     protected function getOptions($query)
     {
         $query->select('id as value', 'name as label');
-        return $this->json($query->get());
+        return $this->success($query->get());
     }
 
     /**
@@ -78,7 +44,7 @@ class Controller extends BaseController
      */
     protected function paginateToJson($query)
     {
-        return $this->json($this->paginate($query));
+        return $this->success($this->paginate($query));
     }
 
     /**
@@ -108,28 +74,4 @@ class Controller extends BaseController
         }
         return $query;
     }
-
-    /**
-     * @param array $rule
-     * @param array $message
-     * @param array $data
-     * @return \Illuminate\Http\JsonResponse|null
-     */
-    public function ruleValidator($rule=[], $message=[],$data = [])
-    {
-        $data = empty($data) ? $this->req->all() : $data;
-        $validator = Validator::make($data, $rule, $message);
-        if($validator->fails()){
-            foreach($validator->errors()->getMessages() as $message){
-                return $this->error($message[0]);
-            }
-        }
-        return null;
-    }
-
-    public function split($value,$delimiter = "\n"){
-        $res =  explode($delimiter,$value);
-        return array_map('trim',$res);
-    }
-
 }

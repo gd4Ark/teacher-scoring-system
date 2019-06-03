@@ -12,7 +12,7 @@ Vue.prototype.$config = config
 import data from '@/common/data/index'
 Vue.prototype.$v_data = data
 
-import App from '@/common/App'
+import App from './App'
 import router from './router/index'
 import store from './store/index'
 

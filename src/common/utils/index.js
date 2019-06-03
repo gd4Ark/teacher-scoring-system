@@ -124,3 +124,16 @@ export function uuid(len = 32, radix = 0) {
     }
     return uuid.join('')
 }
+
+/**
+ * @export
+ * @param {*} str
+ * @returns {string}
+ */
+export function removeBlank(str) {
+    return str
+        .split('\n')
+        .map(s => s.trim())
+        .filter(s => s)
+        .join('\n')
+}

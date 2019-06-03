@@ -64,11 +64,11 @@ export default {
             }
         )
     },
-    async updateSearchKeyword(ctx, { module, search_keyword = [] }) {
+    async updateSearch(ctx, { module, search = [] }) {
         ctx.commit(
             `${module}/update`,
             {
-                search_keyword
+                search
             },
             {
                 root: true

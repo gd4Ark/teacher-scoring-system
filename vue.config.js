@@ -10,6 +10,8 @@ const pages = [
     {
         index: {
             entry: `src/pages/${current}/main.js`,
+            template: `src/pages/${current}/tpl.html`,
+            title: pkg.title,
             filename: 'index.html'
         }
     },
@@ -17,10 +19,14 @@ const pages = [
     {
         index: {
             entry: 'src/pages/admin/main.js',
+            template: 'src/pages/admin/tpl.html',
+            title: pkg.title,
             filename: 'admin/index.html'
         },
         query: {
             entry: 'src/pages/query/main.js',
+            template: 'src/pages/query/tpl.html',
+            title: pkg.title,
             filename: 'query/index.html'
         }
     }
@@ -35,7 +41,7 @@ module.exports = {
         sourceMap: false,
         loaderOptions: {
             sass: {
-                data: `@import "@/common/styles/app.scss";`
+                data: `@import "@/common/styles/_app.scss";`
             }
         }
     },
@@ -43,7 +49,6 @@ module.exports = {
         host: '0.0.0.0',
         port: 8080,
         https: false,
-        open: true,
         hotOnly: true
     },
     configureWebpack: config => {

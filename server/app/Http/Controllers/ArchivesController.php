@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Archive\ArchiveCreateRequest;
+use App\Http\Requests\Archive\ArchiveUpdateRequest;
 use App\Models\Group;
 use App\Models\Score;
 use App\Models\Archive;
 use App\Models\Subject;
 use App\Models\Teacher;
-use App\Rules\ArchiveRule;
 use Illuminate\Http\Request;
 
 class ArchivesController extends Controller
@@ -35,29 +36,25 @@ class ArchivesController extends Controller
     public function show($id)
     {
         $item = Archive::query()->findOrFail($id);
-        return $this->json($item);
+        return $this->success($item);
     }
 
-    public function create()
+    public function create(ArchiveCreateRequest $request)
     {
-        $validator = $this->ruleValidator(ArchiveRule::rules(),ArchiveRule::message());
-        if ($validator){
-            return $validator;
-        }
         try {
 
-            $this->archive();
+            $this->archive($request);
 
             $this->afterArchive();
 
-            return $this->json();
+            return $this->success();
 
         } catch (\Exception $e) {
-            return $this->error(env('APP_DEBUG') ? $e->getMessage() : '创建失败');
+            return $this->failed(env('APP_DEBUG') ? $e->getMessage() : '创建失败');
         }
     }
 
-    private function archive(){
+    private function archive($request){
         $query = Score::query()
             ->select(['teachers.name as teacher_name','subjects.name as subjects_name'])
             ->selectRaw('COUNT(scores.student_id) as student_count')
@@ -72,7 +69,7 @@ class ArchivesController extends Controller
         $archive = $query->get();
 
         Archive::query()->create([
-            'name' => $this->req->get('name'),
+            'name' => $request->get('name'),
             'meta' => [
                 'archive' => $archive
             ]
@@ -85,4 +82,15 @@ class ArchivesController extends Controller
         Group::query()->delete();
     }
 
+    public function update(ArchiveUpdateRequest $request, $id)
+    {
+        $item = Archive::query()->findOrFail($id);
+        $input = $request->all();
+        try {
+            $item->update($input);
+            return $this->success($item);
+        } catch (\Exception $e) {
+            return $this->failed(env('APP_DEBUG') ? $e->getMessage() : '更新失败');
+        }
+    }
 }
