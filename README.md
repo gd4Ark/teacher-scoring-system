@@ -59,14 +59,25 @@
 
 ## 安装与使用
 
+下载
+
 ```
-// 下载
 git clone https://github.com/gd4Ark/teacher-scoring-system.git
-// 安装前端依赖
+```
+
+前端
+
+```
 npm install
-// 安装后端依赖
+```
+
+后端
+
+```
 cd server
 composer install
+// 创建好数据库且填写 .env 文件后，进行数据迁移
+php artisan migrate --seed
 ```
 
 ## 注意事项
@@ -74,6 +85,18 @@ composer install
 ### 1、MySQL 版本问题
 
 答：由于本项目使用了一些 MariaDB 不支持的特性，所以请使用 MySQL 版本的数据库。
+
+### 2、填写 .env 文件
+
+答：创建好数据库后（注意是 InnoDB 引擎），复制 .env.example 为 .env，填写你的数据库连接信息。
+
+### 3、账号密码
+
+答：默认账号密码都是 admin。
+
+## TODO LIST
+
+- 后台管理自定义评分项
 
 ## 作者
 

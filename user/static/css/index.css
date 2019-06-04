@@ -16,10 +16,6 @@ label {
     transition: all 0.5s ease;
 }
 
-input[type=radio]:checked+label {
-    /*background:#c0efd5;*/
-}
-
 input[type=radio]:checked+label::after {
     content: '\2714';
 }
@@ -50,10 +46,6 @@ td[data-sub-project] {
 
 td.select {
     transition: all 0.8s ease;
-}
-
-td.select:hover {
-    /*background:#5dbbf6;*/
 }
 
 td.select.err {
