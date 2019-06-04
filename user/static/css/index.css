@@ -25,7 +25,7 @@ input[type=radio]:checked+label::after {
 }
 
 .btn {
-    margin: 10px 0;
+    margin-top: 20px;
 }
 
 table {
@@ -79,5 +79,5 @@ textarea {
     resize: none;
     border-radius: 0 !important;
     border: 0 !important;
-    height: 200px !important;
+    height: 100px !important;
 }

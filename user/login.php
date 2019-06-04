@@ -17,7 +17,7 @@
     <div class="container">
         <div class="row row-centered">
             <div class="well col-md-6 col-centered">
-                <h2>教师评分系统 - 学生登录</h2>
+                <h2>评教系统 - 学生登录</h2>
                 <div class="input-group input-group-md">
                     <span class="input-group-addon">班级</span>
                     <select id="groups" class="form-control">
@@ -39,7 +39,7 @@
         </div>
     </div>
     <div class="footer flex">
-        &copy 清远市技师学院 2019
+        &copy 4ark. 2019
     </div>
 
     <script src="./static/js/jquery-3.2.1.min.js"></script>

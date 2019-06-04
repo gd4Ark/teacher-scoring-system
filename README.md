@@ -1,8 +1,6 @@
-# 教师评分系统
-
 ## 介绍
 
-教师评分系统是一款为提高教师的教学质量，反馈学生的心声，提高学校教务管理能力的系统。针对各专业所授课程及教师的评价结果，直观的统计出每位教师的综合能力。
+评教系统是一款为提高教师的教学质量，反馈学生的心声，提高学校教务管理能力的系统。针对各专业所授课程及教师的评价结果，直观的统计出每位教师的综合能力。
 
 本系统为前后端分离的 SPA 应用，前端使用 VUE 、ElementUI，后端使用 Lumen、MySQL。
 
@@ -35,9 +33,15 @@
 
 ![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/admin.gif)
 
-### 学生评分 
+### 学生评分
 
-![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/student.gif)
+#### 登陆界面 
+
+![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/student_login.png)
+
+#### 评分界面
+
+![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/student_submit.png)
 
 ## 安装与使用
 
@@ -51,9 +55,15 @@ cd server
 composer install
 ```
 
+## 注意事项
+
+### 1、MySQL 版本问题
+
+
+
 ## 作者
 
-**教师评分系统** © 4ark，根据许可证 [MIT](https://github.com/gd4Ark/learn-english/blob/master/LICENSE) 发布。
+**评教系统** © 4ark，根据许可证 [MIT](https://github.com/gd4Ark/learn-english/blob/master/LICENSE) 发布。
 
 > [Blog](https://4ark.me/) · GitHub [@gd4Ark](https://github.com/gd4Ark)
 

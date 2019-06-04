@@ -50,7 +50,7 @@ body {
 }
 
 .header {
-    height: 80px;
+    height: 65px;
 }
 
 .header h1 {
@@ -58,7 +58,7 @@ body {
 }
 
 .header>* {
-    line-height: 80px;
+    line-height: 65px;
 }
 
 .header a {
@@ -74,6 +74,7 @@ body {
     text-align: center;
     height: 50px;
     line-height: 50px;
+    font-size: 1.3rem;
 }
 
 

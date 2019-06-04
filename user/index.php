@@ -34,7 +34,7 @@ $has_complete = $student['complete'];
     <link rel="stylesheet" href="./static/css/bootstrap.min.css">
     <link rel="stylesheet" href="./static/css/style.css">
     <link rel="stylesheet" href="./static/css/index.css">
-    <title>教师评分系统</title>
+    <title>评教系统</title>
     <!-- 解决加载时单元格闪一下的BUG -->
     <style>
         th,
@@ -49,7 +49,7 @@ $has_complete = $student['complete'];
 
 <body>
     <div class="header">
-        <h1 class="title">教师评分系统</h1>
+        <h1 class="title">评教系统</h1>
         <a href="./login">退出</a>
     </div>
     <div class="main flex">
