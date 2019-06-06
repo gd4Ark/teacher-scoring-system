@@ -61,22 +61,26 @@
 
 下载
 
-```
+```bash
 git clone https://github.com/gd4Ark/teacher-scoring-system.git
 ```
 
-安装
+前端
 
-```
+```bash
 npm install
+# 开发模式
+npm run serve
+# 构建模式
+npm run build
 ```
 
 后端
 
-```
+```bash
 cd server
 composer install
-// 创建好数据库且填写 .env 文件后，进行数据迁移
+# 创建好数据库且填写 .env 文件后，进行数据迁移
 php artisan migrate --seed
 ```
 
@@ -97,6 +101,10 @@ php artisan migrate --seed
 ### 4、账号密码
 
 答：默认账号密码都是 admin。
+
+## 5、其他问题
+
+答：如有其他问题请提 issue 或发送邮件到我的邮箱。
 
 ## TODO LIST
 
