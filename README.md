@@ -65,7 +65,7 @@
 git clone https://github.com/gd4Ark/teacher-scoring-system.git
 ```
 
-前端
+安装
 
 ```
 npm install
@@ -90,7 +90,11 @@ php artisan migrate --seed
 
 答：创建好数据库后（注意是 InnoDB 引擎），复制 .env.example 为 .env，填写你的数据库连接信息。
 
-### 3、账号密码
+### 3、服务端 API 地址
+
+答：管理端的配置在`src/common/config/index.js`中，学生端的配置在`user/static/js/config.js`中。
+
+### 4、账号密码
 
 答：默认账号密码都是 admin。
 
