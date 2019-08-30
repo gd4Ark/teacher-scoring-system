@@ -1,0 +1,26 @@
+/*web background*/
+.container {
+    display: table;
+    height: 92%;
+}
+
+.row {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+/* centered columns styles */
+.row-centered {
+    text-align: center;
+}
+
+.col-centered {
+    display: inline-block;
+    float: none;
+    text-align: left;
+    margin-right: -4px;
+}
+
+h2 {
+    text-align: center;
+}

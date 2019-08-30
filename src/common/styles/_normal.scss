@@ -1,0 +1,263 @@
+.el-message-box,
+.el-message {
+    min-width: $message-box-width;
+    max-width: $message-box-width;
+    z-index: $message-box-zIndex;
+}
+
+.el-dialog__wrapper {
+    @include sub-center;
+}
+
+.el-dialog {
+    @include flex-column;
+    max-width: $dialog-max-width;
+    max-height: $dialog-max-height;
+    margin: 0 !important;
+}
+
+.el-dialog__body {
+    padding: $dialog-body-padding;
+    flex: 1;
+    overflow: auto;
+}
+
+.el-dialog__footer {
+    padding: $dialog-body-footer;
+}
+
+.el-dialog__wrapper {
+    overflow: hidden;
+}
+
+.el-dialog__title {
+    @include no-user-select;
+}
+
+.avatar-uploader {
+    @include flex;
+}
+.el-upload-list--picture-card .el-upload-list__item,
+.el-upload--picture-card {
+    @include wh($upload-size);
+    line-height: $upload-size;
+}
+
+.el-upload-dragger {
+    height: 100% !important;
+}
+
+.toolbar {
+    padding: 3px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.el-loading-mask {
+    z-index: $loading-mask-zIndex;
+}
+
+.inner-container {
+    @include wh(100%);
+}
+
+.table-content {
+    @include wh(100%);
+    @include flex-column;
+}
+
+.el-button--mini {
+    padding: $button--mini-padding;
+}
+
+* + .el-button {
+    margin-left: $after-button-margin-left;
+}
+
+.el-switch {
+    text-align: left;
+    line-height: 40px;
+}
+
+.el-radio,
+.el-radio-button--mini {
+    line-height: 40px;
+}
+
+.el-radio-button:focus:not(.is-focus):not(:active):not(.is-disabled) {
+    box-shadow: none;
+}
+
+.el-radio-group {
+    text-align: left;
+}
+
+.el-form--inline .el-form-item {
+    margin: $form-item-margin;
+}
+
+.el-form-item-container {
+    margin-bottom: $form-item-margin-bottom;
+}
+
+.el-form-item:not(.el-form-item-container) {
+    margin-bottom: $form-item-margin-bottom;
+}
+
+.search .el-form-item:not(.el-form-item-container) {
+    margin-bottom: 0px;
+}
+
+.el-form-item {
+    margin-bottom: 0;
+}
+
+.el-form-item__label {
+    text-align: center;
+    font-size: 0.8rem;
+    width: 85px;
+}
+
+.el-form-item__error {
+    font-size: 8px;
+    padding-top: 2px;
+    line-height: 0.3;
+}
+
+.el-range-editor {
+    display: flex !important;
+}
+
+.el-time-panel {
+    width: 150px;
+}
+
+.el-form--inline .el-form-item__content {
+    vertical-align: middle;
+}
+
+.el-input-number,
+.el-date-editor.el-input,
+.el-date-editor.el-input__inner {
+    width: auto;
+}
+
+.el-input-number--mini {
+    width: $input-number--mini-width;
+}
+
+.el-input--suffix .el-input__inner {
+    padding: $input-suffix-padding;
+}
+
+.el-range-editor--mini.el-input__inner,
+.el-input--mini .el-input__inner {
+    height: 24px !important;
+}
+
+.el-range-editor--mini .el-range-separator {
+    line-height: 15px;
+}
+
+.el-cascader__search-input {
+    height: 0;
+}
+
+.el-select.el-select--mini {
+    .el-input--mini .el-input__inner {
+        height: 24px !important;
+    }
+}
+
+.el-date-editor {
+    .el-input__icon,
+    .el-icon-date {
+        display: none;
+    }
+}
+
+.el-cascader--mini {
+    line-height: 40px;
+}
+
+.el-select .el-input.is-focus .el-input__inner {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.el-textarea__inner {
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+.table-card {
+    flex: 1;
+    @include flex-column;
+
+    .el-card__body {
+        flex: 1;
+        overflow: hidden;
+    }
+}
+
+.el-dropdown {
+    font-size: 1.1rem;
+}
+
+.el-textarea__inner {
+    font-family: inherit;
+}
+
+.font-size-small {
+    font-size: 0.8rem;
+}
+
+.status {
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 10px;
+
+    &.yes {
+        color: #67c23a;
+    }
+
+    &.no {
+        color: #f56c6c;
+    }
+}
+
+.el-row + .el-row {
+    margin-top: 10px;
+}
+
+.full-tab-form {
+    flex: 1;
+    @include flex-column;
+    .el-form-item-tab {
+        flex: 1;
+        overflow: hidden;
+        .el-tabs {
+            @include full-tab;
+        }
+    }
+}
+
+.full-tab {
+    @include full-tab;
+}
+
+.card-body-scroll_y {
+    @include card-body-scroll_y;
+}
+
+.el-image-viewer__mask {
+    opacity: 0.8;
+}
+.el-image-viewer__close {
+    color: #eee;
+}
+
+.el-pager {
+    height: 22px;
+}

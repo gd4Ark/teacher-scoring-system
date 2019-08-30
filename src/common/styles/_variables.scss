@@ -1,0 +1,66 @@
+//
+$font-family: 'Roboto,Helvetica Neue,Helvetica,Tahoma,Arial,FZLanTingHeiS-L-G,PingFang SC,Microsoft YaHei';
+$font-size: 14px;
+$mobile-font-size: 12px;
+
+$app-padding: 0.8vw;
+
+$global-font-color: #34495e;
+$secondary-font-color: #95928d;
+
+$title-font-size: 1.05rem;
+
+$sidebar-color: #f7f7f7;
+$sidebar-width: 200px;
+
+$color-primary: #409eff;
+$color-primary-sub: rgba($color-primary, 0.15);
+$color-primary-drak: rgba($color-primary, 0.05);
+
+$app-header-height: 62px;
+$app-header-bgcolor: $color-primary;
+$app-header-color: #ffffff;
+
+$app-menu-item-height: 50px;
+$app-menu-item-color: #303133;
+$app-menu-item-active-color: $color-primary;
+$app-sub-menu-item-bgcolor: $sidebar-color;
+$app-menu-item-hover-bgcolor: $color-primary-drak;
+
+$card-header-height: 25px;
+$card-header-padding: 8px $app-padding;
+$card-body-padding: 8px $app-padding;
+
+$table-width: 100%;
+$table-height: 93%;
+$table-font-size: 0.95rem;
+$table-row-padding: 8px 0;
+
+$header-icon-size: 1.2rem;
+$header-icon-padding: 8px;
+
+$input-suffix-padding: 0 15px;
+
+$form-item-margin: 0;
+
+$message-box-width: 300px;
+$message-box-zIndex: 3000;
+
+$dialog-max-width: 600px;
+$dialog-max-height: 700px;
+$mobile-dialog-max-width: 85vw;
+$mobile-dialog-max-height: 500px;
+$dialog-body-padding: 10px 20px;
+$dialog-body-footer: 0 20px 20px;
+
+$loading-mask-zIndex: 999;
+
+$button--mini-padding: 5px 8px;
+
+$after-button-margin-left: 10px;
+
+$form-item-margin-bottom: 9px;
+
+$input-number--mini-width: 130px;
+
+$upload-size: 80px;

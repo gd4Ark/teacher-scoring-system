@@ -1,0 +1,108 @@
+@mixin flex {
+    display: flex;
+}
+
+@mixin flex-column {
+    @include flex;
+    flex-direction: column;
+}
+
+@mixin sub-center {
+    @include flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin po-abs {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+@mixin center {
+    @include po-abs;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+@mixin padding {
+    @include padding-x;
+    @include padding-y;
+}
+
+@mixin padding-x($padding: $app-padding) {
+    padding-left: $padding;
+    padding-right: $padding;
+}
+
+@mixin padding-y($padding: $app-padding) {
+    padding-top: $padding;
+    padding-bottom: $padding;
+}
+
+@mixin wh($width, $height: false) {
+    width: $width;
+
+    @if $height {
+        height: $height;
+    } @else {
+        height: $width;
+    }
+}
+
+@mixin nav {
+    @include flex;
+    justify-content: space-around;
+    align-items: center;
+
+    .nav-item a {
+        display: block;
+        @include wh(100%);
+        color: $secondary-font-color;
+
+        &.router-link-active {
+            color: $highlight-color;
+        }
+    }
+}
+
+@mixin mask($zIndex: 1, $bg: rgba(0, 0, 0, 0.4)) {
+    @include center;
+    @include wh(100%);
+    background: $bg;
+    z-index: $zIndex;
+}
+
+@mixin no-user-select {
+    user-select: none;
+}
+
+@mixin no-scrollbar {
+    &::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+    }
+}
+
+@mixin full-tab {
+    @include flex-column;
+    height: 100%;
+    .el-tabs__content {
+        flex: 1;
+        overflow-y: auto;
+        @include no-scrollbar;
+    }
+}
+
+@mixin card-body-scroll_y {
+    @include flex-column;
+    height: 100%;
+    overflow: hidden;
+    > .el-card__body {
+        flex: 1;
+        @include wh(100%);
+        @include no-scrollbar;
+        overflow-y: auto;
+    }
+}

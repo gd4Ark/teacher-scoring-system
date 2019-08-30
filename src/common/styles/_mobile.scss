@@ -1,0 +1,6 @@
+html.mobile {
+    .el-dialog {
+        max-width: $mobile-dialog-max-width;
+        max-height: $mobile-dialog-max-height;
+    }
+}
