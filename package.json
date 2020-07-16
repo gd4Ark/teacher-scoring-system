@@ -27,7 +27,7 @@
     "fuse.js": "3.4.4",
     "html2canvas": "^1.0.0-rc.3",
     "jspdf": "^1.5.3",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "normalize.css": "7.0.0",
     "nprogress": "0.2.0",
     "path-to-regexp": "^3.0.0",
