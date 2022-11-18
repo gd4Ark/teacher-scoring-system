@@ -47,7 +47,7 @@
     "@babel/register": "7.0.0",
     "@vue/cli-plugin-babel": "3.5.3",
     "@vue/cli-plugin-eslint": "^3.0.5",
-    "@vue/cli-service": "^3.0.5",
+    "@vue/cli-service": "^5.0.8",
     "compression-webpack-plugin": "^2.0.0",
     "cross-env": "^5.2.0",
     "eslint": "^5.16.0",
